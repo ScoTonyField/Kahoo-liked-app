@@ -1,8 +1,10 @@
 import { Button, Container, FormControl, FormHelperText, Grid, Input, InputLabel } from '@material-ui/core';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 
 const Login = ({ setLogin, setPage }) => {
+  const history = useHistory();
   console.log(setLogin);
 
   const handleLogin = (e) => {
@@ -10,7 +12,7 @@ const Login = ({ setLogin, setPage }) => {
     setLogin(true);
     setPage('dashboard');
     // window.location.replace('/dashboard');
-    window.location = '/dashboard';
+    history.push('/dashboard');
   }
 
   return (
@@ -44,8 +46,8 @@ const Login = ({ setLogin, setPage }) => {
 };
 
 Login.propTypes = {
-  setLogin: PropTypes.func.isRequired,
-  setPage: PropTypes.func.isRequired
+  setLogin: PropTypes.func,
+  setPage: PropTypes.func,
 };
 
 export default Login;
