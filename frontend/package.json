@@ -4,11 +4,14 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.3",
+    "fontsource-roboto": "^4.0.0",
+    "formik": "^2.2.6",
     "history": "^5.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.0"
+    "react-scripts": "4.0.0",
+    "styled-components": "^5.2.3"
   },
   "scripts": {
     "start": "react-scripts start",
