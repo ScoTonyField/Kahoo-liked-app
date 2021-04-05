@@ -1,10 +1,15 @@
 import React from 'react';
 import { Container } from '@material-ui/core';
+import Title from '../components/title/Title';
 
-const NotFound = () => {
+const NotFound = (props) => {
+  console.log(props)
+
   return (
     <Container>
-      404 Not Found
+        <Title>
+            404 Not Found
+        </Title>
     </Container>
   );
 };

@@ -5,7 +5,6 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
-import 'fontsource-roboto';
 
 import React from 'react';
 import { Formik } from 'formik';
@@ -15,6 +14,7 @@ import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 // import styles from './styles.css';
 import Title from '../components/title/Title';
+import makeAPIRequest from '../Api';
 
 const StyledLayout = styled.div`
   display: flex;
@@ -44,15 +44,28 @@ const validateInput = (values) => {
   return errors;
 }
 
-const Login = ({ setToken, setPage }) => {
+const Login = (props) => {
   // const classes = useStyles();
+  console.log(props)
   const history = useHistory();
 
-  const handleLogin = (values) => {
-    // handle values
-    setToken('token');
-    setPage('dashboard');
-    history.push('/dashboard');
+  const handleLogin = (values, { setSubmitting }) => {
+    const body = JSON.stringify({
+      email: values.email,
+      password: values.password,
+    })
+    makeAPIRequest('admin/auth/login', 'POST', null, null, body)
+      .then(res => {
+        console.log(res.token);
+        props.setToken(res.token);
+        // props.setPage('dashboard');
+        history.push('/dashboard');
+      }).catch(err => {
+        if (err.status === 400) {
+          alert('Incorrect email or password, please try again.');
+          setSubmitting(false);
+        }
+      })
   }
 
   return (
@@ -60,6 +73,7 @@ const Login = ({ setToken, setPage }) => {
       <StyledLayout>
         <Title>Sign in</Title>
         <Formik
+          // TODO: clear this
           initialValues={{
             email: 'test@test.com',
             password: '12345678'
@@ -129,7 +143,6 @@ const Login = ({ setToken, setPage }) => {
                   </Link>
                 </Typography>
             </form>
-
           )}
         </Formik>
       </StyledLayout>

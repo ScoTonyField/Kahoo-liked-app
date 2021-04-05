@@ -1,12 +1,16 @@
 import { Container } from '@material-ui/core';
 import React from 'react';
 import PropTypes from 'prop-types';
+import Title from '../components/title/Title';
 
-const Home = ({ token }) => {
+const Home = (props) => {
+  const token = props.token;
   console.log('Directing to Homepage, token: ' + token)
   return (
     <Container>
-        Homepage
+        <Title>
+          Homepage
+        </Title>
         {!token &&
             <p>Well come to BigBrain, please login or register.</p>
         }
@@ -15,7 +19,7 @@ const Home = ({ token }) => {
 };
 
 Home.propTypes = {
-  token: PropTypes.string.isRequired
+  token: PropTypes.string
 };
 
 export default Home;

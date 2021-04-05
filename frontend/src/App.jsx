@@ -11,7 +11,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
 } from 'react-router-dom';
 
 import
@@ -23,6 +23,8 @@ import
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import './App.css';
+import makeAPIRequest from './Api';
+import NotFound from './pages/NotFound';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,52 +41,81 @@ const useStyles = makeStyles((theme) => ({
 function App () {
   const classes = useStyles();
   // directs to different page by setting state
-  const [curPage, setCurPage] = React.useState('home');
+  const curRoute = window.location.href.split('/')[3];
+  const [curPage, setCurPage] = React.useState(curRoute || 'home');
+  // // auto update curPage when path
+  // React.useEffect(() => {
+  //   console.log(history)
+  // }, [history[0]]);
+  // console.log(window.location.href)
+
   // state to indicate if the user is logged in, is false by defualt
   const [token, setToken] = React.useState('');
-  console.log(curPage, setToken);
-  console.log(token)
+  console.log('cur page: ', curPage);
+  console.log('token: ', token);
+
   const handleLogout = () => {
-    setToken('');
-    setCurPage('home');
+    makeAPIRequest('admin/auth/logout', 'POST', token, null, null)
+      .then(() => {
+        alert('Logged out successfully.')
+        setToken('');
+        setCurPage('home');
+      }).catch(() => alert('Invalid Token'));
   }
 
-  React.useEffect(() => {
-    return setToken('');
-  }, [])
   return (
     <div>
-    <Router>
+      <Router>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" className={classes.title} component={ Link } to='/' color="inherit" onClick={() => setCurPage('home')}>
+              BigBrain
+            </Typography>
+              {/* if not logged in, show login/register button */}
+              {!token && (
+                <div>
+                  <Button component={ Link } color="inherit" to='/login' onClick={() => setCurPage('login')}>Login</Button>
+                  <Button component={ Link } color="inherit" to='/register' onClick={() => setCurPage('register')}>Register</Button>
+                </div>
+              )}
+              {/* if logged in, show dashboard and logout button */}
+              {token && (
+                <div>
+                  <Button component={ Link } color="inherit" to='/dashboard' onClick={() => setCurPage('dashboard')}>Dashboard</Button>
+                  <Button component={ Link } color="inherit" to='/home' onClick={handleLogout}>Logout</Button>
+                </div>
+              )}
+          </Toolbar>
+        </AppBar>
+        <Switch>
+          <Route
+            path="/login"
+            render={(props) => (
+              <Login {...props} setToken={setToken} setPage={setCurPage} />
+            )}/>
+          <Route
+            path="/register"
+            render={(props) => (
+              <Register {...props} setToken={setToken} setPage={setCurPage} />
+            )}/>
+          <Route
+            path="/dashboard"
+            render={(props) => (
+              <Dashboard {...props} token={token} setPage={setCurPage}/>
+            )}/>
+          <Route
+            path="/home"
+            render={(props) => (
+              <Home {...props} token={token} />
+            )}/>
 
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" className={classes.title} component={ Link } to='/' color="inherit" onClick={() => setCurPage('home')}>
-            BigBrane
-          </Typography>
-            {/* if not logged in, show login/register button */}
-            {!token && (
-              <div>
-                <Button component={ Link } color="inherit" to='/login' onClick={() => setCurPage('login')}>Login</Button>
-                <Button component={ Link } color="inherit" to='/register' onClick={() => setCurPage('register')}>Register</Button>
-              </div>
-            )}
-            {/* if logged in, show dashboard and logout button */}
-            {token && (
-              <div>
-                <Button component={ Link } color="inherit" to='/dashboard' onClick={() => setCurPage('dashboard')}>Dashboard</Button>
-                <Button component={ Link } color="inherit" to='/home' onClick={handleLogout}>Logout</Button>
-              </div>
-            )}
-        </Toolbar>
-      </AppBar>
-      <Switch>
-        <Route path="/login"><Login setToken={setToken} setPage={setCurPage} /></Route>
-        <Route path="/register" component={Register}/>
-        <Route path="/dashboard" component={Dashboard}/>
-        {/* put root to bottom since switch would match route from top to bottm */}
-        <Route path="/"><Home token={token} /></Route>
-      </Switch>
-    </Router>
+          {/* put root to bottom since switch would match route from top to bottm */}
+          <Route exact path="/">
+            <Home token={token} />
+          </Route>
+          <Route path="*" component={NotFound} />
+        </Switch>
+      </Router>
     </div>
 
   );
