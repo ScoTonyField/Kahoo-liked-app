@@ -59,7 +59,7 @@ function App () {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title} component={ Link } to='/' color="inherit" onClick={() => setCurPage('home')}>
-            BigBrane
+            BigBrain
           </Typography>
             {!login && (
               <div>
