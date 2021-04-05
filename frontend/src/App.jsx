@@ -41,16 +41,16 @@ function App () {
   // directs to different page by setting state
   const [curPage, setCurPage] = React.useState('home');
   // state to indicate if the user is logged in, is false by defualt
-  const [login, setLogin] = React.useState();
-  console.log(curPage, setLogin);
-  console.log(login)
+  const [token, setToken] = React.useState('');
+  console.log(curPage, setToken);
+  console.log(token)
   const handleLogout = () => {
-    setLogin(false);
+    setToken('');
     setCurPage('home');
   }
 
   React.useEffect(() => {
-    return setLogin(false);
+    return setToken('');
   }, [])
   return (
     <div>
@@ -61,13 +61,15 @@ function App () {
           <Typography variant="h6" className={classes.title} component={ Link } to='/' color="inherit" onClick={() => setCurPage('home')}>
             BigBrane
           </Typography>
-            {!login && (
+            {/* if not logged in, show login/register button */}
+            {!token && (
               <div>
                 <Button component={ Link } color="inherit" to='/login' onClick={() => setCurPage('login')}>Login</Button>
                 <Button component={ Link } color="inherit" to='/register' onClick={() => setCurPage('register')}>Register</Button>
               </div>
             )}
-            {login && (
+            {/* if logged in, show dashboard and logout button */}
+            {token && (
               <div>
                 <Button component={ Link } color="inherit" to='/dashboard' onClick={() => setCurPage('dashboard')}>Dashboard</Button>
                 <Button component={ Link } color="inherit" to='/home' onClick={handleLogout}>Logout</Button>
@@ -76,11 +78,11 @@ function App () {
         </Toolbar>
       </AppBar>
       <Switch>
-        <Route path="/login"><Login setLogin={setLogin} setPage={setCurPage} /></Route>
+        <Route path="/login"><Login setToken={setToken} setPage={setCurPage} /></Route>
         <Route path="/register" component={Register}/>
         <Route path="/dashboard" component={Dashboard}/>
         {/* put root to bottom since switch would match route from top to bottm */}
-        <Route path="/"><Home login={login} /></Route>
+        <Route path="/"><Home token={token} /></Route>
       </Switch>
     </Router>
     </div>

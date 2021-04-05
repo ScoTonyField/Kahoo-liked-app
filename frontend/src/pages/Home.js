@@ -2,12 +2,12 @@ import { Container } from '@material-ui/core';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Home = ({ login }) => {
-  console.log({ login })
+const Home = ({ token }) => {
+  console.log('Directing to Homepage, token: ' + token)
   return (
     <Container>
         Homepage
-        {!{ login } &&
+        {!token &&
             <p>Well come to BigBrain, please login or register.</p>
         }
     </Container>
@@ -15,7 +15,7 @@ const Home = ({ login }) => {
 };
 
 Home.propTypes = {
-  login: PropTypes.bool.isRequired
+  token: PropTypes.string.isRequired
 };
 
 export default Home;
