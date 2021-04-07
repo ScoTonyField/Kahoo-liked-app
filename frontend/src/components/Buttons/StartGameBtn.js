@@ -1,7 +1,15 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Typography } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 import React from 'react';
 import makeAPIRequest from '../../Api';
 import PropTypes from 'prop-types';
+
+const closeBtnStyle = {
+  position: 'absolute',
+  right: '10px',
+  top: '10px',
+  color: 'grey',
+};
 
 const StartGameBtn = ({ gameId, sessionId, active, setActive }) => {
   const [open, setOpen] = React.useState(false);
@@ -19,6 +27,12 @@ const StartGameBtn = ({ gameId, sessionId, active, setActive }) => {
     setOpen(false);
   };
 
+  const handleViewResults = () => {
+    // TODO: view results
+    history.push(`/results/${sessionId}`);
+    setOpen(false);
+  };
+
   const handleStart = () =>
     makeAPIRequest(`admin/quiz/${gameId}/start`, 'POST', localStorage.getItem('token'), null, null)
       .then(res => {
@@ -33,6 +47,7 @@ const StartGameBtn = ({ gameId, sessionId, active, setActive }) => {
       .then(res => {
         console.log(res);
         setActive(false);
+        setOpen(true);
       }).catch((err) => console.log('ERROR: Fail to end a game', err));
   }
 
@@ -58,18 +73,33 @@ const StartGameBtn = ({ gameId, sessionId, active, setActive }) => {
         aria-labelledby="active-game-title"
         open={open}
       >
-        <DialogTitle id="active-game-title" onClose={handleClose}>
-          The game has been started! :D
+        <DialogTitle id="active-game-title">
+          { active ? 'The game has been started! :D' : 'Game'
+          <IconButton aria-label="close" style={closeBtnStyle} onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            Session id: {sessionId}
+            {
+              active ? `Session id: ${sessionId}` : 'Would you like to view results?'
+            }
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus variant="contained" onClick={handleCopy} color="primary" >
-            Copy Link
-          </Button>
+          {
+            active
+              ? (
+                <Button autoFocus variant="contained" onClick={handleCopy} color="primary" >
+                  Copy Link
+                </Button>
+                )
+              : (
+                <Button autoFocus variant="contained" onClick={handleViewResults} color="primary" >
+                  View Results
+                </Button>
+                )
+          }
         </DialogActions>
       </Dialog>
     </div>
