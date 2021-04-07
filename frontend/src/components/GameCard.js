@@ -41,16 +41,44 @@ const useStyles = makeStyles({
   },
 });
 
-const GameCard = ({ gameInfo, games, setGames }) => {
+const GameCard = ({ gid, games, setGames }) => {
   const classes = useStyles();
-  const [active, setActive] = React.useState(Boolean(gameInfo.active));
+  const [gameInfo, setGameInfo] = React.useState();
+  const [active, setActive] = React.useState(false);
+
+  // Each time start/stop the game, refetch information to get the session id
+  React.useEffect(() => {
+    makeAPIRequest(`admin/quiz/${gid}`, 'GET', localStorage.getItem('token'), null, null)
+      .then(game => {
+        console.log(game)
+        game.id = gid;
+        setGameInfo(game);
+      }).catch(err => console.log('Error fetching quizzes: ', err))
+  }, [active])
+
+  // each time game info update, update the active status
+  React.useEffect(() => {
+    if (gameInfo) {
+      setActive(Boolean(gameInfo.active));
+    }
+  }, [gameInfo])
+
+  // if gameInfo is not loaded, show "loading..." in that card
+  // XXX: ux
+  if (!gameInfo) {
+    return (
+      <Card variant="outlined" className={classes.root}>
+        loading...
+      </Card>
+    )
+  }
 
   const handleDelete = () =>
-    makeAPIRequest(`admin/quiz/${gameInfo.id}`, 'DELETE', localStorage.getItem('token'), null, null)
+    makeAPIRequest(`admin/quiz/${gid}`, 'DELETE', localStorage.getItem('token'), null, null)
       .then(() => {
         alert('Successfully delete quiz ' + gameInfo.name);
         const newGames = [...games];
-        newGames.splice(games.indexOf(gameInfo), 1);
+        newGames.splice(games.indexOf(gid), 1);
         console.log(newGames);
         setGames(newGames);
       }).catch(err => console.log('ERROR: Fail to delete quiz: ', err))
@@ -66,7 +94,7 @@ const GameCard = ({ gameInfo, games, setGames }) => {
         <CardContent>
             <Typography
               variant="h6"
-              color={active ? 'initial' : 'error'}
+              color={active ? 'primary' : 'secondary'}
               gutterBottom
             >
               {active ? 'Active' : 'Inactive'}
@@ -97,10 +125,9 @@ const GameCard = ({ gameInfo, games, setGames }) => {
             </ul>
         </CardContent>
       </CardActionArea>
-
       <CardActions>
         <StartGameBtn
-          gameId={gameInfo.id}
+          gameId={gid}
           sessionId={gameInfo.active}
           active={active}
           setActive={setActive}
@@ -114,7 +141,7 @@ const GameCard = ({ gameInfo, games, setGames }) => {
 };
 
 GameCard.propTypes = {
-  gameInfo: PropTypes.object,
+  gid: PropTypes.number,
   setGames: PropTypes.func,
   games: PropTypes.array,
 };

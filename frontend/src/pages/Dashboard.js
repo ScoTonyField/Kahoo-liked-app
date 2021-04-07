@@ -43,11 +43,7 @@ const Dashboard = () => {
         .then(res => {
           res.quizzes.map(quiz => gamesId.push(quiz.id))
           gamesId.map((gid) =>
-            makeAPIRequest(`admin/quiz/${gid}`, 'GET', localStorage.getItem('token'), null, null)
-              .then(game => {
-                game.id = gid;
-                tmp.push(game);
-              }).catch(err => alert('Error fetching quizzes: ', err))
+            tmp.push(gid)
           )
           setGames(tmp);
         }).catch(err => console.log('Error fetching quizzes id: ', err)
@@ -74,8 +70,8 @@ const Dashboard = () => {
                     games.map((game) => {
                       console.log(game)
                       return (
-                        <Grid item xs={12} sm={6} md={4} lg={3} key={game.id}>
-                          <GameCard gameInfo={game} games={games} setGames={setGames}/>
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={game}>
+                          <GameCard gid={game} games={games} setGames={setGames}/>
                         </Grid>
                       )
                     })

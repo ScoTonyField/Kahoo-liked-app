@@ -39,14 +39,6 @@ const CreateGameModal = ({ games, setGames }) => {
     }
   }
 
-  const insertNewGame = (id) =>
-    makeAPIRequest(`admin/quiz/${id}`, 'GET', localStorage.getItem('token'), null, null)
-      .then(res => {
-        res.id = parseInt(id);
-        setGames([...games, res])
-      })
-      .catch(err => alert('Error adding new game: ', err));
-
   const createNewGame = (value) => {
     const body = JSON.stringify({
       name: value
@@ -55,7 +47,7 @@ const CreateGameModal = ({ games, setGames }) => {
       .then((res) => {
         alert('Successfully create a new quiz!');
         return res;
-      }).then((res) => insertNewGame(res.quizId)
+      }).then((res) => setGames([...games, parseInt(res.quizId)])
       ).catch(err => {
         const errMsg = 'ERROR: Fail to create new quiz: ';
         if (err.status === 400) {

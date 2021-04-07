@@ -10,6 +10,15 @@ const StartGameBtn = ({ gameId, sessionId, active, setActive }) => {
     setOpen(false);
   };
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(sessionId)
+      .then(() => {
+        alert('Link coppied! Paste into brower and go to the game page.')
+      }).catch(err => alert('Copied failed.', err));
+
+    setOpen(false);
+  };
+
   const handleStart = () =>
     makeAPIRequest(`admin/quiz/${gameId}/start`, 'POST', localStorage.getItem('token'), null, null)
       .then(res => {
@@ -46,11 +55,11 @@ const StartGameBtn = ({ gameId, sessionId, active, setActive }) => {
         onClose={handleClose}
         fullWidth={true}
         maxWidth={'sm'}
-        aria-labelledby="customized-dialog-title"
+        aria-labelledby="active-game-title"
         open={open}
       >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Modal title
+        <DialogTitle id="active-game-title" onClose={handleClose}>
+          The game has been started! :D
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
@@ -58,8 +67,8 @@ const StartGameBtn = ({ gameId, sessionId, active, setActive }) => {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            Copy link
+          <Button autoFocus variant="contained" onClick={handleCopy} color="primary" >
+            Copy Link
           </Button>
         </DialogActions>
       </Dialog>
