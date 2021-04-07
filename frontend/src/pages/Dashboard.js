@@ -61,7 +61,7 @@ const Dashboard = () => {
           ? (
             <Box>
               <Box className={classes.btnGroups}>
-                <Subtitle>You currently have {games.length} quizzes in total.</Subtitle>
+                <Subtitle>You currently have {games.length} quizzes in total. Click them to edit the quiz.</Subtitle>
                 <CreateGameModal setGames={setGames} games={games} />
               </Box>
               <Grid container className={classes.root}>

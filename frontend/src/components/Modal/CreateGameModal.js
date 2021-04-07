@@ -21,18 +21,25 @@ const useStyles = makeStyles({
 const CreateGameModal = ({ games, setGames }) => {
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
+  const [errorText, setErrorText] = React.useState();
   const classes = useStyles();
+
+  // Handler for opening the 'create new game' modal
   const handleClickOpen = () => {
+    setErrorText();
     setOpen(true);
   };
 
+  // Handler for closing the 'create new game' modal
   const handleClose = () => {
     setOpen(false);
   };
 
+  // Handler for submitting the name to the new game
   const handleSubmit = () => {
+    // Empty name is not allowed
     if (!name) {
-      alert('The name of a quiz cannot be empty!');
+      setErrorText('Quiz name cannot be empty.')
     } else {
       createNewGame(name);
       setOpen(false);
@@ -78,11 +85,11 @@ const CreateGameModal = ({ games, setGames }) => {
           </DialogContentText>
           <TextField
             autoFocus
-            margin="dense"
-            id="name"
+            required
             label="Quiz Name"
-            type="text"
             fullWidth
+            error={Boolean(errorText)}
+            helperText={errorText}
             onChange={e => setName(e.target.value)}
           />
         </DialogContent>

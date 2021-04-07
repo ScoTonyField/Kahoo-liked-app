@@ -76,7 +76,7 @@ const GameCard = ({ gid, games, setGames }) => {
   const handleDelete = () =>
     makeAPIRequest(`admin/quiz/${gid}`, 'DELETE', localStorage.getItem('token'), null, null)
       .then(() => {
-        alert('Successfully delete quiz ' + gameInfo.name);
+        alert('Successfully delete quiz: ' + gameInfo.name);
         const newGames = [...games];
         newGames.splice(games.indexOf(gid), 1);
         console.log(newGames);
