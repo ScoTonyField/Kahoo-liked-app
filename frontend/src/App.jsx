@@ -49,7 +49,8 @@ function App () {
   // }, [history[0]]);
   // console.log(window.location.href)
 
-  // state to indicate if the user is logged in, is false by defualt
+  // FIXME: state to indicate if the user is logged in, is false by defualt
+  // keep it for any legacy issue. Will be removed later
   const [token, setToken] = React.useState('');
   React.useEffect(() => {
     setToken(localStorage.getItem('token'));
@@ -57,6 +58,7 @@ function App () {
   console.log('cur page: ', curPage);
   console.log('token: ', token);
 
+  // Handle logout button, clear localstorage and reset current page
   const handleLogout = () => {
     makeAPIRequest('admin/auth/logout', 'POST', token, null, null)
       .then(() => {
@@ -112,11 +114,11 @@ function App () {
             render={(props) => (
               <Home {...props} />
             )}/>
-
-          {/* put root to bottom since switch would match route from top to bottm */}
           <Route exact path="/">
             <Home />
           </Route>
+
+          {/* Any other path leads to 404 page */}
           <Route path="*" component={NotFound} />
         </Switch>
       </Router>

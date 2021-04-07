@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 // import styles from './styles.css';
-import Title from '../components/title/Title';
+import Title from '../components/Titles/Title';
 import makeAPIRequest from '../Api';
 
 const StyledLayout = styled.div`

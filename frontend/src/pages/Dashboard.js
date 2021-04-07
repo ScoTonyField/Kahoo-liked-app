@@ -2,11 +2,11 @@ import { Box, Container, Grid } from '@material-ui/core';
 // import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
-import Title from '../components/title/Title';
-import Subtitle from '../components/title/Subtitle';
+import Title from '../components/Titles/Title';
+import Subtitle from '../components/Titles/Subtitle';
 import GameCard from '../components/GameCard';
 import makeAPIRequest from '../Api';
-import CreateGameModal from '../components/Modal/CreateGameModal';
+import CreateGameModal from '../components/Modals/CreateGameModal';
 
 const useStyles = makeStyles({
   btnGroups: {
