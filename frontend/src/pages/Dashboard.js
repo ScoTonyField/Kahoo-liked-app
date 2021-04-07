@@ -50,7 +50,6 @@ const Dashboard = () => {
         )
     }
   }, [])
-  console.log(games)
 
   return (
     <Container>
@@ -68,7 +67,6 @@ const Dashboard = () => {
               <Grid container className={classes.root}>
                   {
                     games.map((game) => {
-                      console.log(game)
                       return (
                         <Grid item xs={12} sm={6} md={4} lg={3} key={game}>
                           <GameCard gid={game} games={games} setGames={setGames}/>

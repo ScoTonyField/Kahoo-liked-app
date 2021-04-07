@@ -1,6 +1,7 @@
 import { Container } from '@material-ui/core';
 import React from 'react';
 import Title from '../components/title/Title';
+import Subtitle from '../components/title/Subtitle';
 
 const Home = () => {
   const token = localStorage.getItem('token');
@@ -10,8 +11,14 @@ const Home = () => {
         <Title>
           Homepage
         </Title>
-        {!token &&
-            <p>Well come to BigBrain, please login or register.</p>
+        {
+          token
+            ? (
+                <Subtitle>You have logged in, go to dashboard to see your quizzes. :D</Subtitle>
+              )
+            : (
+                <Subtitle>Well come to BigBrain, please login or register.</Subtitle>
+              )
         }
     </Container>
   );

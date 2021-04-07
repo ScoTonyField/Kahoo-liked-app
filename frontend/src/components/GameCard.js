@@ -50,9 +50,9 @@ const GameCard = ({ gid, games, setGames }) => {
   React.useEffect(() => {
     makeAPIRequest(`admin/quiz/${gid}`, 'GET', localStorage.getItem('token'), null, null)
       .then(game => {
-        console.log(game)
         game.id = gid;
         setGameInfo(game);
+        console.log(game)
       }).catch(err => console.log('Error fetching quizzes: ', err))
   }, [active])
 
@@ -64,7 +64,7 @@ const GameCard = ({ gid, games, setGames }) => {
   }, [gameInfo])
 
   // if gameInfo is not loaded, show "loading..." in that card
-  // XXX: ux
+  // XXX: UX: notify system loading status
   if (!gameInfo) {
     return (
       <Card variant="outlined" className={classes.root}>
