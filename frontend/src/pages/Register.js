@@ -71,8 +71,8 @@ const Register = (props) => {
         name: values.username,
       })
       makeAPIRequest('admin/auth/register', 'POST', null, null, body).then(res => {
-        console.log(res.token);
-        props.setToken(res.token);
+        localStorage.clear();
+        localStorage.setItem('token', res.token);
         history.push('/dashboard');
       }).catch(err => {
         if (err.status === 400) {

@@ -1,3 +1,11 @@
+/**
+ * path: A string to fetch data from
+ * method: A string indicating fetching method, could be "POST", "GET", etc.
+ * token: A token string for authentication.
+ * query: An object indicating any queries.
+ * body: An strinified JSON object
+ * return value: Promise
+ */
 export default function makeAPIRequest (path, method, token, query, body) {
   let url = `http://localhost:5005/${path}`;
   const options = {

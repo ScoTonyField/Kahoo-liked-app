@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 // import styles from './styles.css';
-import Title from '../components/title/Title';
+import Title from '../components/Titles/Title';
 import makeAPIRequest from '../Api';
 
 const StyledLayout = styled.div`
@@ -44,9 +44,8 @@ const validateInput = (values) => {
   return errors;
 }
 
-const Login = (props) => {
+const Login = () => {
   // const classes = useStyles();
-  console.log(props)
   const history = useHistory();
 
   const handleLogin = (values, { setSubmitting }) => {
@@ -56,9 +55,8 @@ const Login = (props) => {
     })
     makeAPIRequest('admin/auth/login', 'POST', null, null, body)
       .then(res => {
-        console.log(res.token);
-        props.setToken(res.token);
-        // props.setPage('dashboard');
+        localStorage.clear();
+        localStorage.setItem('token', res.token);
         history.push('/dashboard');
       }).catch(err => {
         if (err.status === 400) {
@@ -152,7 +150,6 @@ const Login = (props) => {
 };
 
 Login.propTypes = {
-  setToken: PropTypes.func.isRequired,
   setPage: PropTypes.func.isRequired
 };
 

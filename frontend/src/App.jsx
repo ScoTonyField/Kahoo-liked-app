@@ -49,15 +49,21 @@ function App () {
   // }, [history[0]]);
   // console.log(window.location.href)
 
-  // state to indicate if the user is logged in, is false by defualt
+  // FIXME: state to indicate if the user is logged in, is false by defualt
+  // keep it for any legacy issue. Will be removed later
   const [token, setToken] = React.useState('');
+  React.useEffect(() => {
+    setToken(localStorage.getItem('token'));
+  }, [localStorage.getItem('token')])
   console.log('cur page: ', curPage);
   console.log('token: ', token);
 
+  // Handle logout button, clear localstorage and reset current page
   const handleLogout = () => {
     makeAPIRequest('admin/auth/logout', 'POST', token, null, null)
       .then(() => {
         alert('Logged out successfully.')
+        localStorage.clear();
         setToken('');
         setCurPage('home');
       }).catch(() => alert('Invalid Token'));
@@ -89,30 +95,30 @@ function App () {
         </AppBar>
         <Switch>
           <Route
-            path="/login"
+            exact path="/login"
             render={(props) => (
-              <Login {...props} setToken={setToken} setPage={setCurPage} />
+              <Login {...props} setPage={setCurPage} />
             )}/>
           <Route
-            path="/register"
+            exact path="/register"
             render={(props) => (
               <Register {...props} setToken={setToken} setPage={setCurPage} />
             )}/>
           <Route
-            path="/dashboard"
+            exact path="/dashboard"
             render={(props) => (
-              <Dashboard {...props} token={token} setPage={setCurPage}/>
+              <Dashboard {...props} setPage={setCurPage}/>
             )}/>
           <Route
-            path="/home"
+            exact path="/home"
             render={(props) => (
-              <Home {...props} token={token} />
+              <Home {...props} />
             )}/>
-
-          {/* put root to bottom since switch would match route from top to bottm */}
           <Route exact path="/">
-            <Home token={token} />
+            <Home />
           </Route>
+
+          {/* Any other path leads to 404 page */}
           <Route path="*" component={NotFound} />
         </Switch>
       </Router>
