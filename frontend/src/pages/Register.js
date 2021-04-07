@@ -1,11 +1,14 @@
 import React from 'react';
 import { Container, Grid, Button, Link } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+import { useFormik } from 'formik';
+import { makeStyles } from '@material-ui/core/styles';
+import makeAPIRequest from '../Api';
 
-const styles = theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(5),
     display: 'flex',
@@ -15,7 +18,6 @@ const styles = theme => ({
   form: {
     width: '100%',
     marginTop: theme.spacing(3),
-    cursor: 'pointer',
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -23,86 +25,101 @@ const styles = theme => ({
   toptext: {
     textAlign: 'center',
   },
-});
+}));
 
-class Register extends React.Component {
-  constructor (props) {
-    super(props);
-    this.state = {
-      name: '',
-      pwd: '',
-      email: '',
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target,
-    });
+const Register = (props) => {
+  const history = useHistory();
+  const classes = useStyles();
+  const validate = values => {
+    const errors = {};
+    // check username format
+    if (!values.username) {
+      errors.username = 'Required'
+    } else if (
+      /[0-9]+/i.test(values.username)
+    ) {
+      errors.username = 'Username cannot be all numbers'
+    }
+    // check email format
+    if (!values.email) {
+      errors.email = 'Required';
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+    ) {
+      errors.email = 'Invalid email address';
+    }
+    // check password
+    if (!values.password) {
+      errors.password = 'Required';
+    } else if (values.password.length < 8 || values.password.length > 50) {
+      errors.password = 'Password can only be between 8 and 50 characters'
+    }
+    return errors;
   };
 
-  handleSubmit = (event) => {
-    event.prreventDefault();
-    const post = {
-      email: this.state.email,
-      password: this.state.pwd,
-      name: this.state.name,
-    };
-    console.log(post);
-    // fetch('http://localhost:5005/admin/auth/register', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(post),
-    // }).then(res => {
-    //   return res.json();
-    // }).then(data => {
-    //   console.log(data);
-    // }).catch(err => {
-    //   alert(err);
-    // })
-  }
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+      email: '',
+    },
+    validate,
+    onSubmit: (values, { setSubmitting }) => {
+      const body = JSON.stringify({
+        email: values.email,
+        password: values.password,
+        name: values.username,
+      })
+      makeAPIRequest('admin/auth/register', 'POST', null, null, body).then(res => {
+        console.log(res.token);
+        props.setToken(res.token);
+        history.push('/dashboard');
+      }).catch(err => {
+        if (err.status === 400) {
+          alert('Incorrect email or password, please try again.');
+          setSubmitting(false);
+        }
+      })
+    },
+  });
 
-  render () {
-    // const { name, password, email } = this.state;
-    const { classes } = this.props;
-
-    return (
-      <div className={classes.paper}>
+  return (
+    <div className={classes.paper}>
         <Container component='main' maxWidth='xs'>
           <Typography component='h1' variant='h5' className={classes.toptext}>
             Join BigBrain
           </Typography>
-          <form className={classes.form} noValidate onSubmit={this.handleSubmit}>
+          <form className={classes.form} onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  name="sinupName"
+                  name="username"
                   variant="outlined"
                   required
                   fullWidth
-                  id="signup-name"
+                  id="username"
                   label="Username"
-                  // autoFocus
-                  defaultValue={this.state.name}
-                  onChange={this.handleChange}
+                  defaultValue={formik.values.username}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={Boolean(formik.errors.username)}
+                  helperText={formik.errors.username}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                    name="signupPwd"
+                    name="password"
                     variant="outlined"
                     required
                     fullWidth
-                    id="signup-pwd"
+                    id="password"
                     label="Password"
                     type='password'
-                    // autoFocus
-                    defaultValue={this.state.pwd}
-                    onChange={this.handleChange}
+                    defaultValue={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={Boolean(formik.errors.password)}
+                    helperText={formik.errors.password}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -112,10 +129,13 @@ class Register extends React.Component {
                   fullWidth
                   id="email"
                   label="Email"
-                  name="signup-email"
+                  name="email"
                   autoComplete="email"
-                  defaultValue={this.state.email}
-                  onChange={this.handleChange}
+                  onChange={formik.handleChange}
+                  defaultValue={formik.values.email}
+                  onBlur={formik.handleBlur}
+                  error={Boolean(formik.errors.email)}
+                  helperText={formik.errors.email}
                 />
               </Grid>
             </Grid>
@@ -138,12 +158,12 @@ class Register extends React.Component {
           </form>
         </Container>
       </div>
-    );
-  }
-}
-
-Register.propTypes = {
-  classes: PropTypes.object.isRequired,
+  );
 };
 
-export default withStyles(styles)(Register);
+Register.propTypes = {
+  setPage: PropTypes.func,
+  setToken: PropTypes.func,
+};
+
+export default Register;
