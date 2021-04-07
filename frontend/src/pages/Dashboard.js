@@ -1,11 +1,12 @@
-import { Box, Button, Container, Grid } from '@material-ui/core';
+import { Box, Container, Grid } from '@material-ui/core';
 // import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import Title from '../components/title/Title';
-import PropTypes from 'prop-types';
+import Subtitle from '../components/title/Subtitle';
 import GameCard from '../components/GameCard';
 import makeAPIRequest from '../Api';
+import CreateGameModal from '../components/Modal/CreateGameModal';
 
 const useStyles = makeStyles({
   btnGroups: {
@@ -26,23 +27,34 @@ const useStyles = makeStyles({
 
 });
 
-const Dashboard = (props) => {
+const Dashboard = () => {
   // const history = useHistory();
-  console.log('dashboard token: ', props.token);
+  console.log('dashboard token: ', localStorage.getItem('token'));
   const classes = useStyles();
+  const gamesId = [];
+
+  // games contains a list of quiz id (not quiz object)
   const [games, setGames] = React.useState([]);
+  const tmp = [];
 
   React.useEffect(() => {
-    if (props.token) {
-      makeAPIRequest('admin/quiz', 'GET', props.token, null, null)
+    if (localStorage.getItem('token')) {
+      makeAPIRequest('admin/quiz', 'GET', localStorage.getItem('token'), null, null)
         .then(res => {
-          res.quizzes.map((game) => setGames([...games, game]));
-        }).catch((err) => {
-          console.log('ERROR fetching quizzes: ', err);
-          alert('Invalid Token. Fails to fetch games.');
-        })
+          res.quizzes.map(quiz => gamesId.push(quiz.id))
+          gamesId.map((gid) =>
+            makeAPIRequest(`admin/quiz/${gid}`, 'GET', localStorage.getItem('token'), null, null)
+              .then(game => {
+                game.id = gid;
+                tmp.push(game);
+              }).catch(err => alert('Error fetching quizzes: ', err))
+          )
+          setGames(tmp);
+        }).catch(err => console.log('Error fetching quizzes id: ', err)
+        )
     }
   }, [])
+  console.log(games)
 
   return (
     <Container>
@@ -50,24 +62,23 @@ const Dashboard = (props) => {
         Dashboard
       </Title>
       {
-        props.token
+        localStorage.getItem('token')
           ? (
             <Box>
               <Box className={classes.btnGroups}>
-                <Button
-                  className={classes.button}
-                  variant="outlined"
-                  color="primary">
-                  Create new game
-                </Button>
+                <Subtitle>You currently have {games.length} quizzes in total.</Subtitle>
+                <CreateGameModal setGames={setGames} games={games} />
               </Box>
               <Grid container className={classes.root}>
                   {
-                    games.map((game) => (
-                      <Grid item xs={12} sm={6} md={4} lg={3} key={game.id}>
-                        <GameCard gameInfo={game} />
-                      </Grid>
-                    ))
+                    games.map((game) => {
+                      console.log(game)
+                      return (
+                        <Grid item xs={12} sm={6} md={4} lg={3} key={game.id}>
+                          <GameCard gameInfo={game} games={games} setGames={setGames}/>
+                        </Grid>
+                      )
+                    })
                   }
               </Grid>
             </Box>
@@ -79,10 +90,6 @@ const Dashboard = (props) => {
 
     </Container>
   );
-};
-
-Dashboard.propTypes = {
-  token: PropTypes.string,
 };
 
 export default Dashboard;

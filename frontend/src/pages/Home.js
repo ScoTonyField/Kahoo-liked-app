@@ -1,10 +1,9 @@
 import { Container } from '@material-ui/core';
 import React from 'react';
-import PropTypes from 'prop-types';
 import Title from '../components/title/Title';
 
-const Home = (props) => {
-  const token = props.token;
+const Home = () => {
+  const token = localStorage.getItem('token');
   console.log('Directing to Homepage, token: ' + token)
   return (
     <Container>
@@ -16,10 +15,6 @@ const Home = (props) => {
         }
     </Container>
   );
-};
-
-Home.propTypes = {
-  token: PropTypes.string
 };
 
 export default Home;

@@ -51,6 +51,9 @@ function App () {
 
   // state to indicate if the user is logged in, is false by defualt
   const [token, setToken] = React.useState('');
+  React.useEffect(() => {
+    setToken(localStorage.getItem('token'));
+  }, [localStorage.getItem('token')])
   console.log('cur page: ', curPage);
   console.log('token: ', token);
 
@@ -58,6 +61,7 @@ function App () {
     makeAPIRequest('admin/auth/logout', 'POST', token, null, null)
       .then(() => {
         alert('Logged out successfully.')
+        localStorage.clear();
         setToken('');
         setCurPage('home');
       }).catch(() => alert('Invalid Token'));
@@ -91,7 +95,7 @@ function App () {
           <Route
             path="/login"
             render={(props) => (
-              <Login {...props} setToken={setToken} setPage={setCurPage} />
+              <Login {...props} setPage={setCurPage} />
             )}/>
           <Route
             path="/register"
@@ -101,17 +105,17 @@ function App () {
           <Route
             path="/dashboard"
             render={(props) => (
-              <Dashboard {...props} token={token} setPage={setCurPage}/>
+              <Dashboard {...props} setPage={setCurPage}/>
             )}/>
           <Route
             path="/home"
             render={(props) => (
-              <Home {...props} token={token} />
+              <Home {...props} />
             )}/>
 
           {/* put root to bottom since switch would match route from top to bottm */}
           <Route exact path="/">
-            <Home token={token} />
+            <Home />
           </Route>
           <Route path="*" component={NotFound} />
         </Switch>
