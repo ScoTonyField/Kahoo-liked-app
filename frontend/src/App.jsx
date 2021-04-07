@@ -93,22 +93,22 @@ function App () {
         </AppBar>
         <Switch>
           <Route
-            path="/login"
+            exact path="/login"
             render={(props) => (
               <Login {...props} setPage={setCurPage} />
             )}/>
           <Route
-            path="/register"
+            exact path="/register"
             render={(props) => (
               <Register {...props} setToken={setToken} setPage={setCurPage} />
             )}/>
           <Route
-            path="/dashboard"
+            exact path="/dashboard"
             render={(props) => (
               <Dashboard {...props} setPage={setCurPage}/>
             )}/>
           <Route
-            path="/home"
+            exact path="/home"
             render={(props) => (
               <Home {...props} />
             )}/>

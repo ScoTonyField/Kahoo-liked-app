@@ -11,7 +11,7 @@ import {
   Typography
 } from '@material-ui/core';
 import makeAPIRequest from '../Api';
-import StartGameBtn from './Buttons/StartGameBtn';
+import StartGameBtn from './Buttons/ToggleGameBtn';
 // import makeAPIRequest from '../Api';
 
 const useStyles = makeStyles({
