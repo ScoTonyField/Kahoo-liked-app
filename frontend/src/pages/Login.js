@@ -4,6 +4,7 @@ import {
   TextField,
   Box,
   Typography,
+  Grid,
 } from '@material-ui/core';
 
 import React from 'react';
@@ -20,6 +21,7 @@ const StyledLayout = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 20px;
 `;
 
 const validateInput = (values) => {
@@ -127,19 +129,22 @@ const Login = () => {
                     Sign in
                   </Button>
               </Box>
-              <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
-                  Do not have an account?
-                  <Link
-                    to="/register"
-                    variant="h6"
-                    style={{ padding: '10px' }}
+              <Grid container justify='flex-end'>
+                <Grid item>
+                  <Typography
+                    color="textSecondary"
+                    variant="body1"
                   >
-                    Sign up
-                  </Link>
-                </Typography>
+                    Do not have an account?
+                    <Link
+                      to="/register"
+                      variant="body1"
+                      style={{ padding: '10px' }}>
+                       Sign up
+                    </Link>
+                  </Typography>
+                </Grid>
+              </Grid>
             </form>
           )}
         </Formik>

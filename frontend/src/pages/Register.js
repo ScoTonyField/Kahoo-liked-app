@@ -1,12 +1,12 @@
 import React from 'react';
-import { Container, Grid, Button, Link } from '@material-ui/core';
+import { Container, Grid, Button, Link, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import makeAPIRequest from '../Api';
+import Title from '../components/Titles/Title';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -21,10 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-  },
-  toptext: {
-    textAlign: 'center',
-  },
+  }
 }));
 
 const Register = (props) => {
@@ -86,9 +83,9 @@ const Register = (props) => {
   return (
     <div className={classes.paper}>
         <Container component='main' maxWidth='xs'>
-          <Typography component='h1' variant='h5' className={classes.toptext}>
+          <Title className={classes.toptext}>
             Join BigBrain
-          </Typography>
+          </Title>
           <form className={classes.form} onSubmit={formik.handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -130,6 +127,7 @@ const Register = (props) => {
                   id="email"
                   label="Email"
                   name="email"
+                  type="email"
                   autoComplete="email"
                   onChange={formik.handleChange}
                   defaultValue={formik.values.email}
@@ -150,9 +148,18 @@ const Register = (props) => {
             </Button>
             <Grid container justify='flex-end'>
               <Grid item>
-                <Link href="/login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
+              <Typography
+                  color="textSecondary"
+                  variant="body1"
+                >
+                  Already have an account?
+                  <Link
+                    to="/login"
+                    variant="body1"
+                    style={{ padding: '10px' }}>
+                    Sign in
+                  </Link>
+                </Typography>
               </Grid>
             </Grid>
           </form>
