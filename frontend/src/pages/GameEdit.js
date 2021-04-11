@@ -11,7 +11,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 // import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 // import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -19,6 +18,7 @@ import { Button, Container } from '@material-ui/core';
 import AddBoxRoundedIcon from '@material-ui/icons/AddBoxRounded';
 import makeAPIRequest from '../Api';
 import Row from '../components/Row';
+import Title from '../components/Titles/Title';
 const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: 'center',
@@ -139,67 +139,55 @@ const GameEdit = () => {
     })
   }
 
-  if (rows.length === 0) {
+  const questionTable = () => {
     return (
-      <Container maxWidth='md' component='main' className={classes.root}>
-        <Paper className={classes.paper} variant='outlined'>
-          <Typography variant='h5'>No questions in this game now, please add your question.</Typography>
-          <Button
-            variant='contained'
-            color='primary'
-            startIcon={<AddBoxRoundedIcon />}
-            className={classes.addbtn}
-            onClick={(event) => { handleAdd(event) }}
-          >
-            Add
-          </Button>
-          <Button
-            variant='contained'
-            color='primary'
-            className={classes.addbtn}
-            onClick={handleTest}
-          >
-            test button
-          </Button>
-        </Paper>
-      </Container>
+      <TableContainer>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>Question ID</TableCell>
+                <TableCell align="center">Question Type</TableCell>
+                <TableCell align="center"></TableCell>
+                <TableCell align="center"></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <Row key={row.qid} row={row} remove={handleDelete} edit={handleEdit}/>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
     )
-  } else {
-    return (
-      <Container maxWidth='md' component='main' className={classes.root}>
-        <Typography variant='h4'>{fetchData.name}</Typography>
-        <Paper className={classes.paper} variant='outlined'>
-          <TableContainer>
-            <Table aria-label="collapsible table">
-              <TableHead>
-                <TableRow>
-                  <TableCell />
-                  <TableCell>Question ID</TableCell>
-                  <TableCell align="center">Question Type</TableCell>
-                  <TableCell align="center"></TableCell>
-                  <TableCell align="center"></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <Row key={row.qid} row={row} remove={handleDelete} edit={handleEdit}/>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-        <Button
-          variant='contained'
-          color='primary'
-          startIcon={<AddBoxRoundedIcon />}
-          className={classes.addbtn}
-          onClick={(event) => { handleAdd(event) }}
-        >
-          Add
-        </Button>
-      </Container>
-    );
   }
+
+  return (
+    <Container maxWidth='md' component='main' className={classes.root}>
+      <Title>{fetchData.name}</Title>
+      <Button
+        variant='contained'
+        color='primary'
+        startIcon={<AddBoxRoundedIcon />}
+        className={classes.addbtn}
+        onClick={(event) => { handleAdd(event) }}
+      >
+        Add
+      </Button>
+      <Paper className={classes.paper} variant='outlined'>
+      {
+        rows.length > 0
+          ? questionTable()
+          : (
+              <>
+                <Button variant='contained' color="primary" onClick={handleTest}>Test</Button>
+                <p>No questions</p>
+              </>
+            )
+      }
+      </Paper>
+    </Container>
+  );
 };
 
 export default GameEdit;
