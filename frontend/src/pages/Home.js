@@ -17,7 +17,7 @@ const Home = () => {
                 <Subtitle>You have logged in, go to dashboard to see your quizzes. :D</Subtitle>
               )
             : (
-                <Subtitle>Well come to BigBrain, please login or register.</Subtitle>
+                  <Subtitle>Well come to BigBrain, please login or register.</Subtitle>
               )
         }
     </Container>

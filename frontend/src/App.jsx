@@ -3,8 +3,8 @@ import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
-// import QuestionEdit from './pages/QuestionEdit';
-// import GameEdit from './pages/GameEdit';
+import QuestionEdit from './pages/QuestionEdit';
+import GameEdit from './pages/GameEdit';
 // import GamePlay from './pages/GamePlay';
 
 import {
@@ -114,6 +114,16 @@ function App () {
             render={(props) => (
               <Home {...props} />
             )}/>
+          <Route
+            exact path='/quiz/:quizid'
+            render={(props) => (
+              <GameEdit {...props} setToken={setToken} setPage={setCurPage}/>
+            )} />
+          <Route
+            eact path='/quiz/:quizid/:questionid'
+            render={(props) => (
+              <QuestionEdit {...props} setToken={setToken} setPage={setCurPage}/>
+            )} />
           <Route exact path="/">
             <Home />
           </Route>
