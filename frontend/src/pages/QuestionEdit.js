@@ -1,11 +1,11 @@
-import { Container } from '@material-ui/core';
 import React from 'react';
+import Title from '../components/Titles/Title';
 
 const QuestionEdit = () => {
   return (
-    <Container>
+    <Title>
         Question Edit
-    </Container>
+    </Title>
   );
 };
 

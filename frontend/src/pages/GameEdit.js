@@ -80,7 +80,7 @@ const GameEdit = () => {
   }
 
   const handleAdd = (event) => {
-    const newQuizId = ++rows.length
+    const newQuizId = ++rows.length;
     history.push(`/quiz/${currentQuiz}/${newQuizId}`);
   }
   // TODO: test part, delete these in the future
@@ -95,10 +95,10 @@ const GameEdit = () => {
           questions: [
             {
               qid: '2346',
-              types: '1',
+              isSingle: true,
               contents: 'What is your teachers name?',
-              timelimit: '10',
-              points: '10',
+              timeLimit: 10,
+              points: 10,
               media: null,
               options: [
                 'Tony',
@@ -107,15 +107,15 @@ const GameEdit = () => {
                 'Scott'
               ],
               answers: [
-                '1',
+                1,
               ],
             },
             {
               qid: '4336',
-              types: '2',
+              isSingle: false,
               contents: 'What parts you enjoy in frontend?',
-              timelimit: '10',
-              points: '10',
+              timeLimit: 10,
+              points: 10,
               media: null,
               options: [
                 'coding',
@@ -124,10 +124,9 @@ const GameEdit = () => {
                 'communicate with people'
               ],
               answers: [
-                '0',
-                '1',
-                '2',
-                '3'
+                0,
+                1,
+                2
               ],
             },
           ],

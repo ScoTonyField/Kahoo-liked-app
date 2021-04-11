@@ -1,8 +1,9 @@
 import React from 'react';
-import { Container } from '@material-ui/core';
+import { Box, Container } from '@material-ui/core';
 import { useLocation } from 'react-router-dom';
 import Title from '../components/Titles/Title';
 import Subtitle from '../components/Titles/Subtitle';
+import { List } from 'react-content-loader'
 import makeAPIRequest from '../Api';
 
 const Results = () => {
@@ -18,9 +19,8 @@ const Results = () => {
 
   React.useEffect(() => {
     fetchResults(sessionId);
+    console.log(results);
   }, []);
-
-  console.log(results);
 
   return (
     <Container>
@@ -30,6 +30,17 @@ const Results = () => {
         <Subtitle>
           Results for game session: {sessionId}
         </Subtitle>
+        <Box>
+          {
+            results
+              ? 'Resultes Loaded '
+              : (
+                <>
+                  <List />
+                </>
+                )
+          }
+        </Box>
     </Container>
   );
 };
