@@ -10,6 +10,7 @@ import {
   CardMedia,
   Typography
 } from '@material-ui/core';
+import { List } from 'react-content-loader';
 import makeAPIRequest from '../Api';
 import StartGameBtn from './Buttons/ToggleGameBtn';
 // import makeAPIRequest from '../Api';
@@ -68,7 +69,7 @@ const GameCard = ({ gid, games, setGames }) => {
   if (!gameInfo) {
     return (
       <Card variant="outlined" className={classes.root}>
-        loading...
+        <List />
       </Card>
     )
   }
@@ -78,14 +79,15 @@ const GameCard = ({ gid, games, setGames }) => {
       .then(() => {
         alert('Successfully delete quiz: ' + gameInfo.name);
         const newGames = [...games];
+
+        // remove game from the list and set new state
         newGames.splice(games.indexOf(gid), 1);
-        console.log(newGames);
         setGames(newGames);
       }).catch(err => console.log('ERROR: Fail to delete quiz: ', err))
 
   return (
     <Card variant="outlined" className={classes.root}>
-      <CardActionArea>
+      <CardActionArea href={`/quiz/edit/${gid}`}>
          <CardMedia
             className={classes.media}
             image={gameInfo.thumbnail ?? 'https://tse4-mm.cn.bing.net/th/id/OIP.EEoake0D7LrG5c4X4TDPFQHaHa?pid=ImgDet&rs=1'}
@@ -118,8 +120,10 @@ const GameCard = ({ gid, games, setGames }) => {
               </li>
               <li>
                 <Typography variant="body2" component="p" className={classes.pos} color="textSecondary" >
-                  {'Total time to complete: ' + gameInfo.questions.length}
-                  {/* TODO: calculate time */}
+                  {
+                    'Total time to complete: ' +
+                      gameInfo.questions.reduce((a, b) => a['time-limit'] + b['time-limit'], 0)
+                  }
                 </Typography>
               </li>
             </ul>
