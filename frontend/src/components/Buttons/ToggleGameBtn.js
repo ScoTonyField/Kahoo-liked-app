@@ -12,7 +12,7 @@ const closeBtnStyle = {
   color: 'grey',
 };
 
-const StartGameBtn = ({ gameId, sessionId, active, setActive }) => {
+const ToggleGameBtn = ({ gameId, sessionId, active, setActive }) => {
   const [open, setOpen] = React.useState(false);
   const [lastSessionId, setLastSessionId] = React.useState();
   const history = useHistory();
@@ -51,6 +51,8 @@ const StartGameBtn = ({ gameId, sessionId, active, setActive }) => {
         setActive(true);
       }).catch(() => alert('ERROR: Fail to start a game'));
 
+  const handleOpen = () => setOpen(true)
+
   /**
    * Handle stop game button to stop a game.
    * Before stopping the game, store the session id of the game.
@@ -71,9 +73,14 @@ const StartGameBtn = ({ gameId, sessionId, active, setActive }) => {
       {
         active
           ? (
-            <Button size="medium" color="primary" onClick={handleStop}>
-                Stop
-            </Button>
+            <>
+              <Button size="medium" color="primary" onClick={handleOpen}>
+                Link
+              </Button>
+              <Button size="medium" color="primary" onClick={handleStop}>
+                  Stop
+              </Button>
+            </>
             )
           : (
             <Button size="medium" color="primary" onClick={handleStart}>
@@ -131,11 +138,11 @@ const StartGameBtn = ({ gameId, sessionId, active, setActive }) => {
   );
 };
 
-StartGameBtn.propTypes = {
+ToggleGameBtn.propTypes = {
   gameId: PropTypes.number,
   sessionId: PropTypes.number,
   active: PropTypes.bool,
   setActive: PropTypes.func,
 };
 
-export default StartGameBtn;
+export default ToggleGameBtn;

@@ -3,6 +3,7 @@ import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Results from './pages/Results';
 // import QuestionEdit from './pages/QuestionEdit';
 // import GameEdit from './pages/GameEdit';
 // import GamePlay from './pages/GamePlay';
@@ -94,29 +95,12 @@ function App () {
           </Toolbar>
         </AppBar>
         <Switch>
-          <Route
-            exact path="/login"
-            render={(props) => (
-              <Login {...props} setPage={setCurPage} />
-            )}/>
-          <Route
-            exact path="/register"
-            render={(props) => (
-              <Register {...props} setToken={setToken} setPage={setCurPage} />
-            )}/>
-          <Route
-            exact path="/dashboard"
-            render={(props) => (
-              <Dashboard {...props} setPage={setCurPage}/>
-            )}/>
-          <Route
-            exact path="/home"
-            render={(props) => (
-              <Home {...props} />
-            )}/>
-          <Route exact path="/">
-            <Home />
-          </Route>
+          <Route exact path="/login" component={Login}/>
+          <Route exact path="/register" component={Register}/>
+          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/results/:sessionid" component={Results} />
+          <Route exact path="/home" component={Home}/>
+          <Route exact path="/" component={Home}/>
 
           {/* Any other path leads to 404 page */}
           <Route path="*" component={NotFound} />

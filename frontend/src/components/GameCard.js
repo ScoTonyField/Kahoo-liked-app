@@ -12,7 +12,8 @@ import {
 } from '@material-ui/core';
 import { List } from 'react-content-loader';
 import makeAPIRequest from '../Api';
-import StartGameBtn from './Buttons/ToggleGameBtn';
+import ToggleGameBtn from './Buttons/ToggleGameBtn';
+import GameHistory from './Modals/GameHistoryModal';
 // import makeAPIRequest from '../Api';
 
 const useStyles = makeStyles({
@@ -21,7 +22,6 @@ const useStyles = makeStyles({
     margin: '20px 15px',
     transition: 'transform 0.15s ease-in-out',
     '&:hover': {
-      cursor: 'pointer',
       transform: 'scale(1.05)'
     }
   },
@@ -105,7 +105,7 @@ const GameCard = ({ gid, games, setGames }) => {
               className={classes.name}
               variant="h5"
               component="h2">
-                {gameInfo.name ?? '[Empty Name]'}
+                {gameInfo.name}
             </Typography>
             <ul className={classes.list}>
               <li>
@@ -130,12 +130,13 @@ const GameCard = ({ gid, games, setGames }) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <StartGameBtn
+        <ToggleGameBtn
           gameId={gid}
           sessionId={gameInfo.active}
           active={active}
           setActive={setActive}
         />
+        <GameHistory name={gameInfo.name} history={gameInfo.oldSessions} />
         <Button size="medium" color="secondary" onClick={handleDelete}>
           Delete
         </Button>

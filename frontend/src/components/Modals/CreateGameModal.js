@@ -8,9 +8,10 @@ import {
   DialogContentText,
   DialogTitle
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import makeAPIRequest from '../../Api';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles({
   button: {
@@ -23,6 +24,8 @@ const CreateGameModal = ({ games, setGames }) => {
   const [name, setName] = React.useState('');
   const [errorText, setErrorText] = React.useState();
   const classes = useStyles();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   // Handler for opening the 'create new game' modal
   const handleClickOpen = () => {
@@ -77,7 +80,12 @@ const CreateGameModal = ({ games, setGames }) => {
             Create a new quiz
         </Button>
         {/* XXX: accessibility: labelledby: https://material-ui.com/zh/components/modal/ */}
-      <Dialog open={open} onClose={handleClose} aria-labelledby="create-new-quiz-title">
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        fullScreen={fullScreen}
+        aria-labelledby="create-new-quiz-title"
+      >
         <DialogTitle id="create-new-quiz-title">Create a new quiz</DialogTitle>
         <DialogContent>
           <DialogContentText>

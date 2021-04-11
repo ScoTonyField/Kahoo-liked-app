@@ -1,4 +1,5 @@
 /**
+ * This function is from Assignment 2 written by Katrina Ding (z5211336)
  * path: A string to fetch data from
  * method: A string indicating fetching method, could be "POST", "GET", etc.
  * token: A token string for authentication.
