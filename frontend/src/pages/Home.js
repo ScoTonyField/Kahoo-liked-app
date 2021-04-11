@@ -4,15 +4,14 @@ import Title from '../components/Titles/Title';
 import Subtitle from '../components/Titles/Subtitle';
 
 const Home = () => {
-  const token = localStorage.getItem('token');
-  console.log('Directing to Homepage, token: ' + token)
+  console.log('Directing to Homepage');
   return (
     <Container>
         <Title>
           Homepage
         </Title>
         {
-          token
+          localStorage.getItem('token')
             ? (
                 <Subtitle>You have logged in, go to dashboard to see your quizzes. :D</Subtitle>
               )

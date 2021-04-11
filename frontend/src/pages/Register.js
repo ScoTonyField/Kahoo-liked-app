@@ -2,7 +2,6 @@ import React from 'react';
 import { Container, Grid, Button, Link, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
-import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 import { makeStyles } from '@material-ui/core/styles';
 import makeAPIRequest from '../Api';
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Register = (props) => {
+const Register = () => {
   const history = useHistory();
   const classes = useStyles();
   const validate = values => {
@@ -166,11 +165,6 @@ const Register = (props) => {
         </Container>
       </div>
   );
-};
-
-Register.propTypes = {
-  setPage: PropTypes.func,
-  setToken: PropTypes.func,
 };
 
 export default Register;

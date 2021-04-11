@@ -29,7 +29,6 @@ const useStyles = makeStyles({
 
 const Dashboard = () => {
   // const history = useHistory();
-  console.log('dashboard token: ', localStorage.getItem('token'));
   const classes = useStyles();
   const gamesId = [];
 
@@ -52,7 +51,7 @@ const Dashboard = () => {
   }, [])
 
   return (
-    <Container>
+    <Container >
       <Title>
         Dashboard
       </Title>
@@ -64,11 +63,11 @@ const Dashboard = () => {
                 <Subtitle>You currently have {games.length} quizzes in total. Click them to edit the quiz.</Subtitle>
                 <CreateGameModal setGames={setGames} games={games} />
               </Box>
-              <Grid container className={classes.root}>
+              <Grid container>
                   {
                     games.map((game) => {
                       return (
-                        <Grid item xs={12} sm={6} md={4} lg={3} key={game}>
+                        <Grid item xs={12} sm={6} md={4} lg={4} xl={3} key={game}>
                           <GameCard gid={game} games={games} setGames={setGames}/>
                         </Grid>
                       )

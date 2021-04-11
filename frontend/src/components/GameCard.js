@@ -12,7 +12,8 @@ import {
 } from '@material-ui/core';
 import { List } from 'react-content-loader';
 import makeAPIRequest from '../Api';
-import StartGameBtn from './Buttons/ToggleGameBtn';
+import ToggleGameBtn from './Buttons/ToggleGameBtn';
+import GameHistory from './Modals/GameHistoryModal';
 // import makeAPIRequest from '../Api';
 
 const useStyles = makeStyles({
@@ -21,7 +22,6 @@ const useStyles = makeStyles({
     margin: '20px 15px',
     transition: 'transform 0.15s ease-in-out',
     '&:hover': {
-      cursor: 'pointer',
       transform: 'scale(1.05)'
     }
   },
@@ -53,7 +53,6 @@ const GameCard = ({ gid, games, setGames }) => {
       .then(game => {
         game.id = gid;
         setGameInfo(game);
-        console.log(game)
       }).catch(err => console.log('Error fetching quizzes: ', err))
   }, [active])
 
@@ -87,7 +86,7 @@ const GameCard = ({ gid, games, setGames }) => {
 
   return (
     <Card variant="outlined" className={classes.root}>
-      <CardActionArea href={`/quiz/edit/${gid}`}>
+      <CardActionArea href={`/quiz/${gid}`}>
          <CardMedia
             className={classes.media}
             image={gameInfo.thumbnail ?? 'https://tse4-mm.cn.bing.net/th/id/OIP.EEoake0D7LrG5c4X4TDPFQHaHa?pid=ImgDet&rs=1'}
@@ -105,7 +104,7 @@ const GameCard = ({ gid, games, setGames }) => {
               className={classes.name}
               variant="h5"
               component="h2">
-                {gameInfo.name ?? '[Empty Name]'}
+                {gameInfo.name}
             </Typography>
             <ul className={classes.list}>
               <li>
@@ -130,12 +129,13 @@ const GameCard = ({ gid, games, setGames }) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <StartGameBtn
+        <ToggleGameBtn
           gameId={gid}
           sessionId={gameInfo.active}
           active={active}
           setActive={setActive}
         />
+        <GameHistory name={gameInfo.name} history={gameInfo.oldSessions} />
         <Button size="medium" color="secondary" onClick={handleDelete}>
           Delete
         </Button>

@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import QuestionEdit from './pages/QuestionEdit';
 import GameEdit from './pages/GameEdit';
+import Results from './pages/Results';
 // import GamePlay from './pages/GamePlay';
 
 import {
@@ -49,14 +50,18 @@ function App () {
   // }, [history[0]]);
   // console.log(window.location.href)
 
+  React.useEffect(() => {
+    setCurPage(curRoute || 'home');
+    console.log('cur page: ', curPage);
+  }, [curRoute]);
+
   // FIXME: state to indicate if the user is logged in, is false by defualt
   // keep it for any legacy issue. Will be removed later
   const [token, setToken] = React.useState('');
   React.useEffect(() => {
     setToken(localStorage.getItem('token'));
+    console.log('token: ', token);
   }, [localStorage.getItem('token')])
-  console.log('cur page: ', curPage);
-  console.log('token: ', token);
 
   // Handle logout button, clear localstorage and reset current page
   const handleLogout = () => {
@@ -94,40 +99,16 @@ function App () {
           </Toolbar>
         </AppBar>
         <Switch>
+          <Route exact path="/login" component={Login}/>
+          <Route exact path="/register" component={Register}/>
+          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/results/:sessionid" component={Results} />
+          <Route exact path="/home" component={Home}/>
+          <Route exact path="/" component={Home}/>
           <Route
-            exact path="/login"
-            render={(props) => (
-              <Login {...props} setPage={setCurPage} />
-            )}/>
+            exact path='/quiz/:quizid' component={GameEdit} />
           <Route
-            exact path="/register"
-            render={(props) => (
-              <Register {...props} setToken={setToken} setPage={setCurPage} />
-            )}/>
-          <Route
-            exact path="/dashboard"
-            render={(props) => (
-              <Dashboard {...props} setPage={setCurPage}/>
-            )}/>
-          <Route
-            exact path="/home"
-            render={(props) => (
-              <Home {...props} />
-            )}/>
-          <Route
-            exact path='/quiz/:quizid'
-            render={(props) => (
-              <GameEdit {...props} setToken={setToken} setPage={setCurPage}/>
-            )} />
-          <Route
-            eact path='/quiz/:quizid/:questionid'
-            render={(props) => (
-              <QuestionEdit {...props} setToken={setToken} setPage={setCurPage}/>
-            )} />
-          <Route exact path="/">
-            <Home />
-          </Route>
-
+            eact path='/quiz/:quizid/:questionid' component={QuestionEdit} />
           {/* Any other path leads to 404 page */}
           <Route path="*" component={NotFound} />
         </Switch>
