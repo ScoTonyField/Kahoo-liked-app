@@ -29,7 +29,6 @@ const useStyles = makeStyles({
 
 const Dashboard = () => {
   // const history = useHistory();
-  console.log('dashboard token: ', localStorage.getItem('token'));
   const classes = useStyles();
   const gamesId = [];
 

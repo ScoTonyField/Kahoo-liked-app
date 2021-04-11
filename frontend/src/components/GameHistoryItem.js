@@ -3,7 +3,6 @@ import {
   TableCell,
   TableRow
 } from '@material-ui/core';
-import { List } from 'react-content-loader';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -25,10 +24,10 @@ const GameHistoryItem = ({ sessionId }) => {
   console.log(sessionInfo)
 
   return (
-    <TableRow key={sessionId}>
+    <TableRow hover key={sessionId}>
       { sessionInfo === null
         ? (
-            <List />
+            <TableCell>Loading...</TableCell>
           )
         : (
             <>

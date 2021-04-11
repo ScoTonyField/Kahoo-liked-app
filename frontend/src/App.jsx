@@ -50,14 +50,18 @@ function App () {
   // }, [history[0]]);
   // console.log(window.location.href)
 
+  React.useEffect(() => {
+    setCurPage(curRoute || 'home');
+    console.log('cur page: ', curPage);
+  }, [curRoute]);
+
   // FIXME: state to indicate if the user is logged in, is false by defualt
   // keep it for any legacy issue. Will be removed later
   const [token, setToken] = React.useState('');
   React.useEffect(() => {
     setToken(localStorage.getItem('token'));
+    console.log('token: ', token);
   }, [localStorage.getItem('token')])
-  console.log('cur page: ', curPage);
-  console.log('token: ', token);
 
   // Handle logout button, clear localstorage and reset current page
   const handleLogout = () => {

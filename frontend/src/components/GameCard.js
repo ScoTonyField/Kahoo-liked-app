@@ -53,7 +53,6 @@ const GameCard = ({ gid, games, setGames }) => {
       .then(game => {
         game.id = gid;
         setGameInfo(game);
-        console.log(game)
       }).catch(err => console.log('Error fetching quizzes: ', err))
   }, [active])
 

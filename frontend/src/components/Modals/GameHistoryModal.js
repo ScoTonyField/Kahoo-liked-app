@@ -15,19 +15,12 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import GameHistoryItem from '../GameHistoryItem';
-
-const useStyles = makeStyles({
-  table: {
-    minWidth: 650,
-  },
-});
 
 const GameHistory = ({ name, history }) => {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
-  const classes = useStyles();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   // Handler for opening the 'create new game' modal
@@ -53,7 +46,7 @@ const GameHistory = ({ name, history }) => {
             <DialogTitle id="quiz-history-title">History for { name }. Click to view results.</DialogTitle>
                 <DialogContent>
                   <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="simple table">
+                    <Table aria-label="quiz history table">
                       <TableHead>
                         <TableRow>
                           <TableCell>Session id</TableCell>
