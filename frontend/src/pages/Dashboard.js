@@ -7,6 +7,7 @@ import Subtitle from '../components/Titles/Subtitle';
 import GameCard from '../components/GameCard';
 import makeAPIRequest from '../Api';
 import CreateGameModal from '../components/Modals/CreateGameModal';
+import ImportModal from '../components/Modals/ImportModal';
 
 const useStyles = makeStyles({
   btnGroups: {
@@ -62,6 +63,7 @@ const Dashboard = () => {
               <Box className={classes.btnGroups}>
                 <Subtitle>You currently have {games.length} quizzes in total. Click them to edit the quiz.</Subtitle>
                 <CreateGameModal setGames={setGames} games={games} />
+                <ImportModal setGames={setGames} games={games} />
               </Box>
               <Grid container>
                   {

@@ -21,8 +21,6 @@ const GameHistoryItem = ({ sessionId }) => {
   // Handle 'view results' button to jump to the results page
   const handleClick = () => history.push(`/results/${sessionId}`)
 
-  console.log(sessionInfo)
-
   return (
     <TableRow hover key={sessionId}>
       { sessionInfo === null
@@ -35,8 +33,8 @@ const GameHistoryItem = ({ sessionId }) => {
               <TableCell align="right">{'' + sessionInfo.active}</TableCell>
               <TableCell align="right">{'' + sessionInfo.answerAvailable}</TableCell>
               <TableCell align="right">
-                {sessionInfo.iosTimeLastQuestionStarted
-                  ? new Date(sessionInfo.iosTimeLastQuestionStarted).toString().split(' ').splice(0, 5).join(' ')
+                {sessionInfo.isoTimeLastQuestionStarted
+                  ? new Date(sessionInfo.isoTimeLastQuestionStarted).toString().split(' ').splice(0, 5).join(' ')
                   : 'Not Available'
                 }</TableCell>
               <TableCell align="right">{sessionInfo.questions.length}</TableCell>
