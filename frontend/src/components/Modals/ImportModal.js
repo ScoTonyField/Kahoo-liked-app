@@ -8,13 +8,9 @@ import {
   DialogTitle,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
-const styleBtn = styled({ Button })`
-    margin: 20px;
-`;
+import FileUploadBtn from '../Buttons/FileUploadBtn';
 
 const ImportModal = ({ games, setGames }) => {
   const [open, setOpen] = React.useState(false);
@@ -37,23 +33,24 @@ const ImportModal = ({ games, setGames }) => {
   }
   return (
     <div>
-       <styleBtn
+       <Button
             onClick={handleClickOpen}
             variant="outlined"
             color="primary">
-            Create a new quiz
-        </styleBtn>
+            Import
+        </Button>
         <Dialog
         open={open}
         onClose={handleClose}
         fullScreen={fullScreen}
         aria-labelledby="create-new-quiz-title"
         >
-          <DialogTitle id="create-new-quiz-title">Create a new quiz</DialogTitle>
+          <DialogTitle id="create-new-quiz-title">Import Game Data</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              To make a new quiz, please enter the name of the new game.
+              To make a new quiz, please upload the <b>csv/json</b> file that contains game data
             </DialogContentText>
+            <FileUploadBtn />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">
