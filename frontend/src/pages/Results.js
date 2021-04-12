@@ -15,7 +15,8 @@ import Title from '../components/Titles/Title';
 import Subtitle from '../components/Titles/Subtitle';
 import { List } from 'react-content-loader'
 import makeAPIRequest from '../Api';
-import PlayerRow from '../components/PlayerRow';
+import ResultPlayerRow from '../components/ResultPlayerRow';
+import ResultBarChar from '../components/Charts/ResultBarChart';
 
 const Results = () => {
   const location = useLocation();
@@ -32,26 +33,26 @@ const Results = () => {
   fetchResults(sessionId);
 
   const playerTable = () =>
-      <TableContainer component={Paper}>
-          <Table aria-label="quiz history table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Player Name</TableCell>
-                <TableCell align="right">Score</TableCell>
-                <TableCell align="right">Number of Answers</TableCell>
-                <TableCell align="right">Average Time to Answer</TableCell>
-                <TableCell align="right"/>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {
-                results.map((player, idx) => (
-                  <PlayerRow key={idx} player={player} />
-                ))
-              }
-            </TableBody>
-          </Table>
-        </TableContainer>
+    <TableContainer component={Paper}>
+      <Table aria-label="quiz history table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Player Name</TableCell>
+            <TableCell align="right">Score</TableCell>
+            <TableCell align="right">Number of Answers</TableCell>
+            <TableCell align="right">Average Time to Answer</TableCell>
+            <TableCell align="right"/>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {
+            results.map((player, idx) => (
+              <ResultPlayerRow key={idx} player={player} />
+            ))
+          }
+        </TableBody>
+      </Table>
+    </TableContainer>
 
   const contentLoader = () => <List />
 
@@ -66,8 +67,13 @@ const Results = () => {
         <Box>
           {
             results
-              ? playerTable()
-              // if results not loaded, display content loader
+              ? (
+                  <>
+                    { playerTable() }
+                    <ResultBarChar />
+                  </>
+                )
+                // if results not loaded, display content loader
               : contentLoader()
           }
         </Box>

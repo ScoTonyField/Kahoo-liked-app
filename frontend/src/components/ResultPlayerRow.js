@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TableCell, TableRow } from '@material-ui/core';
 
-const PersonRow = ({ player }) => {
+const ResultPlayerRow = ({ player }) => {
   return (
     <TableRow hover key={player.name}>
       <TableCell component="th" scope="row">{player.name}</TableCell>
@@ -13,8 +13,8 @@ const PersonRow = ({ player }) => {
   );
 };
 
-PersonRow.propTypes = {
+ResultPlayerRow.propTypes = {
   player: PropTypes.object
 };
 
-export default PersonRow;
+export default ResultPlayerRow;
