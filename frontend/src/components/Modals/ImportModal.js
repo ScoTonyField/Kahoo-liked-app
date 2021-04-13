@@ -34,33 +34,37 @@ const ImportModal = ({ games, setGames }) => {
   return (
     <div>
        <Button
-            onClick={handleClickOpen}
-            variant="outlined"
-            color="primary">
-            Import
-        </Button>
-        <Dialog
+        onClick={handleClickOpen}
+        variant="outlined"
+        color="primary">
+        Import
+      </Button>
+      <Dialog
         open={open}
         onClose={handleClose}
         fullScreen={fullScreen}
         aria-labelledby="create-new-quiz-title"
-        >
-          <DialogTitle id="create-new-quiz-title">Import Game Data</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              To make a new quiz, please upload the <b>csv/json</b> file that contains game data
-            </DialogContentText>
-            <FileUploadBtn />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleSubmit} color="primary">
-              Confirm
-            </Button>
-          </DialogActions>
-        </Dialog>
+      >
+        <DialogTitle id="create-new-quiz-title">
+          Import Game Data
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            To make a new quiz, please upload the <b>csv/json</b> file that contains game data
+          </DialogContentText>
+
+          <FileUploadBtn fileType=".csv,.json" />
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleSubmit} color="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

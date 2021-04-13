@@ -5,11 +5,11 @@
 */
 export const quizQuestionPublicReturn = question => {
   console.log('See question: ', question);
-  return question;
+  return question; // not returning the answer
 };
 
 /*
- For a given data structure of a question, get the IDs (index) of
+ For a given data structure of a question, get the IDs of
  the correct answers (minimum 1).
 */
 export const quizQuestionGetCorrectAnswers = question => {
@@ -21,7 +21,8 @@ export const quizQuestionGetCorrectAnswers = question => {
  all of the answers, correct or incorrect.
 */
 export const quizQuestionGetAnswers = question => {
-  return question.options; // For a single answer
+  console.log(question)
+  return question; // For a single answer
 };
 
 /*

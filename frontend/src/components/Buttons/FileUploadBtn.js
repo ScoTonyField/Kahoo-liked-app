@@ -9,11 +9,11 @@ const HiddenInput = styled.input`
   display: none;
 `;
 
-const ImportModal = () => {
+const FileUploadBtn = ({ fileType }) => {
   return (
     <div >
       <HiddenInput
-        accept=".csv,.json"
+        accept={fileType}
         id="file-upload-button"
         type="file"
       />
@@ -26,9 +26,8 @@ const ImportModal = () => {
   );
 };
 
-ImportModal.propTypes = {
-  setGames: PropTypes.func,
-  games: PropTypes.array,
+FileUploadBtn.propTypes = {
+  fileType: PropTypes.string,
 };
 
-export default ImportModal;
+export default FileUploadBtn;
