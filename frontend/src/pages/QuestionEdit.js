@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import WallpaperIcon from '@material-ui/icons/Wallpaper';
+import styled from 'styled-components';
+// import FileUploadBtn from '../components/Buttons/FileUploadBtn';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,6 +66,10 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const HiddenInput = styled.input`
+  display: none;
+`;
+
 const QuestionEdit = () => {
   const classes = useStyles();
 
@@ -86,21 +92,29 @@ const QuestionEdit = () => {
             border={1}
             borderColor='lightgrey'
             borderRadius='borderRadius'
-            height='40%'
-            width='45%'
+            minHeight='40%'
+            minWidth='45%'
             className={classes.media}
           >
             <WallpaperIcon color='disabled' className={classes.mediaIcon}/>
             <Typography variant='body1'>
               Click following button to upload your attached media
             </Typography>
-            <Button
-              variant='contained'
-              color='primary'
-              className={classes.mediaButton}
-            >
-              Image
-            </Button>
+            <HiddenInput
+              accept='image/*'
+              id='image-upload-btn'
+              type='file'
+            />
+            <label htmlFor="image-upload-btn">
+              <Button
+                variant='contained'
+                color='primary'
+                component='span'
+                className={classes.mediaButton}
+              >
+                Image
+              </Button>
+            </label>
             <Button
               variant='contained'
               color='primary'
@@ -148,8 +162,8 @@ const QuestionEdit = () => {
               <TextField
                 variant='outlined'
                 required
-                id='qutionOne'
-                name='questionOne'
+                id='qutionTwo'
+                name='questionTwo'
                 placeholder='Type your answer'
                 className={classes.questionForm}
               >
@@ -157,7 +171,7 @@ const QuestionEdit = () => {
               <Checkbox
                 defaultChecked
                 color="primary"
-                inputProps={{ 'aria-label': 'question one' }}
+                inputProps={{ 'aria-label': 'question two' }}
                 className={classes.checkbox}
               />
             </Box>
@@ -172,8 +186,8 @@ const QuestionEdit = () => {
               <TextField
                 variant='outlined'
                 required
-                id='qutionOne'
-                name='questionOne'
+                id='qutionThree'
+                name='questionThree'
                 placeholder='Optional answer'
                 className={classes.questionForm}
               >
@@ -181,7 +195,7 @@ const QuestionEdit = () => {
               <Checkbox
                 defaultChecked
                 color="primary"
-                inputProps={{ 'aria-label': 'question one' }}
+                inputProps={{ 'aria-label': 'question three' }}
                 className={classes.checkbox}
               />
             </Box>
@@ -201,8 +215,8 @@ const QuestionEdit = () => {
               <TextField
                 variant='outlined'
                 required
-                id='qutionOne'
-                name='questionOne'
+                id='qutionFour'
+                name='questionFour'
                 placeholder='Optional answer'
                 className={classes.questionForm}
               >
@@ -210,7 +224,7 @@ const QuestionEdit = () => {
               <Checkbox
                 defaultChecked
                 color="primary"
-                inputProps={{ 'aria-label': 'question one' }}
+                inputProps={{ 'aria-label': 'question four' }}
                 className={classes.checkbox}
               />
             </Box>
@@ -225,8 +239,8 @@ const QuestionEdit = () => {
               <TextField
                 variant='outlined'
                 required
-                id='qutionOne'
-                name='questionOne'
+                id='qutionFive'
+                name='questionFive'
                 placeholder='Optional answer'
                 className={classes.questionForm}
               >
@@ -234,7 +248,7 @@ const QuestionEdit = () => {
               <Checkbox
                 defaultChecked
                 color="primary"
-                inputProps={{ 'aria-label': 'question one' }}
+                inputProps={{ 'aria-label': 'question five' }}
                 className={classes.checkbox}
               />
             </Box>
@@ -249,8 +263,8 @@ const QuestionEdit = () => {
               <TextField
                 variant='outlined'
                 required
-                id='qutionOne'
-                name='questionOne'
+                id='qutionSix'
+                name='questionSix'
                 placeholder='Optional answer'
                 className={classes.questionForm}
               >
@@ -258,7 +272,7 @@ const QuestionEdit = () => {
               <Checkbox
                 defaultChecked
                 color="primary"
-                inputProps={{ 'aria-label': 'question one' }}
+                inputProps={{ 'aria-label': 'question six' }}
                 className={classes.checkbox}
               />
             </Box>
