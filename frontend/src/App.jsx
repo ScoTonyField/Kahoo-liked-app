@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  appbar: {
+    zIndex: theme.zIndex.title + 1,
+  }
 }));
 
 function App () {
@@ -105,10 +108,8 @@ function App () {
           <Route exact path="/results/:sessionid" component={Results} />
           <Route exact path="/home" component={Home}/>
           <Route exact path="/" component={Home}/>
-          <Route
-            exact path='/quiz/:quizid' component={GameEdit} />
-          <Route
-            eact path='/quiz/:quizid/:questionid' component={QuestionEdit} />
+          <Route exact path='/quiz/:quizid' component={GameEdit} />
+          <Route eact path='/quiz/:quizid/:questionid' component={QuestionEdit} />
           {/* Any other path leads to 404 page */}
           <Route path="*" component={NotFound} />
         </Switch>
