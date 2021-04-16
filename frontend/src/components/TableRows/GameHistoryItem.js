@@ -6,7 +6,7 @@ import {
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
-import makeAPIRequest from '../Api';
+import makeAPIRequest from '../../Api';
 
 const GameHistoryItem = ({ sessionId }) => {
   const history = useHistory();
@@ -30,7 +30,6 @@ const GameHistoryItem = ({ sessionId }) => {
         : (
             <>
               <TableCell component="th" scope="row">{sessionId}</TableCell>
-              <TableCell align="right">{'' + sessionInfo.active}</TableCell>
               <TableCell align="right">{'' + sessionInfo.answerAvailable}</TableCell>
               <TableCell align="right">
                 {sessionInfo.isoTimeLastQuestionStarted
