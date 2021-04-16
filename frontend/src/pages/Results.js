@@ -8,9 +8,9 @@ import Title from '../components/Titles/Title';
 import Subtitle from '../components/Titles/Subtitle';
 import { List } from 'react-content-loader'
 import makeAPIRequest from '../Api';
-import ResultBarChart from '../components/Charts/ResultBarChart';
 import styled from 'styled-components';
 import PlayerResultsTable from '../components/Tables/PlayerResultsTable';
+import ChartsController from '../components/Charts/ChartsController';
 
 const StyledUl = styled.ul`
   line-height: 2;
@@ -65,7 +65,7 @@ const Results = () => {
                       <li>Last Displayed Question: Quesion {quiz.position}</li>
                     </StyledUl>
                     <PlayerResultsTable results={results} questions={quiz.questions} />
-                    <ResultBarChart players={results} questions={quiz.questions} />
+                    <ChartsController players={results} questions={quiz.questions} />
                   </>
                 )
                 // if results not loaded, display content loader
