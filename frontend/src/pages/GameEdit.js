@@ -80,86 +80,67 @@ const GameEdit = () => {
   }
 
   const handleAdd = (event) => {
-    const newQuizId = ++rows.length;
-    history.push(`/quiz/${currentQuiz}/${newQuizId}`);
-  }
-  // TODO: test part, delete these in the future
-  const handleTest = () => {
-    makeAPIRequest(
-      `admin/quiz/${currentQuiz}`,
-      'PUT',
-      localStorage.getItem('token'),
-      null,
-      JSON.stringify(
-        {
-          questions: [
-            {
-              qid: '2346',
-              isSingle: true,
-              contents: 'What is your teachers name?',
-              timeLimit: 10,
-              points: 10,
-              media: null,
-              options: [
-                'Tony',
-                'Hayden',
-                'Jerry',
-                'Scott'
-              ],
-              answers: [
-                1,
-              ],
-            },
-            {
-              qid: '4336',
-              isSingle: false,
-              contents: 'What parts you enjoy in frontend?',
-              timeLimit: 10,
-              points: 10,
-              media: null,
-              options: [
-                'coding',
-                'design',
-                'testin',
-                'communicate with people'
-              ],
-              answers: [
-                0,
-                1,
-                2
-              ],
-            },
-          ],
-          name: 'My first quiz',
-          thumbnail: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=='
-        }
-      )
-    ).then(() => {
-      console.log('update successfully');
-    })
+    if (Object.keys(rows).length === 0) {
+      history.push(`/quiz/${currentQuiz}/1`);
+    } else {
+      const newQuizId = ++rows.length
+      history.push(`/quiz/${currentQuiz}/${newQuizId}`);
+    }
   }
 
-  const questionTable = () => {
+  if (Object.keys(rows).length === 0 || rows.length === 0) {
     return (
-      <TableContainer>
-          <Table aria-label="collapsible table">
-            <TableHead>
-              <TableRow>
-                <TableCell />
-                <TableCell>Question ID</TableCell>
-                <TableCell align="center">Question Type</TableCell>
-                <TableCell align="center"></TableCell>
-                <TableCell align="center"></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <Row key={row.qid} row={row} remove={handleDelete} edit={handleEdit}/>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+      <Container maxWidth='md' component='main' className={classes.root}>
+        <Paper className={classes.paper} variant='outlined'>
+          <Typography variant='h5'>No questions in this game now, please add your question.</Typography>
+          <Button
+            variant='contained'
+            color='primary'
+            startIcon={<AddBoxRoundedIcon />}
+            className={classes.addbtn}
+            onClick={(event) => { handleAdd(event) }}
+          >
+            Add
+          </Button>
+        </Paper>
+      </Container>
     )
+  } else {
+    console.log(rows);
+    return (
+      <Container maxWidth='md' component='main' className={classes.root}>
+        <Typography variant='h4'>{fetchData.name}</Typography>
+        <Paper className={classes.paper} variant='outlined'>
+          <TableContainer>
+            <Table aria-label="collapsible table">
+              <TableHead>
+                <TableRow>
+                  <TableCell />
+                  <TableCell>Question ID</TableCell>
+                  <TableCell align="center">Question Type</TableCell>
+                  <TableCell align="center"></TableCell>
+                  <TableCell align="center"></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <Row key={row.qid} row={row} remove={handleDelete} edit={handleEdit}/>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+        <Button
+          variant='contained'
+          color='primary'
+          startIcon={<AddBoxRoundedIcon />}
+          className={classes.addbtn}
+          onClick={(event) => { handleAdd(event) }}
+        >
+          Add
+        </Button>
+      </Container>
+    );
   }
 
   return (
