@@ -353,7 +353,6 @@ const QuestionEdit = () => {
       </form>
     )
   }
->>>>>>> scott
 };
 
 export default QuestionEdit;

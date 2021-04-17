@@ -8,22 +8,15 @@ import {
   DialogContentText,
   DialogTitle
 } from '@material-ui/core';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import makeAPIRequest from '../../Api';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-
-const useStyles = makeStyles({
-  button: {
-    margin: '20px',
-  },
-});
 
 const CreateGameModal = ({ games, setGames }) => {
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
   const [errorText, setErrorText] = React.useState();
-  const classes = useStyles();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -73,12 +66,12 @@ const CreateGameModal = ({ games, setGames }) => {
   return (
     <div>
       <Button
-            className={classes.button}
-            onClick={handleClickOpen}
-            variant="outlined"
-            color="primary">
-            Create a new quiz
-        </Button>
+        onClick={handleClickOpen}
+        variant="outlined"
+        color="primary"
+      >
+        Create a new quiz
+      </Button>
         {/* XXX: accessibility: labelledby: https://material-ui.com/zh/components/modal/ */}
       <Dialog
         open={open}

@@ -18,7 +18,7 @@ const FileUploadBtn = ({ fileType }) => {
         type="file"
       />
       <label htmlFor="file-upload-button">
-        <Button variant="contained" color="primary" component='span'>
+        <Button variant="outlined" color="primary" component="span">
             Import
         </Button>
       </label>

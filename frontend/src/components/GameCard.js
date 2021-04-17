@@ -13,7 +13,7 @@ import {
 import { List } from 'react-content-loader';
 import makeAPIRequest from '../Api';
 import ToggleGameBtn from './Buttons/ToggleGameBtn';
-import GameHistory from './Modals/GameHistoryModal';
+import GameHistoryModal from './Modals/GameHistoryModal';
 // import makeAPIRequest from '../Api';
 
 const useStyles = makeStyles({
@@ -135,7 +135,7 @@ const GameCard = ({ gid, games, setGames }) => {
           active={active}
           setActive={setActive}
         />
-        <GameHistory name={gameInfo.name} history={gameInfo.oldSessions} />
+        <GameHistoryModal name={gameInfo.name} history={gameInfo.oldSessions} />
         <Button size="medium" color="secondary" onClick={handleDelete}>
           Delete
         </Button>
