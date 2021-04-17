@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 
 const useStlyes = makeStyles((theme) => ({
   answerBox: {
-    margin: theme.spacing(2, 2, 0)
+    margin: theme.spacing(2, 1, 0),
   },
   questionForm: {
-    margin: theme.spacing(2, 3),
+    margin: theme.spacing(2, 2),
   },
   checkbox: {
-    margin: theme.spacing(3, 2),
+    margin: theme.spacing(3, 1),
   }
 }))
 
@@ -58,7 +58,7 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
         border={1}
         borderColor='lightgrey'
         borderRadius='borderRadius'
-        minWidth='30%'
+        minWidth='25%'
         height='14%'
         className={classes.answerBox}
       >
@@ -84,7 +84,7 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
         border={1}
         borderColor='lightgrey'
         borderRadius='borderRadius'
-        minWidth='30%'
+        minWidth='25%'
         height='14%'
         className={classes.answerBox}
       >
@@ -110,7 +110,7 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
         border={1}
         borderColor='lightgrey'
         borderRadius='borderRadius'
-        minWidth='30%'
+        minWidth='25%'
         height='14%'
         className={classes.answerBox}
       >
@@ -136,7 +136,7 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
         border={1}
         borderColor='lightgrey'
         borderRadius='borderRadius'
-        minWidth='30%'
+        minWidth='25%'
         height='14%'
         className={classes.answerBox}
       >
@@ -162,7 +162,7 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
         border={1}
         borderColor='lightgrey'
         borderRadius='borderRadius'
-        minWidth='30%'
+        minWidth='25%'
         height='14%'
         className={classes.answerBox}
       >
@@ -188,7 +188,7 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
         border={1}
         borderColor='lightgrey'
         borderRadius='borderRadius'
-        minWidth='30%'
+        minWidth='25%'
         height='14%'
         className={classes.answerBox}
       >

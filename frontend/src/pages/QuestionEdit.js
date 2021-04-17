@@ -15,16 +15,16 @@ import VideoModal from '../components/Modals/VideoModal';
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(2, 1),
-    height: '90vh'
+    // height: '90vh'
   },
   sidebar: {
     padding: theme.spacing(2, 0),
     textAlign: 'left',
-    height: '100%'
+    minHeight: '100%'
   },
   main: {
     padding: theme.spacing(2, 3),
-    height: '100%',
+    minHeight: '100%',
     // textAlign: 'center'
   },
   formControl: {
@@ -51,23 +51,14 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center'
   },
   mediaButton: {
-    margin: theme.spacing(5, 2, 0),
-    width: '40%',
+    margin: theme.spacing(3, 2, 2),
+    width: '25%',
     height: '50px'
   },
   mediaIcon: {
-    margin: theme.spacing(10, 0, 2),
+    margin: theme.spacing(8, 0, 2),
     fontSize: 'xx-large'
   },
-  answerBox: {
-    margin: theme.spacing(2, 2, 0)
-  },
-  questionForm: {
-    margin: theme.spacing(2, 3),
-  },
-  checkbox: {
-    margin: theme.spacing(3, 2),
-  }
 }));
 
 const HiddenInput = styled.input`
@@ -87,7 +78,6 @@ const QuestionEdit = () => {
   const [defaultTime, setDefaultTime] = useState(5);
   const [defaultPoint, setDefaultPoint] = useState('');
   const [fetchData, setFetchData] = useState({});
-  // const [defaultOptions, setDefaultOptions] = useState([]);
   const params = useParams();
   const classes = useStyles();
   const checkOptions = () => {
@@ -104,10 +94,8 @@ const QuestionEdit = () => {
   const handleSubmit = () => {
     console.log(fetchData);
 
-    // TODO: implement submit function
     if (params.questionid > questionsAll.length) {
       const updateQuestion = questionsAll;
-      // alert(updateQuestion);
       updateQuestion.push({
         qid: params.questionid,
         isSingle: defaultType,
@@ -135,7 +123,6 @@ const QuestionEdit = () => {
       })
     } else if (Object.keys(questionsAll).length === 0) {
       const updateQuestion = [];
-      // alert(updateQuestion);
       updateQuestion.push({
         qid: params.questionid,
         isSingle: defaultType,
@@ -218,11 +205,10 @@ const QuestionEdit = () => {
       <p>Data is Loding..</p>
     )
   } else {
-    // TODO: add reset button
     return (
       <form>
         <Grid container className={classes.root} spacing={2}>
-          <Grid item xs={10}>
+          <Grid item xs={7} sm={8} md={8} lg={10}>
             <Paper className={classes.main} elevation={3}>
               {/* Type questions */}
               <Typography variant="h6">Current question ID: <b>{params.questionid}</b></Typography>
@@ -241,7 +227,7 @@ const QuestionEdit = () => {
                 border={1}
                 borderColor='lightgrey'
                 borderRadius='borderRadius'
-                minHeight='40%'
+                minHeight='35%'
                 minWidth='45%'
                 className={classes.media}
               >
@@ -277,7 +263,7 @@ const QuestionEdit = () => {
               <SelectionBox key={questions.qid} questions={questions} defaultType={defaultType} setDefaultType={setDefaultType} defaultAnswer={defaultAnswer} setDefaultAnswer={setDefaultAnswer}></SelectionBox>
             </Paper>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={5} sm={4} md={4} lg={2}>
             <Paper className={classes.sidebar} elevation={3}>
               <FormControl variant="outlined" className={classes.formControl}>
                 <Typography variant='h6' className={classes.text}>
@@ -340,13 +326,6 @@ const QuestionEdit = () => {
               >
                 Submit
               </Button>
-              {/* <Button
-                variant='contained'
-                color='default'
-                className={classes.button}
-              >
-                Reset
-              </Button> */}
             </Paper>
           </Grid>
         </Grid>
