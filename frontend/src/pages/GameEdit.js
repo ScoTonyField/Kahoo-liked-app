@@ -80,67 +80,15 @@ const GameEdit = () => {
   }
 
   const handleAdd = (event) => {
-    const newQuizId = ++rows.length
-    history.push(`/quiz/${currentQuiz}/${newQuizId}`);
-  }
-  // TODO: test part, delete these in the future
-  const handleTest = () => {
-    makeAPIRequest(
-      `admin/quiz/${currentQuiz}`,
-      'PUT',
-      localStorage.getItem('token'),
-      null,
-      JSON.stringify(
-        {
-          questions: [
-            {
-              qid: '2346',
-              types: '1',
-              contents: 'What is your teachers name?',
-              timelimit: '10',
-              points: '10',
-              media: null,
-              options: [
-                'Tony',
-                'Hayden',
-                'Jerry',
-                'Scott'
-              ],
-              answers: [
-                '1',
-              ],
-            },
-            {
-              qid: '4336',
-              types: '2',
-              contents: 'What parts you enjoy in frontend?',
-              timelimit: '10',
-              points: '10',
-              media: null,
-              options: [
-                'coding',
-                'design',
-                'testin',
-                'communicate with people'
-              ],
-              answers: [
-                '0',
-                '1',
-                '2',
-                '3'
-              ],
-            },
-          ],
-          name: 'My first quiz',
-          thumbnail: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=='
-        }
-      )
-    ).then(() => {
-      console.log('update successfully');
-    })
+    if (Object.keys(rows).length === 0) {
+      history.push(`/quiz/${currentQuiz}/1`);
+    } else {
+      const newQuizId = ++rows.length
+      history.push(`/quiz/${currentQuiz}/${newQuizId}`);
+    }
   }
 
-  if (rows.length === 0) {
+  if (Object.keys(rows).length === 0 || rows.length === 0) {
     return (
       <Container maxWidth='md' component='main' className={classes.root}>
         <Paper className={classes.paper} variant='outlined'>
@@ -154,18 +102,11 @@ const GameEdit = () => {
           >
             Add
           </Button>
-          <Button
-            variant='contained'
-            color='primary'
-            className={classes.addbtn}
-            onClick={handleTest}
-          >
-            test button
-          </Button>
         </Paper>
       </Container>
     )
   } else {
+    console.log(rows);
     return (
       <Container maxWidth='md' component='main' className={classes.root}>
         <Typography variant='h4'>{fetchData.name}</Typography>

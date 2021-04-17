@@ -24,7 +24,16 @@ function Row (props) {
         <TableCell align="center">
           {props.row.qid}
         </TableCell>
-        <TableCell align="center">{props.row.types}</TableCell>
+        {/* <TableCell align="center">{props.row.isSingle}</TableCell> */}
+        {
+          props.row.isSingle
+            ? (
+              <TableCell align="center">Single-select</TableCell>
+              )
+            : (
+              <TableCell align="center">Multiple-select</TableCell>
+              )
+        }
         <TableCell align="center">
           <Button variant="contained" color="primary" onClick={ (event) => { props.edit(props.row.qid, event) }}>
             Edit
@@ -59,10 +68,10 @@ function Row (props) {
 Row.propTypes = {
   row: PropTypes.shape({
     qid: PropTypes.string.isRequired,
-    types: PropTypes.string.isRequired,
+    isSingle: PropTypes.bool.isRequired,
     contents: PropTypes.string.isRequired,
-    timelimit: PropTypes.string.isRequired,
-    points: PropTypes.string.isRequired,
+    timelimit: PropTypes.number.isRequired,
+    points: PropTypes.number.isRequired,
     media: PropTypes.any,
     options: PropTypes.array.isRequired,
     answers: PropTypes.array.isRequired,

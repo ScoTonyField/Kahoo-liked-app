@@ -15,7 +15,27 @@ const useStlyes = makeStyles((theme) => ({
   }
 }))
 
-const SelectionBoxModal = ({ questions }) => {
+const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnswer }) => {
+  const handleChange = (event) => {
+    const currentAnswer = defaultAnswer;
+    if (event.target.checked) {
+      currentAnswer.push(parseInt(event.target.id));
+      if (currentAnswer.length > 1) {
+        setDefaultType(false)
+      } else {
+        setDefaultType(true)
+      }
+    } else {
+      currentAnswer.pop();
+      if (currentAnswer.length > 1) {
+        setDefaultType(false)
+      } else {
+        setDefaultType(true)
+      }
+    }
+    setDefaultAnswer(currentAnswer);
+  }
+
   const classes = useStlyes();
   const keys = Object.keys(questions);
   // console.log(keys);
@@ -53,10 +73,11 @@ const SelectionBoxModal = ({ questions }) => {
         >
         </TextField>
         <Checkbox
-          defaultChecked
+          // defaultChecked
           color='primary'
-          id='checkbox1'
+          id='1'
           className={classes.checkbox}
+          onChange={handleChange}
         />
       </Box>
       <Box
@@ -78,10 +99,11 @@ const SelectionBoxModal = ({ questions }) => {
         >
         </TextField>
         <Checkbox
-          defaultChecked
+          // defaultChecked
           color='primary'
-          id='checkbox2'
+          id='2'
           className={classes.checkbox}
+          onChange={handleChange}
         />
       </Box>
       <Box
@@ -103,10 +125,11 @@ const SelectionBoxModal = ({ questions }) => {
         >
         </TextField>
         <Checkbox
-          defaultChecked
+          // defaultChecked
           color='primary'
-          id='checkbox3'
+          id='3'
           className={classes.checkbox}
+          onChange={handleChange}
         />
       </Box>
       <Box
@@ -128,10 +151,11 @@ const SelectionBoxModal = ({ questions }) => {
         >
         </TextField>
         <Checkbox
-          defaultChecked
+          // defaultChecked
           color='primary'
-          id='checkbox4'
+          id='4'
           className={classes.checkbox}
+          onChange={handleChange}
         />
       </Box>
       <Box
@@ -153,10 +177,11 @@ const SelectionBoxModal = ({ questions }) => {
         >
         </TextField>
         <Checkbox
-          defaultChecked
+          // defaultChecked
           color='primary'
-          id='checkbox5'
+          id='5'
           className={classes.checkbox}
+          onChange={handleChange}
         />
       </Box>
       <Box
@@ -175,12 +200,13 @@ const SelectionBoxModal = ({ questions }) => {
           placeholder='Optional answer'
           defaultValue={questions.options[5]}
           className={classes.questionForm}
+          onChange={handleChange}
         >
         </TextField>
         <Checkbox
-          defaultChecked
+          // defaultChecked
           color='primary'
-          id='checkbox6'
+          id='6'
           className={classes.checkbox}
         />
       </Box>
@@ -188,8 +214,11 @@ const SelectionBoxModal = ({ questions }) => {
   )
 }
 
-SelectionBoxModal.propTypes = {
+SelectionBox.propTypes = {
   questions: PropTypes.object,
+  setDefaultType: PropTypes.func,
+  defaultAnswer: PropTypes.array,
+  setDefaultAnswer: PropTypes.func,
 };
 
-export default SelectionBoxModal;
+export default SelectionBox;
