@@ -10,7 +10,7 @@ const ResultPlayerRow = ({ player, idx }) => {
       <TableCell align="right">{player.score}</TableCell>
       <TableCell align="right">{player.averageTime ?? '[Not Available]'}</TableCell>
       <TableCell align="right">
-        <Button variant="outlined">View Stats</Button>
+        <Button size="small" variant="outlined">View Stats</Button>
       </TableCell>
     </TableRow>
   );

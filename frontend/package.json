@@ -9,6 +9,7 @@
     "fontsource-roboto": "^4.0.0",
     "formik": "^2.2.6",
     "history": "^5.0.0",
+    "randomcolor": "^0.6.2",
     "react": "^17.0.1",
     "react-chartjs-2": "^2.11.1",
     "react-content-loader": "^6.0.3",
