@@ -1,16 +1,14 @@
-import { FormControl, Select, Typography, TextField, Divider, Button, Box } from '@material-ui/core';
+import { FormControl, Select, Typography, TextField, Divider, Button, Box, Card, CardActionArea, CardMedia } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import WallpaperIcon from '@material-ui/icons/Wallpaper';
+// import WallpaperIcon from '@material-ui/icons/Wallpaper';
 import styled from 'styled-components';
 import makeAPIRequest from '../Api';
 import SelectionBox from '../components/SelectionBox';
 import VideoModal from '../components/Modals/VideoModal';
-// import CardMedia from '@material-ui/core/CardMedia';
-// import AnswerOptionModal from '../components/Modals/AnswerOptionModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,6 +57,10 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(8, 0, 2),
     fontSize: 'xx-large'
   },
+  card: {
+    maxWidth: '50%',
+    margin: theme.spacing(2, 'auto', 0)
+  }
 }));
 
 const HiddenInput = styled.input`
@@ -100,7 +102,7 @@ const QuestionEdit = () => {
         qid: params.questionid,
         isSingle: defaultType,
         contents: defaultContent,
-        timelimit: defaultTime,
+        timelimit: parseInt(defaultTime),
         points: parseInt(defaultPoint),
         media: defaultLink, // youtube link
         options: checkOptions(),
@@ -127,7 +129,7 @@ const QuestionEdit = () => {
         qid: params.questionid,
         isSingle: defaultType,
         contents: defaultContent,
-        timelimit: defaultTime,
+        timelimit: parseInt(defaultTime),
         points: parseInt(defaultPoint),
         media: defaultLink, // youtube link
         options: checkOptions(),
@@ -155,7 +157,7 @@ const QuestionEdit = () => {
         qid: params.questionid,
         isSingle: defaultType,
         contents: defaultContent,
-        timelimit: defaultTime,
+        timelimit: parseInt(defaultTime),
         points: parseInt(defaultPoint),
         media: defaultLink, // youtube link
         options: checkOptions(),
@@ -194,8 +196,8 @@ const QuestionEdit = () => {
         setQuestions(data.questions[params.questionid - 1]);
         setDefaultContent(data.questions[params.questionid - 1].contents);
         setDefaultType(data.questions[params.questionid - 1].isSingle);
-        setDefaultTime(data.questions[params.questionid - 1].timelimit);
-        setDefaultPoint(data.questions[params.questionid - 1].points);
+        setDefaultTime(parseInt(data.questions[params.questionid - 1].timelimit));
+        setDefaultPoint(parseInt(data.questions[params.questionid - 1].points));
       }
     });
   }, [])
@@ -231,10 +233,20 @@ const QuestionEdit = () => {
                 minWidth='45%'
                 className={classes.media}
               >
-                <WallpaperIcon color='disabled' className={classes.mediaIcon}/>
+                <Card className={classes.card}>
+                  <CardActionArea>
+                    <CardMedia
+                      component="img"
+                      alt="upload-media"
+                      height='180'
+                      image='https://tse4-mm.cn.bing.net/th/id/OIP.EEoake0D7LrG5c4X4TDPFQHaHa?pid=ImgDet&rs=1'
+                    />
+                  </CardActionArea>
+                </Card>
+                {/* <WallpaperIcon color='disabled' className={classes.mediaIcon}/>
                 <Typography variant='body1'>
                   Click following button to upload your attached media
-                </Typography>
+                </Typography> */}
                 <HiddenInput
                   accept='image/*'
                   id='image-upload-btn'
@@ -307,7 +319,8 @@ const QuestionEdit = () => {
                 </Typography>
                 <TextField
                   variant='outlined'
-                  // required
+                  type='number'
+                  required
                   id='points'
                   name='points'
                   placeholder='Give your points'
