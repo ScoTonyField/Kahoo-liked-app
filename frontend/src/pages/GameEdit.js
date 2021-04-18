@@ -14,7 +14,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 // import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 // import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { Button, Container } from '@material-ui/core';
+import { Button, Container, Typography } from '@material-ui/core';
 import AddBoxRoundedIcon from '@material-ui/icons/AddBoxRounded';
 import makeAPIRequest from '../Api';
 import Row from '../components/Row';
@@ -109,7 +109,7 @@ const GameEdit = () => {
     console.log(rows);
     return (
       <Container maxWidth='md' component='main' className={classes.root}>
-        <Typography variant='h4'>{fetchData.name}</Typography>
+        <Title>{fetchData.name}</Title>
         <Paper className={classes.paper} variant='outlined'>
           <TableContainer>
             <Table aria-label="collapsible table">
@@ -142,33 +142,6 @@ const GameEdit = () => {
       </Container>
     );
   }
-
-  return (
-    <Container maxWidth='md' component='main' className={classes.root}>
-      <Title>{fetchData.name}</Title>
-      <Button
-        variant='contained'
-        color='primary'
-        startIcon={<AddBoxRoundedIcon />}
-        className={classes.addbtn}
-        onClick={(event) => { handleAdd(event) }}
-      >
-        Add
-      </Button>
-      <Paper className={classes.paper} variant='outlined'>
-      {
-        rows.length > 0
-          ? questionTable()
-          : (
-              <>
-                <Button variant='contained' color="primary" onClick={handleTest}>Test</Button>
-                <p>No questions</p>
-              </>
-            )
-      }
-      </Paper>
-    </Container>
-  );
 };
 
 export default GameEdit;

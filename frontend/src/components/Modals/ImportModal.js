@@ -37,7 +37,7 @@ const ImportModal = ({ games, setGames }) => {
         onClick={handleClickOpen}
         variant="outlined"
         color="primary">
-        Import
+        Import Quiz
       </Button>
       <Dialog
         open={open}

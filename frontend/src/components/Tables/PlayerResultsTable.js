@@ -41,26 +41,32 @@ const PlayerResultsTable = ({ results, questions }) => {
   return (
     <>
       <h2>Players Overview</h2>
-      <TableContainer component={Paper}>
-        <Table aria-label="quiz history table">
-          <TableHead>
-            <TableRow>
-              <TableCell>No.</TableCell>
-              <TableCell align="right">Player Name</TableCell>
-              <TableCell align="right">Score</TableCell>
-              <TableCell align="right">Average Time to Answer</TableCell>
-              <TableCell align="right"/>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {
-              players.map((player, idx) => (
-                <ResultPlayerRow key={idx} player={player} idx={idx} />
-              ))
-            }
-          </TableBody>
-        </Table>
-      </TableContainer>
+      {
+        players.length === 0
+          ? <p align='center'>Table not available: No player</p>
+          : (
+              <TableContainer component={Paper}>
+                <Table aria-label="quiz history table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>No.</TableCell>
+                      <TableCell align="right">Player Name</TableCell>
+                      <TableCell align="right">Score</TableCell>
+                      <TableCell align="right">Average Time to Answer</TableCell>
+                      <TableCell align="right"/>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {
+                      players.map((player, idx) => (
+                        <ResultPlayerRow key={idx} player={player} idx={idx} />
+                      ))
+                    }
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )
+      }
     </>
   );
 };

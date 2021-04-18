@@ -42,6 +42,17 @@ const Results = () => {
     fetchResults(sessionId);
   }, [])
 
+  const lastQuestion = () => {
+    if (quiz.position < 0) return 'Quiz Not Started';
+    else if (quiz.position === 0) return 'Lobby';
+    else return `Question ${quiz.position}`;
+  }
+
+  const startTime = () =>
+    quiz.isoTimeLastQuestionStarted === null
+      ? 'Quiz Not Started'
+      : new Date(quiz.isoTimeLastQuestionStarted).toString().split(' ').splice(0, 5).join(' ')
+
   const contentLoader = () => <List />
 
   return (
@@ -61,8 +72,8 @@ const Results = () => {
                     <StyledUl>
                       <li>Number of players: {quiz.players.length}</li>
                       <li>Number of questions: {quiz.questions.length}</li>
-                      <li>Starting Time: {new Date(quiz.isoTimeLastQuestionStarted).toString().split(' ').splice(0, 5).join(' ')}</li>
-                      <li>Last Displayed Question: Quesion {quiz.position}</li>
+                      <li>Starting Time: {startTime()}</li>
+                      <li>Last Displayed Question: {lastQuestion()}</li>
                     </StyledUl>
                     <PlayerResultsTable results={results} questions={quiz.questions} />
                     <ChartsController players={results} questions={quiz.questions} />

@@ -20,7 +20,8 @@ const calculateCorrectness = (players, questions) => {
       }
       return 1; // remove eslint error
     });
-    dataTmp.push(correct / numAnswer);
+    const percentage = correct / numAnswer;
+    dataTmp.push(isNaN(percentage) ? 0 : percentage);
   }
   return dataTmp;
 }
@@ -67,7 +68,6 @@ const ChartsController = ({ players, questions }) => {
       labelTmp.push(q.contents);
       return 1;
     });
-
     setLabels(labelTmp);
 
     // set value to data according to data topic
@@ -85,26 +85,34 @@ const ChartsController = ({ players, questions }) => {
   return (
     <div>
       <h2>Charts</h2>
-      <Box m={2}>
-        <Select
-          value={topic}
-          onChange={handleChange}
-          displayEmpty
-          inputProps={{ 'aria-label': 'Without label' }}
-        >
-          <MenuItem value='Percentage of Correctness'>Percentage of Correctness</MenuItem>
-          <MenuItem value='Average Response Time'>Average Response Time</MenuItem>
-        </Select>
-        <FormHelperText>Please select your Data Topic</FormHelperText>
-      </Box>
-      <ChartTabBar view={view} setView={setView} />
-      <h3 align="center" >{topic}</h3>
-      { labels && dataset
-        ? ((view === 'bar' && <ResultBarChart labels={labels} dataset={dataset} />) ||
-          (view === 'line' && <ResultLineChart labels={labels} dataset={dataset} />) ||
-          (view === 'pie' && <ResultPieChart labels={labels} dataset={dataset} />)
-          )
-        : <BulletList />
+      {
+        (questions.length === 0 || players.length === 0)
+          ? <p align="center">Charts not available: No player or no question</p>
+          : (
+              <>
+                <Box m={2}>
+                  <Select
+                    value={topic}
+                    onChange={handleChange}
+                    displayEmpty
+                    inputProps={{ 'aria-label': 'Without label' }}
+                  >
+                    <MenuItem value='Percentage of Correctness'>Percentage of Correctness</MenuItem>
+                    <MenuItem value='Average Response Time'>Average Response Time</MenuItem>
+                  </Select>
+                  <FormHelperText>Please select your Data Topic</FormHelperText>
+                </Box>
+                <ChartTabBar view={view} setView={setView} />
+                <h3 align="center" >{topic}</h3>
+                { labels && dataset
+                  ? ((view === 'bar' && <ResultBarChart labels={labels} dataset={dataset} />) ||
+                    (view === 'line' && <ResultLineChart labels={labels} dataset={dataset} />) ||
+                    (view === 'pie' && <ResultPieChart labels={labels} dataset={dataset} />)
+                    )
+                  : <BulletList />
+                }
+              </>
+            )
       }
     </div>
   );
