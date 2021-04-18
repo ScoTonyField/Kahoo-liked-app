@@ -3,7 +3,7 @@ import {
   Box,
   Container,
 } from '@material-ui/core';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Title from '../components/Titles/Title';
 import Subtitle from '../components/Titles/Subtitle';
 import { List } from 'react-content-loader'
@@ -18,8 +18,7 @@ const StyledUl = styled.ul`
 `;
 
 const Results = () => {
-  const location = useLocation();
-  const sessionId = location.pathname.split('/')[2];
+  const { sessionid: sessionId } = useParams();
   const [results, setResults] = React.useState();
   const [quiz, setQuiz] = React.useState();
 

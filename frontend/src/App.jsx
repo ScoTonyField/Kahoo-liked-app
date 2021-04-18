@@ -6,16 +6,16 @@ import Register from './pages/Register';
 import QuestionEdit from './pages/QuestionEdit';
 import GameEdit from './pages/GameEdit';
 import Results from './pages/Results';
-// import GamePlay from './pages/GamePlay';
+import NotFound from './pages/NotFound';
+import GameController from './pages/GameController';
+import GamePlayPlayerView from './components/Views/GamePlayPlayerView';
 import { browserHistory } from 'react-router';
-
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
 } from 'react-router-dom';
-
 import
 {
   Button,
@@ -26,7 +26,6 @@ import
 import { makeStyles } from '@material-ui/core/styles';
 import './App.css';
 import makeAPIRequest from './Api';
-import NotFound from './pages/NotFound';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,13 +105,19 @@ function App () {
           <Route exact path="/login" component={Login}/>
           <Route exact path="/register" component={Register}/>
           <Route exact path="/dashboard" component={Dashboard} />
-          <Route exact path="/quiz/:quizid" component={GameEdit} />
-          <Route exact path="/quiz/:quizid/:questionid" component={QuestionEdit} />
           <Route exact path="/results/:sessionid" component={Results} />
+
+          {/* Quiz edit */}
+          <Route exact path='/quiz/edit/:quizid' component={GameEdit} />
+          <Route exact path='/quiz/edit/:quizid/:questionid' component={QuestionEdit} />
+
+          {/* Quiz play */}
+          <Route exact path='/quiz/play/admin/:sessionid' component={GameController}/>
+          <Route exact path='/quiz/play/:sessionid' component={GamePlayPlayerView} />
+
+          {/* Home page */}
           <Route exact path="/home" component={Home}/>
           <Route exact path="/" component={Home}/>
-          <Route exact path='/quiz/:quizid' component={GameEdit} />
-          <Route exact path='/quiz/:quizid/:questionid' component={QuestionEdit} />
           {/* Any other path leads to 404 page */}
           <Route path="*" component={NotFound} />
         </Switch>
