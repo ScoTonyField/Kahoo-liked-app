@@ -7,8 +7,8 @@ import QuestionEdit from './pages/QuestionEdit';
 import GameEdit from './pages/GameEdit';
 import Results from './pages/Results';
 import NotFound from './pages/NotFound';
-import GameController from './pages/GameController';
-import GamePlayPlayerView from './components/Views/GamePlayPlayerView';
+import GameAdminView from './pages/GameAdminView';
+import GamePlayPlayerView from './pages/GamePlayPlayerView';
 import { browserHistory } from 'react-router';
 import {
   BrowserRouter as Router,
@@ -26,6 +26,7 @@ import
 import { makeStyles } from '@material-ui/core/styles';
 import './App.css';
 import makeAPIRequest from './Api';
+import PlayerResult from './pages/PlayerResult';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -105,14 +106,17 @@ function App () {
           <Route exact path="/login" component={Login}/>
           <Route exact path="/register" component={Register}/>
           <Route exact path="/dashboard" component={Dashboard} />
+
+          {/* Session Result */}
           <Route exact path="/results/:sessionid" component={Results} />
+          <Route exact path="/results/player/:playerid" component={PlayerResult} />
 
           {/* Quiz edit */}
           <Route exact path='/quiz/edit/:quizid' component={GameEdit} />
           <Route exact path='/quiz/edit/:quizid/:questionid' component={QuestionEdit} />
 
           {/* Quiz play */}
-          <Route exact path='/quiz/play/admin/:sessionid' component={GameController}/>
+          <Route exact path='/quiz/play/admin/:sessionid' component={GameAdminView}/>
           <Route exact path='/quiz/play/:sessionid' component={GamePlayPlayerView} />
 
           {/* Home page */}

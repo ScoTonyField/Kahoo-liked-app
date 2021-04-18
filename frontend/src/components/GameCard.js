@@ -84,9 +84,11 @@ const GameCard = ({ gid, games, setGames }) => {
         setGames(newGames);
       }).catch(err => console.log('ERROR: Fail to delete quiz: ', err))
 
+  const timeNeed = gameInfo.questions.reduce((a, b) => a + b.timeLimit, 0);
+
   return (
     <Card variant="outlined" className={classes.root}>
-      <CardActionArea href={`/quiz/${gid}`}>
+      <CardActionArea href={`/quiz/edit/${gid}`}>
          <CardMedia
             className={classes.media}
             image={gameInfo.thumbnail ?? 'https://tse4-mm.cn.bing.net/th/id/OIP.EEoake0D7LrG5c4X4TDPFQHaHa?pid=ImgDet&rs=1'}
@@ -120,8 +122,7 @@ const GameCard = ({ gid, games, setGames }) => {
               <li>
                 <Typography variant="body2" component="p" className={classes.pos} color="textSecondary" >
                   {
-                    'Total time to complete: ' +
-                      gameInfo.questions.reduce((a, b) => a['time-limit'] + b['time-limit'], 0)
+                    `Total time to complete: ${parseInt(timeNeed / 60, 10)} minutes ${timeNeed % 60} seconds`
                   }
                 </Typography>
               </li>

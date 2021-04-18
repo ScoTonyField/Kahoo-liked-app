@@ -72,7 +72,7 @@ const Results = () => {
                       <li>Number of players: {quiz.players.length}</li>
                       <li>Number of questions: {quiz.questions.length}</li>
                       <li>Starting Time: {startTime()}</li>
-                      <li>Last Displayed Question: {lastQuestion()}</li>
+                      <li>Last Displayed State: {lastQuestion()}</li>
                     </StyledUl>
                     <PlayerResultsTable results={results} questions={quiz.questions} />
                     <ChartsController players={results} questions={quiz.questions} />

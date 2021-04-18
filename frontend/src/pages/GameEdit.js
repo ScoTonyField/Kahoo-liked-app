@@ -81,10 +81,10 @@ const GameEdit = () => {
 
   const handleAdd = (event) => {
     if (Object.keys(rows).length === 0) {
-      history.push(`/quiz/${currentQuiz}/1`);
+      history.push(`/quiz/edit/${currentQuiz}/1`);
     } else {
       const newQuizId = ++rows.length
-      history.push(`/quiz/${currentQuiz}/${newQuizId}`);
+      history.push(`/quiz/edit/${currentQuiz}/${newQuizId}`);
     }
   }
 
@@ -123,8 +123,8 @@ const GameEdit = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <Row key={row.qid} row={row} remove={handleDelete} edit={handleEdit}/>
+                {rows.map((row, idx) => (
+                  <Row key={idx} row={row} remove={handleDelete} edit={handleEdit}/>
                 ))}
               </TableBody>
             </Table>

@@ -112,7 +112,7 @@ const QuestionEdit = () => {
         qid: params.questionid,
         isSingle: defaultType,
         contents: defaultContent,
-        timelimit: defaultTime,
+        timeLimit: defaultTime,
         points: parseInt(defaultPoint),
         media: defaultLink, // youtube link
         options: checkOptions(),
@@ -131,7 +131,7 @@ const QuestionEdit = () => {
           thumbnail: fetchData.thumbnail
         })
       ).then(() => {
-        history.push(`/quiz/${params.quizid}`)
+        history.push(`/quiz/edit/${params.quizid}`)
       })
     } else if (Object.keys(questionsAll).length === 0) {
       const updateQuestion = [];
@@ -140,7 +140,7 @@ const QuestionEdit = () => {
         qid: params.questionid,
         isSingle: defaultType,
         contents: defaultContent,
-        timelimit: defaultTime,
+        timeLimit: defaultTime,
         points: parseInt(defaultPoint),
         media: defaultLink, // youtube link
         options: checkOptions(),
@@ -159,7 +159,7 @@ const QuestionEdit = () => {
           thumbnail: fetchData.thumbnail
         })
       ).then(() => {
-        history.push(`/quiz/${params.quizid}`)
+        history.push(`/quiz/edit/${params.quizid}`)
       })
     } else {
       const updateQuestion = fetchData.questions;
@@ -168,7 +168,7 @@ const QuestionEdit = () => {
         qid: params.questionid,
         isSingle: defaultType,
         contents: defaultContent,
-        timelimit: defaultTime,
+        timeLimit: defaultTime,
         points: parseInt(defaultPoint),
         media: defaultLink, // youtube link
         options: checkOptions(),
@@ -187,7 +187,7 @@ const QuestionEdit = () => {
           thumbnail: fetchData.thumbnail
         })
       ).then(() => {
-        history.push(`/quiz/${params.quizid}`)
+        history.push(`/quiz/edit/${params.quizid}`)
       })
     }
   }
@@ -207,7 +207,7 @@ const QuestionEdit = () => {
         setQuestions(data.questions[params.questionid - 1]);
         setDefaultContent(data.questions[params.questionid - 1].contents);
         setDefaultType(data.questions[params.questionid - 1].isSingle);
-        setDefaultTime(data.questions[params.questionid - 1].timelimit);
+        setDefaultTime(data.questions[params.questionid - 1].timeLimit);
         setDefaultPoint(data.questions[params.questionid - 1].points);
       }
     });
@@ -304,7 +304,7 @@ const QuestionEdit = () => {
                   value={defaultTime}
                   onChange={(event) => setDefaultTime(event.target.value)}
                   inputProps={{
-                    name: 'timelimit',
+                    name: 'timeLimit',
                     id: 'time-limit',
                   }}
                 >
