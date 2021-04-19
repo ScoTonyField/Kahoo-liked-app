@@ -4,14 +4,16 @@ import { Button } from '@material-ui/core';
 import makeAPIRequest from '../Api';
 import { useParams } from 'react-router-dom';
 
-const GamePlayAdminQuestion = ({ question, setQuizPos }) => {
+const GamePlayAdminQuestion = ({ question, quizPos, setQuizPos }) => {
   const { quizid: quizId } = useParams();
   const [remainTime, setRemainTime] = React.useState();
 
-  console.log(question);
+  console.log('question', question);
+  React.useEffect(() => {
+    if (quizPos >= 0) setRemainTime(question.timeLimit);
+  }, [quizPos])
   // get state from local storage in case user accidentally close the browser
   React.useEffect(() => {
-    if (!remainTime) setRemainTime(+question.timeLimit);
     console.log('starting timer for q ', question.qid)
     const timer = window.setInterval(() => {
       // stop timer when timer hits 0, else keep decreasing
@@ -33,7 +35,7 @@ const GamePlayAdminQuestion = ({ question, setQuizPos }) => {
 
   return (
     <>
-      <p>{remainTime}</p>
+      <p>Remain Time: {remainTime}</p>
       <p>question: {JSON.stringify(question)}</p>
       {/* XXX: UX: only when timer=0, admin can advance the q */}
       <Button
@@ -48,6 +50,7 @@ const GamePlayAdminQuestion = ({ question, setQuizPos }) => {
 };
 
 GamePlayAdminQuestion.propTypes = {
+  quizPos: PropTypes.number,
   question: PropTypes.object,
   setQuizPos: PropTypes.func
 }

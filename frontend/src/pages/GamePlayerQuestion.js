@@ -20,13 +20,14 @@ const GamePlayPlayerQuestion = ({ setProgress }) => {
         .then(res => {
           console.log('question: ', res);
           setQuestion(res.question);
+          setProgress(0);
         }).catch((err) => {
           console.log('ERROR: Fail to fetch question', err)
           // when no more question, the quiz is done.
           setProgress(1);
         });
       console.log(new Date());
-    }, 10000); // TODO: change time interval (1 sec prefered)
+    }, 1000); // TODO: change time interval (1 sec prefered)
 
     return () => {
       console.log('stop player question interval');

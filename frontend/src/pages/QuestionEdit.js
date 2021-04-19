@@ -153,7 +153,7 @@ const QuestionEdit = () => {
             thumbnail: fetchData.thumbnail
           })
         ).then(() => {
-          history.push(`/quiz/${params.quizid}`)
+          history.push(`/quiz/edit/${params.quizid}`)
         })
       } else {
         const idx = locateQuestion(questionsAll, params.questionid);
@@ -180,7 +180,7 @@ const QuestionEdit = () => {
             thumbnail: fetchData.thumbnail
           })
         ).then(() => {
-          history.push(`/quiz/${params.quizid}`)
+          history.push(`/quiz/edit/${params.quizid}`)
         })
       }
     }

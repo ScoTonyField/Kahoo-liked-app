@@ -80,7 +80,7 @@ const GameEdit = () => {
   }
 
   const handleEdit = (qid, event) => {
-    history.push(`/quiz/${currentQuiz}/${qid}`);
+    history.push(`/quiz/edit/${currentQuiz}/${qid}`);
   }
 
   const handleAdd = (event) => {
@@ -91,7 +91,7 @@ const GameEdit = () => {
     //   history.push(`/quiz/${currentQuiz}/${newQuizId}`);
     // }
     const newQuestionId = IdGenerator(idList);
-    history.push(`/quiz/${currentQuiz}/${newQuestionId}`);
+    history.push(`/quiz/edit/${currentQuiz}/${newQuestionId}`);
   }
 
   if (Object.keys(rows).length === 0 || rows.length === 0) {

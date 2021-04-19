@@ -4,7 +4,7 @@ import makeAPIRequest from '../Api';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 
-const JoinGameInput = ({ setPlayerId }) => {
+const JoinGameInput = ({ setPlayerId, setProgress }) => {
   const { sessionid: sessionId } = useParams();
   const [value, setValue] = React.useState('');
   const [error, setError] = React.useState('');
@@ -23,8 +23,10 @@ const JoinGameInput = ({ setPlayerId }) => {
       makeAPIRequest(`play/join/${sessionId}`, 'POST', null, null, body)
         .then(res => {
           localStorage.setItem('player', JSON.stringify({
+            sessionid: sessionId,
             nickname: value,
             id: res.playerId,
+            progress: -1,
           }));
           setPlayerId(res.playerId);
         }).catch(() => {
@@ -69,7 +71,7 @@ const JoinGameInput = ({ setPlayerId }) => {
 };
 
 JoinGameInput.propTypes = {
-  sessionId: PropTypes.string,
+  setProgress: PropTypes.func,
   setPlayerId: PropTypes.func
 };
 
