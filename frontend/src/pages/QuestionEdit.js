@@ -314,17 +314,9 @@ const QuestionEdit = () => {
                 <Typography variant='h6' className={classes.text}>
                     Types (auto)
                 </Typography>
-                <Select
-                  native
-                  value={defaultType}
-                  inputProps={{
-                    name: 'types',
-                    id: 'types',
-                  }}
-                >
-                  <option aria-label="5" value={true}>Single-select</option>
-                  <option value={false}>Multiple-select</option>
-                </Select>
+                <Typography variant='subtitle1'>
+                  {defaultType ? 'Single Choice' : 'Multiple Choice'}
+                </Typography>
               </FormControl>
               <FormControl variant="outlined" className={classes.formControl}>
                 <Typography variant='h6' className={classes.text}>
