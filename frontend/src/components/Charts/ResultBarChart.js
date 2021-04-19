@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Bar } from 'react-chartjs-2';
 
-const ResultBarChar = ({ labels, dataset }) => {
+const ResultBarChar = ({ options, topic, labels, dataset }) => {
   const data = {
     labels: labels,
     datasets: [
       {
-        label: 'Percentage of Correctness',
+        label: topic,
         backgroundColor: 'rgba(77, 210, 255,0.5)',
         borderColor: 'rgba(77, 210, 255,0.2)',
         borderWidth: 1,
@@ -18,25 +18,6 @@ const ResultBarChar = ({ labels, dataset }) => {
     ]
   };
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: true,
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true,
-          min: 0,
-          max: 1,
-          stepSize: 0.2,
-          lineHeight: 1.5,
-        }
-      }],
-    },
-    layout: {
-      padding: 20,
-    }
-  }
-
   return (
     <Bar
       data={data}
@@ -46,6 +27,8 @@ const ResultBarChar = ({ labels, dataset }) => {
 };
 
 ResultBarChar.propTypes = {
+  options: PropTypes.object,
+  topic: PropTypes.string,
   labels: PropTypes.array,
   dataset: PropTypes.array
 };

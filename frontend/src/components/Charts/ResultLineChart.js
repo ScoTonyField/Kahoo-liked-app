@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Line } from 'react-chartjs-2';
 
-const ResultLineChart = ({ labels, dataset }) => {
+const ResultLineChart = ({ options, topic, labels, dataset }) => {
   const data = {
     labels: labels,
     datasets: [
       {
-        label: 'Percentage of Correctness',
+        label: topic,
         borderColor: 'rgb(77, 210, 255)',
         borderWidth: 2,
         fill: false,
@@ -15,25 +15,6 @@ const ResultLineChart = ({ labels, dataset }) => {
       }
     ]
   };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: true,
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true,
-          min: 0,
-          max: 1,
-          stepSize: 0.2,
-          lineHeight: 1.5,
-        }
-      }],
-    },
-    layout: {
-      padding: 20,
-    }
-  }
 
   return (
     <Line
@@ -44,8 +25,10 @@ const ResultLineChart = ({ labels, dataset }) => {
 };
 
 ResultLineChart.propTypes = {
+  options: PropTypes.object,
+  topic: PropTypes.string,
   labels: PropTypes.array,
-  dataset: PropTypes.array
+  dataset: PropTypes.array,
 };
 
 export default ResultLineChart;

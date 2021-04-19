@@ -5,6 +5,8 @@ import Title from '../components/Titles/Title';
 import Subtitle from '../components/Titles/Subtitle';
 import Lobby from './Lobby';
 import GameAdminQuestion from './GameAdminQuestion';
+import makeAPIRequest from '../Api';
+import { List } from 'react-content-loader';
 
 const GameAdminController = () => {
   const history = useHistory();
@@ -13,50 +15,68 @@ const GameAdminController = () => {
   }
   // current position
   const [quizPos, setQuizPos] = React.useState();
+
   // all the quiz data
   const [quiz, setQuiz] = React.useState({});
   // -1: lobby (not started), 0: in progress (started), 1: finish (ended)
-  const [progress, setProgress] = React.useState(-1);
   const { sessionid: sessionId } = useParams();
 
   React.useEffect(() => {
-    if (!quizPos) setQuizPos(localStorage.getItem('position'));
-    // finishing the game
-    // if (quizPos === quiz.questions.length) setProgress(1);
+    console.log('admin controller interval triggerd, fetch quiz status every 10sec')
+    const fetchStatus = window.setInterval(() => {
+      makeAPIRequest(`admin/session/${sessionId}/status`, 'GET', localStorage.getItem('token'), null, null)
+        .then(res => {
+          console.log(res)
+          localStorage.setItem('position', res.results.position);
+          if (res.results.position < 0) setQuizPos(-1);
+          else if (res.results.position === res.results.questions.length) setQuizPos(1);
+          else setQuizPos(0)
+          setQuiz(res.results);
+        }).catch((err) => {
+          console.log('ERROR: Fail to fetch quiz status', err)
+        })
+      console.log(new Date());
+    }, 1000);
+    return () => {
+      console.log('stop interval in admin controller') // TODO: delete this
+      clearInterval(fetchStatus)
+    };
   }, [])
 
+  // UX: if quiz has not been load, display content loader
+  if (!quiz || !quizPos) return <List />
+
+  // handle "view result" button
   const handleClick = () => history.push(`/results/${sessionId}`);
 
   const handleNext = (nextStage) => {
     console.log('next: ', nextStage)
-    setQuizPos(nextStage);
     localStorage.setItem('position', nextStage);
   }
 
+  // render content depends on game state: lobby, question, result
   const renderContent = () => {
-    switch (progress) {
+    switch (quizPos) {
       // if progress < 0, the game is at lobby state and should display joined player's name
       case -1:
-        return <Lobby setQuizPos={setQuizPos} setQuiz={setQuiz} setProgress={setProgress} />;
+        return <Lobby players={quiz.results.players} />;
 
-      // if progress == 0, the game is at question state
+        // if progress == 0, the game is at question state
       case 0:
-        console.log(quiz.questions)
-        console.log(quizPos)
-        return <GameAdminQuestion question={quiz.questions[quizPos]} setQuizPos={handleNext} />
+        return <GameAdminQuestion question={quiz.questions[quiz.position]} setQuizPos={handleNext} />
 
       // if progress > 0, the game is finished. Display result page
       case 1:
         return (
-                  <>
-                    <p> game end</p>
-                    <Button onClick={handleClick} variant="contained" color="primary">View Results</Button>
-                  </>
+          <>
+            <p> game end</p>
+            <Button onClick={handleClick} variant="contained" color="primary">View Results</Button>
+          </>
         )
 
       // should never reach
       default:
-        return <p>ERROR: Invalid progress code</p>
+        return <p>ERROR: Invalid quiz position code {quizPos}</p>
     }
   }
   return (

@@ -42,6 +42,7 @@ const PlayerResultsTable = ({ results, questions }) => {
     <>
       <h2>Players Overview</h2>
       {
+        // there's not point to display table if there's no player
         players.length === 0
           ? <p align='center'>Table not available: No player</p>
           : (
