@@ -70,7 +70,7 @@ Row.propTypes = {
     qid: PropTypes.string.isRequired,
     isSingle: PropTypes.bool.isRequired,
     contents: PropTypes.string.isRequired,
-    timelimit: PropTypes.number.isRequired,
+    timeLimit: PropTypes.number.isRequired,
     points: PropTypes.number.isRequired,
     media: PropTypes.any,
     options: PropTypes.array.isRequired,

@@ -1,5 +1,5 @@
 import { TextField, Box, Checkbox } from '@material-ui/core';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 
@@ -15,11 +15,64 @@ const useStlyes = makeStyles((theme) => ({
   }
 }))
 
-const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnswer }) => {
+const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnswer, defaultOptions, setDefaultOptions }) => {
+  const [disabledOne, setDisabledOne] = useState(true);
+  // const [checkedOne, setCheckedOne] = useState(false);
+  const [disabledTwo, setDisabledTwo] = useState(true);
+  // const [checkedTwo, setCheckedTwo] = useState(false);
+  const [disabledThree, setDisabledThree] = useState(true);
+  // const [checkedThree, setCheckedThree] = useState(false);
+  const [disabledFour, setDisabledFour] = useState(true);
+  // const [checkedFour, setCheckedFour] = useState(false);
+  const [disabledFive, setDisabledFive] = useState(true);
+  // const [checkedFive, setCheckedFive] = useState(false);
+  const [disabledSix, setDisabledSix] = useState(true);
+  // const [checkedSix, setCheckedSix] = useState(false);
+
+  useEffect(() => {
+    if (questions.options[0]) {
+      setDisabledOne(false);
+    }
+    if (questions.options[1]) {
+      setDisabledTwo(false);
+    }
+    if (questions.options[2]) {
+      setDisabledThree(false);
+    }
+    if (questions.options[3]) {
+      setDisabledFour(false);
+    }
+    if (questions.options[4]) {
+      setDisabledFive(false);
+    }
+    if (questions.options[5]) {
+      setDisabledSix(false);
+    }
+    // if (questions.answers.indexOf(0) !== -1) {
+    //   setCheckedOne(true);
+    // }
+    // if (questions.answers.indexOf(1) !== -1) {
+    //   setCheckedTwo(true);
+    // }
+    // if (questions.answers.indexOf(2) !== -1) {
+    //   setCheckedThree(true);
+    // }
+    // if (questions.answers.indexOf(3) !== -1) {
+    //   setCheckedFour(true);
+    // }
+    // if (questions.answers.indexOf(4) !== -1) {
+    //   setCheckedFive(true);
+    // }
+    // if (questions.answers.indexOf(5) !== -1) {
+    //   setCheckedSix(true);
+    // }
+    setDefaultOptions(questions.options)
+  }, [])
+
   const handleChange = (event) => {
     const currentAnswer = defaultAnswer;
     if (event.target.checked) {
-      currentAnswer.push(parseInt(event.target.id));
+      currentAnswer.push(parseInt(event.target.id) - 1);
       if (currentAnswer.length > 1) {
         setDefaultType(false)
       } else {
@@ -41,9 +94,8 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
   // console.log(keys);
   if (keys.length === 0) {
     questions = {
-      options: [
-        '', '', '', '', '', ''
-      ]
+      options: [],
+      answers: []
     }
   }
 
@@ -70,10 +122,27 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           placeholder='Type your answer'
           defaultValue={questions.options[0]}
           className={classes.questionForm}
+          onChange={(event) => {
+            if (event.target.value) {
+              // console.log(event.target.value);
+              const newDefaultOptions = defaultOptions;
+              newDefaultOptions.splice(0, 1, event.target.value);
+              // console.log(newDefaultOptions);
+              setDefaultOptions(newDefaultOptions);
+              setDisabledOne(false);
+            } else {
+              const newDefaultOptions = defaultOptions;
+              newDefaultOptions.splice(0, 1);
+              // console.log(newDefaultOptions);
+              setDefaultOptions(newDefaultOptions);
+              setDisabledOne(true);
+            }
+          }}
         >
         </TextField>
         <Checkbox
-          // defaultChecked
+          // checked={checkedOne}
+          disabled={disabledOne}
           color='primary'
           id='1'
           className={classes.checkbox}
@@ -96,10 +165,24 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           placeholder='Type your answer'
           defaultValue={questions.options[1]}
           className={classes.questionForm}
+          onChange={(event) => {
+            if (event.target.value) {
+              const newDefaultOptions = defaultOptions;
+              newDefaultOptions.splice(1, 1, event.target.value);
+              setDefaultOptions(newDefaultOptions);
+              setDisabledTwo(false);
+            } else {
+              const newDefaultOptions = defaultOptions;
+              newDefaultOptions.splice(1, 1);
+              setDefaultOptions(newDefaultOptions);
+              setDisabledTwo(true);
+            }
+          }}
         >
         </TextField>
         <Checkbox
-          // defaultChecked
+          // checked={checkedTwo}
+          disabled={disabledTwo}
           color='primary'
           id='2'
           className={classes.checkbox}
@@ -122,10 +205,24 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           placeholder='Optional answer'
           defaultValue={questions.options[2]}
           className={classes.questionForm}
+          onChange={(event) => {
+            if (event.target.value) {
+              const newDefaultOptions = defaultOptions;
+              newDefaultOptions.splice(2, 1, event.target.value);
+              setDefaultOptions(newDefaultOptions);
+              setDisabledThree(false);
+            } else {
+              const newDefaultOptions = defaultOptions;
+              newDefaultOptions.splice(2, 1);
+              setDefaultOptions(newDefaultOptions);
+              setDisabledThree(true);
+            }
+          }}
         >
         </TextField>
         <Checkbox
-          // defaultChecked
+          // checked={checkedThree}
+          disabled={disabledThree}
           color='primary'
           id='3'
           className={classes.checkbox}
@@ -148,10 +245,24 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           placeholder='Optional answer'
           defaultValue={questions.options[3]}
           className={classes.questionForm}
+          onChange={(event) => {
+            if (event.target.value) {
+              const newDefaultOptions = defaultOptions;
+              newDefaultOptions.splice(3, 1, event.target.value);
+              setDefaultOptions(newDefaultOptions);
+              setDisabledFour(false);
+            } else {
+              const newDefaultOptions = defaultOptions;
+              newDefaultOptions.splice(3, 1);
+              setDefaultOptions(newDefaultOptions);
+              setDisabledFour(true);
+            }
+          }}
         >
         </TextField>
         <Checkbox
-          // defaultChecked
+          // checked={checkedFour}
+          disabled={disabledFour}
           color='primary'
           id='4'
           className={classes.checkbox}
@@ -174,10 +285,24 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           placeholder='Optional answer'
           defaultValue={questions.options[4]}
           className={classes.questionForm}
+          onChange={(event) => {
+            if (event.target.value) {
+              const newDefaultOptions = defaultOptions;
+              newDefaultOptions.splice(4, 1, event.target.value);
+              setDefaultOptions(newDefaultOptions);
+              setDisabledFive(false);
+            } else {
+              const newDefaultOptions = defaultOptions;
+              newDefaultOptions.splice(4, 1);
+              setDefaultOptions(newDefaultOptions);
+              setDisabledFive(true);
+            }
+          }}
         >
         </TextField>
         <Checkbox
-          // defaultChecked
+          // checked={checkedFive}
+          disabled={disabledFive}
           color='primary'
           id='5'
           className={classes.checkbox}
@@ -200,14 +325,28 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           placeholder='Optional answer'
           defaultValue={questions.options[5]}
           className={classes.questionForm}
-          onChange={handleChange}
+          onChange={(event) => {
+            if (event.target.value) {
+              const newDefaultOptions = defaultOptions;
+              newDefaultOptions.splice(5, 1, event.target.value);
+              setDefaultOptions(newDefaultOptions);
+              setDisabledSix(false);
+            } else {
+              const newDefaultOptions = defaultOptions;
+              newDefaultOptions.splice(5, 1);
+              setDefaultOptions(newDefaultOptions);
+              setDisabledSix(true);
+            }
+          }}
         >
         </TextField>
         <Checkbox
-          // defaultChecked
+          // checked={checkedSix}
+          disabled={disabledSix}
           color='primary'
           id='6'
           className={classes.checkbox}
+          onChange={handleChange}
         />
       </Box>
     </Box>
@@ -219,6 +358,8 @@ SelectionBox.propTypes = {
   setDefaultType: PropTypes.func,
   defaultAnswer: PropTypes.array,
   setDefaultAnswer: PropTypes.func,
+  defaultOptions: PropTypes.array,
+  setDefaultOptions: PropTypes.func,
 };
 
 export default SelectionBox;

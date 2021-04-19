@@ -4,7 +4,6 @@ import { useParams, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-// import WallpaperIcon from '@material-ui/icons/Wallpaper';
 import styled from 'styled-components';
 import makeAPIRequest from '../Api';
 import SelectionBox from '../components/SelectionBox';
@@ -13,7 +12,6 @@ import VideoModal from '../components/Modals/VideoModal';
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: theme.spacing(2, 1),
-    // height: '90vh'
   },
   sidebar: {
     padding: theme.spacing(2, 0),
@@ -23,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
   main: {
     padding: theme.spacing(2, 3),
     minHeight: '100%',
-    // textAlign: 'center'
   },
   formControl: {
     margin: theme.spacing(1, 3),
@@ -70,7 +67,7 @@ const HiddenInput = styled.input`
 const QuestionEdit = () => {
   const history = useHistory();
 
-  const [questionsAll, setQuestionsAll] = useState({});
+  const [questionsAll, setQuestionsAll] = useState([]);
   const [open, setOpen] = useState(false);
   const [defaultLink, setDefaultLink] = useState('');
   const [questions, setQuestions] = useState({});
@@ -80,105 +77,114 @@ const QuestionEdit = () => {
   const [defaultTime, setDefaultTime] = useState(5);
   const [defaultPoint, setDefaultPoint] = useState('');
   const [fetchData, setFetchData] = useState({});
+  const [defaultOptions, setDefaultOptions] = useState([]);
+  const [defaultImage, setDefaultImage] = useState();
+  const [urlAvailable, setUrlAvailable] = useState(false);
+
   const params = useParams();
   const classes = useStyles();
-  const checkOptions = () => {
-    const optionList = [];
-    for (let i = 1; i <= 6; i++) {
-      if (document.getElementById('Q' + i).value) {
-        optionList.push(document.getElementById('Q' + i).value);
+
+  const locateQuestion = (questionsAll, id) => {
+    for (let i = 0; i < questionsAll.length; i++) {
+      if (id === questionsAll[i].qid) {
+        return i;
       }
     }
-    return optionList;
+    return -1;
   }
 
-  // TODO: add submit details
+  const isOptionsValid = (defaultOptions) => {
+    if (defaultOptions.length === 0) {
+      return false;
+    } else {
+      for (let i = 0; i < defaultOptions.length; i++) {
+        const reduceList = defaultOptions.filter(item => item !== defaultOptions[i])
+        if (reduceList.length !== defaultOptions.length - 1) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  const getFinalMedia = (defaultImage, defaultLink) => {
+    if (defaultLink) {
+      return defaultLink
+    } else if (!defaultImage && !defaultLink) {
+      return '';
+    } else {
+      return defaultImage;
+    }
+  }
+
   const handleSubmit = () => {
     console.log(fetchData);
 
-    if (params.questionid > questionsAll.length) {
-      const updateQuestion = questionsAll;
-      updateQuestion.push({
-        qid: params.questionid,
-        isSingle: defaultType,
-        contents: defaultContent,
-        timelimit: parseInt(defaultTime),
-        points: parseInt(defaultPoint),
-        media: defaultLink, // youtube link
-        options: checkOptions(),
-        answers: defaultAnswer
-      });
-      console.log(updateQuestion);
-      setQuestionsAll(updateQuestion);
-      makeAPIRequest(
-        `admin/quiz/${params.quizid}`,
-        'PUT',
-        localStorage.getItem('token'),
-        null,
-        JSON.stringify({
-          questions: updateQuestion,
-          name: fetchData.name,
-          thumbnail: fetchData.thumbnail
-        })
-      ).then(() => {
-        history.push(`/quiz/${params.quizid}`)
-      })
-    } else if (Object.keys(questionsAll).length === 0) {
-      const updateQuestion = [];
-      updateQuestion.push({
-        qid: params.questionid,
-        isSingle: defaultType,
-        contents: defaultContent,
-        timelimit: parseInt(defaultTime),
-        points: parseInt(defaultPoint),
-        media: defaultLink, // youtube link
-        options: checkOptions(),
-        answers: defaultAnswer
-      });
-      console.log(updateQuestion);
-      setQuestionsAll(updateQuestion);
-      makeAPIRequest(
-        `admin/quiz/${params.quizid}`,
-        'PUT',
-        localStorage.getItem('token'),
-        null,
-        JSON.stringify({
-          questions: updateQuestion,
-          name: fetchData.name,
-          thumbnail: fetchData.thumbnail
-        })
-      ).then(() => {
-        history.push(`/quiz/${params.quizid}`)
-      })
+    if (!defaultContent) {
+      alert('Question content cannot be empty')
+    } else if (!isOptionsValid(defaultOptions)) {
+      alert('Answer options cannot be empty or repeat options')
+    } else if (!defaultPoint || defaultPoint < 0) {
+      alert('Question point cannot be empty or negative');
+    } else if (defaultAnswer.length === 0) {
+      alert('You need to select at least one correct answer');
     } else {
-      const updateQuestion = fetchData.questions;
-      // alert(updateQuestion);
-      updateQuestion.splice(params.questionid - 1, 1, {
-        qid: params.questionid,
-        isSingle: defaultType,
-        contents: defaultContent,
-        timelimit: parseInt(defaultTime),
-        points: parseInt(defaultPoint),
-        media: defaultLink, // youtube link
-        options: checkOptions(),
-        answers: defaultAnswer
-      })
-      console.log(updateQuestion);
-      setQuestionsAll(updateQuestion);
-      makeAPIRequest(
-        `admin/quiz/${params.quizid}`,
-        'PUT',
-        localStorage.getItem('token'),
-        null,
-        JSON.stringify({
-          questions: updateQuestion,
-          name: fetchData.name,
-          thumbnail: fetchData.thumbnail
+      if (!questionsAll.length || locateQuestion(questionsAll, params.questionid) === -1) {
+        const updateQuestion = questionsAll;
+        updateQuestion.push({
+          qid: params.questionid,
+          isSingle: defaultType,
+          contents: defaultContent,
+          timeLimit: parseInt(defaultTime),
+          points: parseInt(defaultPoint),
+          media: getFinalMedia(defaultImage, defaultLink),
+          options: defaultOptions,
+          answers: defaultAnswer
+        });
+        console.log(updateQuestion);
+        makeAPIRequest(
+          `admin/quiz/${params.quizid}`,
+          'PUT',
+          localStorage.getItem('token'),
+          null,
+          JSON.stringify({
+            questions: updateQuestion,
+            name: fetchData.name,
+            thumbnail: fetchData.thumbnail
+          })
+        ).then(() => {
+          history.push(`/quiz/${params.quizid}`)
         })
-      ).then(() => {
-        history.push(`/quiz/${params.quizid}`)
-      })
+      } else {
+        const idx = locateQuestion(questionsAll, params.questionid);
+        const updateQuestion = questionsAll;
+        updateQuestion.splice(idx, 1, {
+          qid: params.questionid,
+          isSingle: defaultType,
+          contents: defaultContent,
+          timeLimit: parseInt(defaultTime),
+          points: parseInt(defaultPoint),
+          media: getFinalMedia(defaultImage, defaultLink),
+          options: defaultOptions,
+          answers: defaultAnswer
+        })
+        // console.log(updateQuestion);
+        makeAPIRequest(
+          `admin/quiz/${params.quizid}`,
+          'PUT',
+          localStorage.getItem('token'),
+          null,
+          JSON.stringify({
+            questions: updateQuestion,
+            name: fetchData.name,
+            thumbnail: fetchData.thumbnail
+          })
+        ).then(() => {
+          history.push(`/quiz/${params.quizid}`)
+        })
+      }
     }
+    // history.push(`/quiz/${params.quizid}`)
   }
 
   useEffect(() => {
@@ -192,14 +198,21 @@ const QuestionEdit = () => {
       console.log(data);
       setFetchData(data);
       setQuestionsAll(data.questions)
-      if (params.questionid <= data.questions.length) {
-        setQuestions(data.questions[params.questionid - 1]);
-        setDefaultContent(data.questions[params.questionid - 1].contents);
-        setDefaultType(data.questions[params.questionid - 1].isSingle);
-        setDefaultTime(parseInt(data.questions[params.questionid - 1].timelimit));
-        setDefaultPoint(parseInt(data.questions[params.questionid - 1].points));
+      const questionIndex = locateQuestion(data.questions, params.questionid);
+      if (questionIndex !== -1) {
+        setQuestions(data.questions[questionIndex]);
+        setDefaultContent(data.questions[questionIndex].contents);
+        setDefaultType(data.questions[questionIndex].isSingle);
+        setDefaultTime(parseInt(data.questions[questionIndex].timeLimit));
+        setDefaultPoint(parseInt(data.questions[questionIndex].points));
+        if (data.questions[questionIndex].media.length > 0 && data.questions[questionIndex].media.split('/')[0] === 'data:image') {
+          setDefaultImage(data.questions[questionIndex].media);
+        } else {
+          setDefaultLink(data.questions[questionIndex].media);
+        }
       }
     });
+    // console.log(defaultAnswer);
   }, [])
 
   if (!questions || questions.length === 0) {
@@ -216,12 +229,15 @@ const QuestionEdit = () => {
               <Typography variant="h6">Current question ID: <b>{params.questionid}</b></Typography>
               <TextField
                 variant='outlined'
+                error={!defaultContent}
+                // required
                 id='content'
                 name='content'
                 placeholder='Start typing your question'
                 fullWidth
                 className={classes.content}
                 value={defaultContent}
+                helperText={defaultContent ? '' : 'Empty input is invalid'}
                 onChange={(event) => setDefaultContent(event.target.value)}
               >
               </TextField>
@@ -239,21 +255,28 @@ const QuestionEdit = () => {
                       component="img"
                       alt="upload-media"
                       height='180'
-                      image='https://tse4-mm.cn.bing.net/th/id/OIP.EEoake0D7LrG5c4X4TDPFQHaHa?pid=ImgDet&rs=1'
+                      image={!defaultLink ? defaultImage : 'https://tse4-mm.cn.bing.net/th/id/OIP.EEoake0D7LrG5c4X4TDPFQHaHa?pid=ImgDet&rs=1'}
                     />
                   </CardActionArea>
                 </Card>
-                {/* <WallpaperIcon color='disabled' className={classes.mediaIcon}/>
-                <Typography variant='body1'>
-                  Click following button to upload your attached media
-                </Typography> */}
                 <HiddenInput
+                  disabled={defaultLink.length > 0}
                   accept='image/*'
                   id='image-upload-btn'
                   type='file'
+                  onChange={(event) => {
+                    const file = event.target.files[0];
+                    const fileRead = new FileReader();
+                    fileRead.readAsDataURL(file);
+                    fileRead.onload = (data) => {
+                      setDefaultImage(data.target.result);
+                      setUrlAvailable(true);
+                    }
+                  }}
                 />
                 <label htmlFor="image-upload-btn">
                   <Button
+                    disabled={defaultLink.length > 0}
                     variant='contained'
                     color='primary'
                     component='span'
@@ -263,6 +286,7 @@ const QuestionEdit = () => {
                   </Button>
                 </label>
                 <Button
+                  disabled={urlAvailable}
                   variant='contained'
                   color='primary'
                   className={classes.mediaButton}
@@ -272,7 +296,16 @@ const QuestionEdit = () => {
                 </Button>
                 <VideoModal key={questions.qid} open={open} setOpen={setOpen} defaultLink={defaultLink} setDefaultLink={setDefaultLink}></VideoModal>
               </Box>
-              <SelectionBox key={questions.qid} questions={questions} defaultType={defaultType} setDefaultType={setDefaultType} defaultAnswer={defaultAnswer} setDefaultAnswer={setDefaultAnswer}></SelectionBox>
+              <SelectionBox
+                key={questions.qid}
+                questions={questions}
+                defaultType={defaultType}
+                setDefaultType={setDefaultType}
+                defaultAnswer={defaultAnswer}
+                setDefaultAnswer={setDefaultAnswer}
+                defaultOptions={defaultOptions}
+                setDefaultOptions={setDefaultOptions}
+              ></SelectionBox>
             </Paper>
           </Grid>
           <Grid item xs={5} sm={4} md={4} lg={2}>
@@ -311,6 +344,13 @@ const QuestionEdit = () => {
                   <option value={15}>15s</option>
                   <option value={20}>20s</option>
                   <option value={25}>25s</option>
+                  <option value={30}>30s</option>
+                  <option value={35}>35s</option>
+                  <option value={40}>40s</option>
+                  <option value={45}>45s</option>
+                  <option value={50}>50s</option>
+                  <option value={55}>55s</option>
+                  <option value={60}>60s</option>
                 </Select>
               </FormControl>
               <FormControl variant="outlined" className={classes.formControl}>
@@ -319,8 +359,10 @@ const QuestionEdit = () => {
                 </Typography>
                 <TextField
                   variant='outlined'
+                  error={defaultPoint === '' || defaultPoint < 0}
+                  helperText={defaultPoint === '' || defaultPoint < 0 ? 'Invalid points' : ''}
                   type='number'
-                  required
+                  // required
                   id='points'
                   name='points'
                   placeholder='Give your points'
