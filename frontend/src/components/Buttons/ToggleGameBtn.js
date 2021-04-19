@@ -90,7 +90,7 @@ const ToggleGameBtn = ({ gameId, sessionId, active, setActive }) => {
       }
       <Dialog
         onClose={handleClose}
-        fullWidth={true}
+        fullWidth
         maxWidth={'sm'}
         aria-labelledby="active-game-title"
         open={open}

@@ -9,31 +9,36 @@ import {
   TableRow
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import ResultPlayerRow from '../TableRows/ResultPlayerRow';
+import PlayerOverviewRow from '../TableRows/PlayerOverviewRow';
+import { calculateIsoTimeDiff } from '../../TimeManipulation';
 
-const timeDiff = (before, after) => (after - before) / 1000;
-
-const PlayerResultsTable = ({ results, questions }) => {
+const PlayerOverviewTable = ({ results, questions }) => {
   const players = [];
 
   results.map(player => {
     const p = {};
-    // player name
+    // player name and answers
     p.name = player.name
+    p.answers = player.answers
+
     // calculage final score
     p.score = player.answers.reduce((a, b, indx) => {
       const pointsCurrentQuestion = b.correct ? +questions[indx].points : 0;
       return a + +pointsCurrentQuestion;
     }, 0)
 
-    // calculate average time used to answer a question
-    const avgTime = player.answers.reduce((a, b) => {
-      const aDate = new Date(a);
-      const bDate = new Date(b);
-      return timeDiff(aDate.questionStartedAt, aDate.answeredAt) - timeDiff(bDate.questionStartedAt, bDate.answeredAt);
-    }, 0) / player.answers.length;
-    p.averageTime = isNaN(avgTime) ? 0 : avgTime;
+    // TODO: delete this, might be an incorrect function
+    // const avgTime = player.answers.reduce((a, b) => {
+    //   const aDate = new Date(a);
+    //   const bDate = new Date(b);
+    //   return timeDiff(aDate.questionStartedAt, aDate.answeredAt) - timeDiff(bDate.questionStartedAt, bDate.answeredAt);
+    // }, 0) / player.answers.length;
 
+    // calculate average time used to answer a question
+    const avgTime = player.answers.reduce((a, b) =>
+      a + calculateIsoTimeDiff(b.questionStartedAt, b.answeredAt), 0) / player.answers.length;
+
+    p.averageTime = isNaN(avgTime) ? 0 : avgTime;
     players.push(p);
     return 1;
   })
@@ -60,7 +65,7 @@ const PlayerResultsTable = ({ results, questions }) => {
                   <TableBody>
                     {
                       players.map((player, idx) => (
-                        <ResultPlayerRow key={idx} player={player} idx={idx} />
+                        <PlayerOverviewRow key={idx} player={player} questions={questions} idx={idx} />
                       ))
                     }
                   </TableBody>
@@ -72,9 +77,10 @@ const PlayerResultsTable = ({ results, questions }) => {
   );
 };
 
-PlayerResultsTable.propTypes = {
+PlayerOverviewTable.propTypes = {
+  quiz: PropTypes.object,
   results: PropTypes.array,
   questions: PropTypes.array
 };
 
-export default PlayerResultsTable;
+export default PlayerOverviewTable;

@@ -9,8 +9,9 @@ import Subtitle from '../components/Titles/Subtitle';
 import { List } from 'react-content-loader'
 import makeAPIRequest from '../Api';
 import styled from 'styled-components';
-import PlayerResultsTable from '../components/Tables/PlayerResultsTable';
+import PlayerOverviewTable from '../components/Tables/PlayerOverviewTable';
 import ChartsController from '../components/Charts/ChartsController';
+import { toFriendlyFormat } from '../TimeManipulation';
 
 const StyledUl = styled.ul`
   line-height: 2;
@@ -50,7 +51,7 @@ const Results = () => {
   const startTime = () =>
     quiz.isoTimeLastQuestionStarted === null
       ? 'Quiz Not Started'
-      : new Date(quiz.isoTimeLastQuestionStarted).toString().split(' ').splice(0, 5).join(' ')
+      : toFriendlyFormat(quiz.isoTimeLastQuestionStarted)
 
   const contentLoader = () => <List />
 
@@ -74,7 +75,7 @@ const Results = () => {
                       <li>Starting Time: {startTime()}</li>
                       <li>Last Displayed State: {lastQuestion()}</li>
                     </StyledUl>
-                    <PlayerResultsTable results={results} questions={quiz.questions} />
+                    <PlayerOverviewTable results={results} questions={quiz.questions} />
                     <ChartsController players={results} questions={quiz.questions} />
                   </>
                 )

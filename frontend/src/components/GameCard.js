@@ -14,6 +14,7 @@ import { List } from 'react-content-loader';
 import makeAPIRequest from '../Api';
 import ToggleGameBtn from './Buttons/ToggleGameBtn';
 import GameHistoryModal from './Modals/GameHistoryModal';
+import { toFriendlyFormat } from '../TimeManipulation';
 // import makeAPIRequest from '../Api';
 
 const useStyles = makeStyles({
@@ -111,7 +112,7 @@ const GameCard = ({ gid, games, setGames }) => {
             <ul className={classes.list}>
               <li>
                 <Typography variant="body2" component="p" className={classes.pos} color="textSecondary" >
-                  {'Created at: ' + new Date(gameInfo.createdAt).toString().split(' ').splice(0, 5).join(' ')}
+                  {'Created at: ' + toFriendlyFormat(gameInfo.createdAt)}
                 </Typography>
               </li>
               <li>
