@@ -7,8 +7,8 @@ import QuestionEdit from './pages/QuestionEdit';
 import GameEdit from './pages/GameEdit';
 import Results from './pages/Results';
 import NotFound from './pages/NotFound';
-import GameAdminView from './pages/GameAdminView';
-import GamePlayPlayerView from './pages/GamePlayPlayerView';
+import GamePlayerController from './pages/GamePlayerController';
+import GameAdminController from './pages/GameAdminController';
 import { browserHistory } from 'react-router';
 import {
   BrowserRouter as Router,
@@ -116,8 +116,8 @@ function App () {
           <Route exact path='/quiz/edit/:quizid/:questionid' component={QuestionEdit} />
 
           {/* Quiz play */}
-          <Route exact path='/quiz/play/admin/:sessionid' component={GameAdminView}/>
-          <Route exact path='/quiz/play/:sessionid' component={GamePlayPlayerView} />
+          <Route exact path='/quiz/play/admin/:quizid/:sessionid' component={GameAdminController}/>
+          <Route exact path='/quiz/play/:sessionid' component={GamePlayerController} />
 
           {/* Home page */}
           <Route exact path="/home" component={Home}/>

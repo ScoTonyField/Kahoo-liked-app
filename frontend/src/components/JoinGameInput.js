@@ -2,8 +2,10 @@ import React from 'react';
 import { Box, Button, TextField } from '@material-ui/core';
 import makeAPIRequest from '../Api';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 
-const JoinGameInput = ({ sessionId, setPlayerId }) => {
+const JoinGameInput = ({ setPlayerId }) => {
+  const { sessionid: sessionId } = useParams();
   const [value, setValue] = React.useState('');
   const [error, setError] = React.useState('');
 
@@ -25,7 +27,10 @@ const JoinGameInput = ({ sessionId, setPlayerId }) => {
             id: res.playerId,
           }));
           setPlayerId(res.playerId);
-        }).catch((err) => console.log('ERROR: Fail to join player', err));
+        }).catch(() => {
+          alert('The game has been started, you are not allowed to join.')
+          // console.log('ERROR: Fail to join player', err) //TODO: delete this
+        });
     }
   }
   return (
