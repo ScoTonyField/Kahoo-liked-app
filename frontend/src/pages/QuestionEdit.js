@@ -327,7 +327,7 @@ const QuestionEdit = () => {
                   value={defaultTime}
                   onChange={(event) => setDefaultTime(event.target.value)}
                   inputProps={{
-                    name: 'timelimit',
+                    name: 'timeLimit',
                     id: 'time-limit',
                   }}
                 >

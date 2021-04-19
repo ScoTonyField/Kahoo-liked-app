@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 import makeAPIRequest from '../../Api';
+import { toFriendlyFormat } from '../../TimeManipulation';
 
 const GameHistoryItem = ({ sessionId }) => {
   const history = useHistory();
@@ -33,7 +34,7 @@ const GameHistoryItem = ({ sessionId }) => {
               <TableCell align="right">{'' + sessionInfo.answerAvailable}</TableCell>
               <TableCell align="right">
                 {sessionInfo.isoTimeLastQuestionStarted
-                  ? new Date(sessionInfo.isoTimeLastQuestionStarted).toString().split(' ').splice(0, 5).join(' ')
+                  ? toFriendlyFormat(sessionInfo.isoTimeLastQuestionStarted)
                   : 'Not Available'
                 }</TableCell>
               <TableCell align="right">{sessionInfo.questions.length}</TableCell>

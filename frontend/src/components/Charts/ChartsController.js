@@ -20,7 +20,7 @@ const calculateCorrectness = (players, questions) => {
       }
       return 1; // remove eslint error
     });
-    const percentage = correct / numAnswer;
+    const percentage = (correct / numAnswer) * 100;
     dataTmp.push(isNaN(percentage) ? 0 : percentage);
   }
   return dataTmp;
@@ -51,6 +51,50 @@ const calculateAvgResponseTime = (players, questions) => {
   return dataTmp;
 }
 
+const correctnessChartOptions = {
+  responsive: true,
+  maintainAspectRatio: true,
+  scales: {
+    yAxes: [{
+      ticks: {
+        beginAtZero: true,
+        min: 0,
+        max: 100,
+        stepSize: 20,
+        lineHeight: 1.5,
+        callback: function (value) {
+          return value + '%';
+        }
+      },
+    }],
+  },
+  layout: {
+    padding: 20,
+  }
+}
+
+const avgTimeChartOptions = {
+  responsive: true,
+  maintainAspectRatio: true,
+  scales: {
+    yAxes: [{
+      ticks: {
+        beginAtZero: true,
+        min: 0,
+        max: 60,
+        stepSize: 5,
+        lineHeight: 1.5,
+        callback: function (value) {
+          return value + 's';
+        }
+      },
+    }],
+  },
+  layout: {
+    padding: 20,
+  }
+}
+
 const ChartsController = ({ players, questions }) => {
   const [view, setView] = React.useState('bar');
   const [topic, setTopic] = React.useState('Percentage of Correctness');
@@ -59,13 +103,12 @@ const ChartsController = ({ players, questions }) => {
 
   console.log('players: ', players)
   console.log('questions: ', questions)
-  console.log('topic: ', topic);
 
   React.useEffect(() => {
     const labelTmp = [];
     // set label to data
-    questions.map(q => {
-      labelTmp.push(q.contents);
+    questions.map((q, idx) => {
+      labelTmp.push(`${idx + 1}. ${q.contents}`);
       return 1;
     });
     setLabels(labelTmp);
@@ -86,6 +129,7 @@ const ChartsController = ({ players, questions }) => {
     <div>
       <h2>Charts</h2>
       {
+        // There's no point to display chart if there's no question or player
         (questions.length === 0 || players.length === 0)
           ? <p align="center">Charts not available: No player or no question</p>
           : (
@@ -104,12 +148,26 @@ const ChartsController = ({ players, questions }) => {
                 </Box>
                 <ChartTabBar view={view} setView={setView} />
                 <h3 align="center" >{topic}</h3>
-                { labels && dataset
-                  ? ((view === 'bar' && <ResultBarChart labels={labels} dataset={dataset} />) ||
-                    (view === 'line' && <ResultLineChart labels={labels} dataset={dataset} />) ||
-                    (view === 'pie' && <ResultPieChart labels={labels} dataset={dataset} />)
-                    )
-                  : <BulletList />
+                {
+                  labels && dataset
+                    ? ((view === 'bar' &&
+                        <ResultBarChart
+                          options={topic === 'Percentage of Correctness' ? correctnessChartOptions : avgTimeChartOptions}
+                          topic={topic}
+                          labels={labels}
+                          dataset={dataset} />) ||
+                      (view === 'line' &&
+                        <ResultLineChart
+                        options={topic === 'Percentage of Correctness' ? correctnessChartOptions : avgTimeChartOptions}
+                        topic={topic}
+                        labels={labels}
+                        dataset={dataset} />) ||
+                      (view === 'pie' &&
+                        <ResultPieChart
+                        labels={labels}
+                        dataset={dataset} />)
+                      )
+                    : <BulletList />
                 }
               </>
             )

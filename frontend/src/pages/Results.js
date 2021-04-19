@@ -3,14 +3,15 @@ import {
   Box,
   Container,
 } from '@material-ui/core';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Title from '../components/Titles/Title';
 import Subtitle from '../components/Titles/Subtitle';
 import { List } from 'react-content-loader'
 import makeAPIRequest from '../Api';
 import styled from 'styled-components';
-import PlayerResultsTable from '../components/Tables/PlayerResultsTable';
+import PlayerOverviewTable from '../components/Tables/PlayerOverviewTable';
 import ChartsController from '../components/Charts/ChartsController';
+import { toFriendlyFormat } from '../TimeManipulation';
 
 const StyledUl = styled.ul`
   line-height: 2;
@@ -18,8 +19,7 @@ const StyledUl = styled.ul`
 `;
 
 const Results = () => {
-  const location = useLocation();
-  const sessionId = location.pathname.split('/')[2];
+  const { sessionid: sessionId } = useParams();
   const [results, setResults] = React.useState();
   const [quiz, setQuiz] = React.useState();
 
@@ -51,7 +51,7 @@ const Results = () => {
   const startTime = () =>
     quiz.isoTimeLastQuestionStarted === null
       ? 'Quiz Not Started'
-      : new Date(quiz.isoTimeLastQuestionStarted).toString().split(' ').splice(0, 5).join(' ')
+      : toFriendlyFormat(quiz.isoTimeLastQuestionStarted)
 
   const contentLoader = () => <List />
 
@@ -73,9 +73,9 @@ const Results = () => {
                       <li>Number of players: {quiz.players.length}</li>
                       <li>Number of questions: {quiz.questions.length}</li>
                       <li>Starting Time: {startTime()}</li>
-                      <li>Last Displayed Question: {lastQuestion()}</li>
+                      <li>Last Displayed State: {lastQuestion()}</li>
                     </StyledUl>
-                    <PlayerResultsTable results={results} questions={quiz.questions} />
+                    <PlayerOverviewTable results={results} questions={quiz.questions} />
                     <ChartsController players={results} questions={quiz.questions} />
                   </>
                 )

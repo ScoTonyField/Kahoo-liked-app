@@ -4,7 +4,7 @@
  to return to a "player"
 */
 export const quizQuestionPublicReturn = question => {
-  console.log('See question: ', question);
+  console.log('See question: ', question); //TODO: remove answer
   return question; // not returning the answer
 };
 

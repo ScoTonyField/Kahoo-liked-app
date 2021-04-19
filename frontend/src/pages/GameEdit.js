@@ -129,8 +129,8 @@ const GameEdit = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <Row key={row.qid} row={row} remove={handleDelete} edit={handleEdit}/>
+                {rows.map((row, idx) => (
+                  <Row key={idx} row={row} remove={handleDelete} edit={handleEdit}/>
                 ))}
               </TableBody>
             </Table>

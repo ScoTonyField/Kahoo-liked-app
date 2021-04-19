@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, TableCell, TableRow } from '@material-ui/core';
+import { TableCell, TableRow } from '@material-ui/core';
+import PlayerResultModal from '../Modals/PlayerResultModal';
 
-const ResultPlayerRow = ({ player, idx }) => {
+const PlayerOverviewRow = ({ player, questions, idx }) => {
   return (
     <TableRow hover key={idx}>
       <TableCell component="th" scope="row">{idx + 1}</TableCell>
@@ -10,15 +11,16 @@ const ResultPlayerRow = ({ player, idx }) => {
       <TableCell align="right">{player.score}</TableCell>
       <TableCell align="right">{player.averageTime ?? '[Not Available]'}</TableCell>
       <TableCell align="right">
-        <Button size="small" variant="outlined">View Stats</Button>
+        <PlayerResultModal player={player} questions={questions} />
       </TableCell>
     </TableRow>
   );
 };
 
-ResultPlayerRow.propTypes = {
+PlayerOverviewRow.propTypes = {
   player: PropTypes.object,
+  questions: PropTypes.array,
   idx: PropTypes.number,
 };
 
-export default ResultPlayerRow;
+export default PlayerOverviewRow;

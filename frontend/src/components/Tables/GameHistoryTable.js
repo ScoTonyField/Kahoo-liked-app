@@ -11,7 +11,7 @@ import {
 import PropTypes from 'prop-types';
 import GameHistoryItem from '../TableRows/GameHistoryItem';
 
-const PlayerResultsTable = ({ history }) => {
+const GameHistoryTable = ({ history }) => {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="quiz history table">
@@ -37,8 +37,8 @@ const PlayerResultsTable = ({ history }) => {
   )
 };
 
-PlayerResultsTable.propTypes = {
+GameHistoryTable.propTypes = {
   history: PropTypes.array,
 };
 
-export default PlayerResultsTable;
+export default GameHistoryTable;
