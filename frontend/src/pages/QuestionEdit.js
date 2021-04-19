@@ -312,19 +312,17 @@ const QuestionEdit = () => {
             <Paper className={classes.sidebar} elevation={3}>
               <FormControl variant="outlined" className={classes.formControl}>
                 <Typography variant='h6' className={classes.text}>
-                    Types (auto)
+                    Question Types
                 </Typography>
-                <Select
-                  native
-                  value={defaultType}
-                  inputProps={{
-                    name: 'types',
-                    id: 'types',
-                  }}
-                >
-                  <option aria-label="5" value={true}>Single-select</option>
-                  <option value={false}>Multiple-select</option>
-                </Select>
+                {
+                  defaultType
+                    ? (
+                      <Typography variant='subtitle' className={classes.text}>Single-select</Typography>
+                      )
+                    : (
+                      <Typography variant='subtitle' className={classes.text}>Multiple-select</Typography>
+                      )
+                }
               </FormControl>
               <FormControl variant="outlined" className={classes.formControl}>
                 <Typography variant='h6' className={classes.text}>

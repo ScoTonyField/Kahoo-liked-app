@@ -9,11 +9,17 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import { Button, Container } from '@material-ui/core';
+import { Button, Container, Card, CardActionArea, CardMedia } from '@material-ui/core';
 import AddBoxRoundedIcon from '@material-ui/icons/AddBoxRounded';
 import makeAPIRequest from '../Api';
 import Row from '../components/Row';
 import IdGenerator from '../IdGenerator';
+import styled from 'styled-components';
+import QuizNameModal from '../components/Modals/QuizNameModal';
+
+const HiddenInput = styled.input`
+  display: none;
+`;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +31,24 @@ const useStyles = makeStyles((theme) => ({
   addbtn: {
     margin: theme.spacing(2, 0),
   },
+  card: {
+    maxWidth: '50%',
+    margin: theme.spacing(2, 'auto', 0)
+  },
+  mediaButton: {
+    margin: theme.spacing(3, 2, 2),
+    width: '15%',
+    height: '50px'
+  },
+  nameButton: {
+    margin: theme.spacing(3, 4, 2),
+    width: '10%',
+    height: '30px'
+  },
+  nameText: {
+    padding: theme.spacing(0, 2),
+    textAlign: 'left'
+  }
 }));
 
 const GameEdit = () => {
@@ -33,6 +57,11 @@ const GameEdit = () => {
   const [fetchData, setFetchData] = useState({});
   const [idList, setIdList] = useState([]);
   const [rows, setRows] = useState([]);
+  const [defaultImage, setDefaultImage] = useState();
+  const [imageChanged, setImageChanged] = useState(false);
+  const [nameChanged, setNameChanged] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [defaultName, setDefaultName] = useState('');
   const history = useHistory();
 
   useEffect(() => {
@@ -47,6 +76,8 @@ const GameEdit = () => {
     ).then(data => {
       setFetchData(data);
       setRows(data.questions);
+      setDefaultName(data.name);
+      setDefaultImage(data.thumbnail);
       // get current id list of the quiz
       const currentIdList = []
       for (let i = 0; i < data.questions.length; i++) {
@@ -56,6 +87,7 @@ const GameEdit = () => {
     });
   }, []);
   const classes = useStyles();
+
   const handleDelete = (qid, event) => {
     const newRows = rows.filter((item) => item.qid !== qid);
     setRows(newRows);
@@ -67,8 +99,8 @@ const GameEdit = () => {
       JSON.stringify(
         {
           questions: newRows,
-          name: fetchData.name,
-          thumbnail: fetchData.thumbnail
+          name: defaultName,
+          thumbnail: defaultImage,
         }
       ),
     ).then(() => {
@@ -84,14 +116,53 @@ const GameEdit = () => {
   }
 
   const handleAdd = (event) => {
-    // if (Object.keys(rows).length === 0) {
-    //   history.push(`/quiz/${currentQuiz}/1`);
-    // } else {
-    //   const newQuizId = ++rows.length
-    //   history.push(`/quiz/${currentQuiz}/${newQuizId}`);
-    // }
     const newQuestionId = IdGenerator(idList);
     history.push(`/quiz/${currentQuiz}/${newQuestionId}`);
+  }
+
+  const handleNameChange = () => {
+    if (!defaultName) {
+      alert('Quiz name cannot be empty');
+    } else {
+      makeAPIRequest(
+        `admin/quiz/${params.quizid}`,
+        'PUT',
+        localStorage.getItem('token'),
+        null,
+        JSON.stringify(
+          {
+            questions: rows,
+            name: defaultName,
+            thumbnail: defaultImage,
+          }
+        )
+      ).then(() => {
+        alert('name updates successfully');
+      })
+    }
+    setOpen(false);
+  }
+
+  const handleSubmit = () => {
+    if (imageChanged) {
+      makeAPIRequest(
+        `admin/quiz/${params.quizid}`,
+        'PUT',
+        localStorage.getItem('token'),
+        null,
+        JSON.stringify(
+          {
+            questions: rows,
+            name: defaultName,
+            thumbnail: defaultImage,
+          }
+        )
+      ).then(() => {
+        alert('avatar updates successfully');
+      })
+    } else {
+      alert('You do not change your avatar');
+    }
   }
 
   if (Object.keys(rows).length === 0 || rows.length === 0) {
@@ -115,7 +186,71 @@ const GameEdit = () => {
     console.log(rows);
     return (
       <Container maxWidth='md' component='main' className={classes.root}>
-        <Typography variant='h4'>{fetchData.name}</Typography>
+        <Card className={classes.card}>
+          <CardActionArea>
+            <CardMedia
+              component="img"
+              alt="upload-media"
+              height='180'
+              image={defaultImage ?? 'https://tse4-mm.cn.bing.net/th/id/OIP.EEoake0D7LrG5c4X4TDPFQHaHa?pid=ImgDet&rs=1'}
+            />
+          </CardActionArea>
+        </Card>
+        <HiddenInput
+          // disabled={defaultLink.length > 0}
+          accept='image/*'
+          id='avatar'
+          type='file'
+          onChange={(event) => {
+            const file = event.target.files[0];
+            const fileRead = new FileReader();
+            fileRead.readAsDataURL(file);
+            fileRead.onload = (data) => {
+              setDefaultImage(data.target.result);
+              setImageChanged(true);
+            }
+          }}
+        />
+        <label htmlFor="avatar">
+          <Button
+            variant='contained'
+            color='primary'
+            component='span'
+            className={classes.mediaButton}
+          >
+            change
+          </Button>
+        </label>
+        <Button
+          variant='contained'
+          color='primary'
+          component='span'
+          className={classes.mediaButton}
+          onClick={handleSubmit}
+        >
+          submit
+        </Button>
+        <Typography variant='h4' className={classes.nameText}>
+          {nameChanged ? defaultName : fetchData.name}
+          <Button
+            variant='outlined'
+            color='primary'
+            component='span'
+            className={classes.nameButton}
+            onClick={(event) => setOpen(true)}
+          >
+            Change
+          </Button>
+          <QuizNameModal
+            key={params.quizid}
+            open={open}
+            setOpen={setOpen}
+            defaultName={defaultName}
+            setDefaultName={setDefaultName}
+            handleNameChange={handleNameChange}
+            setNameChanged={setNameChanged}
+          ></QuizNameModal>
+        </Typography>
         <Paper className={classes.paper} variant='outlined'>
           <TableContainer>
             <Table aria-label="collapsible table">

@@ -127,13 +127,13 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
               // console.log(event.target.value);
               const newDefaultOptions = defaultOptions;
               newDefaultOptions.splice(0, 1, event.target.value);
-              // console.log(newDefaultOptions);
+              console.log(newDefaultOptions);
               setDefaultOptions(newDefaultOptions);
               setDisabledOne(false);
             } else {
               const newDefaultOptions = defaultOptions;
               newDefaultOptions.splice(0, 1);
-              // console.log(newDefaultOptions);
+              console.log(newDefaultOptions);
               setDefaultOptions(newDefaultOptions);
               setDisabledOne(true);
             }
@@ -170,10 +170,12 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
               const newDefaultOptions = defaultOptions;
               newDefaultOptions.splice(1, 1, event.target.value);
               setDefaultOptions(newDefaultOptions);
+              console.log(newDefaultOptions);
               setDisabledTwo(false);
             } else {
               const newDefaultOptions = defaultOptions;
               newDefaultOptions.splice(1, 1);
+              console.log(newDefaultOptions);
               setDefaultOptions(newDefaultOptions);
               setDisabledTwo(true);
             }
@@ -209,11 +211,13 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
             if (event.target.value) {
               const newDefaultOptions = defaultOptions;
               newDefaultOptions.splice(2, 1, event.target.value);
+              console.log(newDefaultOptions);
               setDefaultOptions(newDefaultOptions);
               setDisabledThree(false);
             } else {
               const newDefaultOptions = defaultOptions;
               newDefaultOptions.splice(2, 1);
+              console.log(newDefaultOptions);
               setDefaultOptions(newDefaultOptions);
               setDisabledThree(true);
             }
@@ -249,11 +253,13 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
             if (event.target.value) {
               const newDefaultOptions = defaultOptions;
               newDefaultOptions.splice(3, 1, event.target.value);
+              console.log(newDefaultOptions);
               setDefaultOptions(newDefaultOptions);
               setDisabledFour(false);
             } else {
               const newDefaultOptions = defaultOptions;
               newDefaultOptions.splice(3, 1);
+              console.log(newDefaultOptions);
               setDefaultOptions(newDefaultOptions);
               setDisabledFour(true);
             }
@@ -289,10 +295,12 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
             if (event.target.value) {
               const newDefaultOptions = defaultOptions;
               newDefaultOptions.splice(4, 1, event.target.value);
+              console.log(newDefaultOptions);
               setDefaultOptions(newDefaultOptions);
               setDisabledFive(false);
             } else {
               const newDefaultOptions = defaultOptions;
+              console.log(newDefaultOptions);
               newDefaultOptions.splice(4, 1);
               setDefaultOptions(newDefaultOptions);
               setDisabledFive(true);
@@ -329,11 +337,13 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
             if (event.target.value) {
               const newDefaultOptions = defaultOptions;
               newDefaultOptions.splice(5, 1, event.target.value);
+              console.log(newDefaultOptions);
               setDefaultOptions(newDefaultOptions);
               setDisabledSix(false);
             } else {
               const newDefaultOptions = defaultOptions;
               newDefaultOptions.splice(5, 1);
+              console.log(newDefaultOptions);
               setDefaultOptions(newDefaultOptions);
               setDisabledSix(true);
             }
