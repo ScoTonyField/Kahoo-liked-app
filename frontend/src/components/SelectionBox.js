@@ -17,17 +17,11 @@ const useStlyes = makeStyles((theme) => ({
 
 const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnswer, defaultOptions, setDefaultOptions }) => {
   const [disabledOne, setDisabledOne] = useState(true);
-  // const [checkedOne, setCheckedOne] = useState(false);
   const [disabledTwo, setDisabledTwo] = useState(true);
-  // const [checkedTwo, setCheckedTwo] = useState(false);
   const [disabledThree, setDisabledThree] = useState(true);
-  // const [checkedThree, setCheckedThree] = useState(false);
   const [disabledFour, setDisabledFour] = useState(true);
-  // const [checkedFour, setCheckedFour] = useState(false);
   const [disabledFive, setDisabledFive] = useState(true);
-  // const [checkedFive, setCheckedFive] = useState(false);
   const [disabledSix, setDisabledSix] = useState(true);
-  // const [checkedSix, setCheckedSix] = useState(false);
 
   useEffect(() => {
     if (questions.options[0]) {
@@ -48,25 +42,13 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
     if (questions.options[5]) {
       setDisabledSix(false);
     }
-    // if (questions.answers.indexOf(0) !== -1) {
-    //   setCheckedOne(true);
-    // }
-    // if (questions.answers.indexOf(1) !== -1) {
-    //   setCheckedTwo(true);
-    // }
-    // if (questions.answers.indexOf(2) !== -1) {
-    //   setCheckedThree(true);
-    // }
-    // if (questions.answers.indexOf(3) !== -1) {
-    //   setCheckedFour(true);
-    // }
-    // if (questions.answers.indexOf(4) !== -1) {
-    //   setCheckedFive(true);
-    // }
-    // if (questions.answers.indexOf(5) !== -1) {
-    //   setCheckedSix(true);
-    // }
-    setDefaultOptions(questions.options)
+    const currentOptions = questions.options;
+    let cnt = questions.options.length;
+    while (cnt < 6) {
+      currentOptions.push('');
+      cnt++;
+    }
+    setDefaultOptions(currentOptions);
   }, [])
 
   const handleChange = (event) => {
@@ -132,7 +114,7 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
               setDisabledOne(false);
             } else {
               const newDefaultOptions = defaultOptions;
-              newDefaultOptions.splice(0, 1);
+              newDefaultOptions.splice(0, 1, '');
               console.log(newDefaultOptions);
               setDefaultOptions(newDefaultOptions);
               setDisabledOne(true);
@@ -166,19 +148,11 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           defaultValue={questions.options[1]}
           className={classes.questionForm}
           onChange={(event) => {
-            if (event.target.value) {
-              const newDefaultOptions = defaultOptions;
-              newDefaultOptions.splice(1, 1, event.target.value);
-              setDefaultOptions(newDefaultOptions);
-              console.log(newDefaultOptions);
-              setDisabledTwo(false);
-            } else {
-              const newDefaultOptions = defaultOptions;
-              newDefaultOptions.splice(1, 1);
-              console.log(newDefaultOptions);
-              setDefaultOptions(newDefaultOptions);
-              setDisabledTwo(true);
-            }
+            const newDefaultOptions = defaultOptions;
+            newDefaultOptions.splice(1, 1, event.target.value);
+            setDefaultOptions(newDefaultOptions);
+            console.log(newDefaultOptions);
+            setDisabledTwo(false);
           }}
         >
         </TextField>
@@ -208,19 +182,11 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           defaultValue={questions.options[2]}
           className={classes.questionForm}
           onChange={(event) => {
-            if (event.target.value) {
-              const newDefaultOptions = defaultOptions;
-              newDefaultOptions.splice(2, 1, event.target.value);
-              console.log(newDefaultOptions);
-              setDefaultOptions(newDefaultOptions);
-              setDisabledThree(false);
-            } else {
-              const newDefaultOptions = defaultOptions;
-              newDefaultOptions.splice(2, 1);
-              console.log(newDefaultOptions);
-              setDefaultOptions(newDefaultOptions);
-              setDisabledThree(true);
-            }
+            const newDefaultOptions = defaultOptions;
+            newDefaultOptions.splice(2, 1, event.target.value);
+            console.log(newDefaultOptions);
+            setDefaultOptions(newDefaultOptions);
+            setDisabledThree(false);
           }}
         >
         </TextField>
@@ -250,19 +216,11 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           defaultValue={questions.options[3]}
           className={classes.questionForm}
           onChange={(event) => {
-            if (event.target.value) {
-              const newDefaultOptions = defaultOptions;
-              newDefaultOptions.splice(3, 1, event.target.value);
-              console.log(newDefaultOptions);
-              setDefaultOptions(newDefaultOptions);
-              setDisabledFour(false);
-            } else {
-              const newDefaultOptions = defaultOptions;
-              newDefaultOptions.splice(3, 1);
-              console.log(newDefaultOptions);
-              setDefaultOptions(newDefaultOptions);
-              setDisabledFour(true);
-            }
+            const newDefaultOptions = defaultOptions;
+            newDefaultOptions.splice(3, 1, event.target.value);
+            console.log(newDefaultOptions);
+            setDefaultOptions(newDefaultOptions);
+            setDisabledFour(false);
           }}
         >
         </TextField>
@@ -292,19 +250,11 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           defaultValue={questions.options[4]}
           className={classes.questionForm}
           onChange={(event) => {
-            if (event.target.value) {
-              const newDefaultOptions = defaultOptions;
-              newDefaultOptions.splice(4, 1, event.target.value);
-              console.log(newDefaultOptions);
-              setDefaultOptions(newDefaultOptions);
-              setDisabledFive(false);
-            } else {
-              const newDefaultOptions = defaultOptions;
-              console.log(newDefaultOptions);
-              newDefaultOptions.splice(4, 1);
-              setDefaultOptions(newDefaultOptions);
-              setDisabledFive(true);
-            }
+            const newDefaultOptions = defaultOptions;
+            newDefaultOptions.splice(4, 1, event.target.value);
+            console.log(newDefaultOptions);
+            setDefaultOptions(newDefaultOptions);
+            setDisabledFive(false);
           }}
         >
         </TextField>
@@ -334,19 +284,11 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           defaultValue={questions.options[5]}
           className={classes.questionForm}
           onChange={(event) => {
-            if (event.target.value) {
-              const newDefaultOptions = defaultOptions;
-              newDefaultOptions.splice(5, 1, event.target.value);
-              console.log(newDefaultOptions);
-              setDefaultOptions(newDefaultOptions);
-              setDisabledSix(false);
-            } else {
-              const newDefaultOptions = defaultOptions;
-              newDefaultOptions.splice(5, 1);
-              console.log(newDefaultOptions);
-              setDefaultOptions(newDefaultOptions);
-              setDisabledSix(true);
-            }
+            const newDefaultOptions = defaultOptions;
+            newDefaultOptions.splice(5, 1, event.target.value);
+            console.log(newDefaultOptions);
+            setDefaultOptions(newDefaultOptions);
+            setDisabledSix(false);
           }}
         >
         </TextField>

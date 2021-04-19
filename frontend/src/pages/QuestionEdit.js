@@ -107,6 +107,14 @@ const QuestionEdit = () => {
     return true;
   }
 
+  const deleteEmptyOption = () => {
+    const OptionsAll = defaultOptions;
+    while (OptionsAll.indexOf('') !== -1) {
+      OptionsAll.splice(OptionsAll.indexOf(''), 1);
+    }
+    setDefaultOptions(OptionsAll);
+  }
+
   const getFinalMedia = (defaultImage, defaultLink) => {
     if (defaultLink) {
       return defaultLink
@@ -119,7 +127,7 @@ const QuestionEdit = () => {
 
   const handleSubmit = () => {
     console.log(fetchData);
-
+    deleteEmptyOption();
     if (!defaultContent) {
       alert('Question content cannot be empty')
     } else if (!isOptionsValid(defaultOptions)) {
@@ -212,7 +220,6 @@ const QuestionEdit = () => {
         }
       }
     });
-    // console.log(defaultAnswer);
   }, [])
 
   if (!questions || questions.length === 0) {
@@ -317,10 +324,10 @@ const QuestionEdit = () => {
                 {
                   defaultType
                     ? (
-                      <Typography variant='subtitle' className={classes.text}>Single-select</Typography>
+                      <Typography variant='subtitle1' className={classes.text}>Single-select</Typography>
                       )
                     : (
-                      <Typography variant='subtitle' className={classes.text}>Multiple-select</Typography>
+                      <Typography variant='subtitle1' className={classes.text}>Multiple-select</Typography>
                       )
                 }
               </FormControl>
