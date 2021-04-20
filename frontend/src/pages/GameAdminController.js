@@ -60,8 +60,6 @@ const GameAdminController = () => {
 
       // if progress == 0, the game is at question state
       case 0:
-        console.log('quiz position:', quiz.position)
-        console.log('quiz.q.length', quiz.questions.length)
         return <GameAdminQuestion progress={progress} question={quiz.questions[quiz.position]} handleNext={handleNext} />
 
       // if progress > 0, the game is finished. Display result page

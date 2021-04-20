@@ -3,6 +3,7 @@ import { Box, Button, Card, CardContent, Container, Typography } from '@material
 import Subtitle from '../components/Titles/Subtitle';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
+import Title from '../components/Titles/Title';
 
 const useStyles = makeStyles({
   root: {
@@ -15,6 +16,7 @@ const Lobby = ({ players, handleNext }) => {
 
   return (
     <Container>
+      <Title>{'> Lobby < '}</Title>
       <Subtitle>Join with this link: <b>localhost:3000/quiz/play</b></Subtitle>
       <Box
         display='flex'
