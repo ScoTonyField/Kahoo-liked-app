@@ -8,12 +8,12 @@ import makeAPIRequest from '../Api';
 const Lobby = ({ players, setQuizPos }) => {
   const { quizid: quizId } = useParams();
 
-  // start the game
-  const handleStart = () =>
+  // advance the question, and set position state to next
+  const handleNext = () =>
     makeAPIRequest(`admin/quiz/${quizId}/advance`, 'POST', localStorage.getItem('token'), null, null)
       .then(res => {
         console.log('to ', res.stage)
-        setQuizPos(0)
+        setQuizPos(res.stage)
       }).catch(err => console.log('ERROR: Fail to advance quiz, ', err))
 
   return (
@@ -34,7 +34,7 @@ const Lobby = ({ players, setQuizPos }) => {
       </div>
       <Button
         variant="contained"
-        onClick={handleStart}
+        onClick={handleNext}
       >
         Start
       </Button>
