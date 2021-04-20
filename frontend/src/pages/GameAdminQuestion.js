@@ -1,17 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
-import makeAPIRequest from '../Api';
-import { useParams } from 'react-router-dom';
+import { Box, Button, Card, Divider, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-const GamePlayAdminQuestion = ({ question, quizPos, setQuizPos }) => {
-  const { quizid: quizId } = useParams();
+import { List } from 'react-content-loader';
+import Title from '../components/Titles/Title';
+
+const useStyles = makeStyles({
+  root: {
+    width: 450,
+    margin: '30px',
+    padding: '30px',
+    fontSize: '30pt',
+    overflowWrap: 'break-word',
+    fontWeight: 100,
+  },
+  answer: {
+    fontWeight: props => props.remainTime <= 0 ? 800 : 100,
+  },
+  answerDiaplayText: {
+    display: props => props.remainTime <= 0 ? 'initial' : 'none',
+  }
+});
+
+const sequenceNum = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+const GamePlayAdminQuestion = ({ question, quizPos, handleNext }) => {
+  if (question === undefined) return <List/>
   // timer is initially active
   const [timerActive, setTimerActive] = React.useState(true);
   const [remainTime, setRemainTime] = React.useState(question.timeLimit);
+  const classes = useStyles({ remainTime });
 
   const stopTimer = (timer) => {
     clearInterval(timer);
+    setRemainTime(0);
     setTimerActive(false);
   }
 
@@ -39,26 +62,58 @@ const GamePlayAdminQuestion = ({ question, quizPos, setQuizPos }) => {
     }
   }, [])
 
-  // advance the question, and set position state to next
-  const handleNext = () =>
-    makeAPIRequest(`admin/quiz/${quizId}/advance`, 'POST', localStorage.getItem('token'), null, null)
-      .then(res => {
-        console.log('to ', res.stage)
-        setQuizPos(res.stage)
-      }).catch(err => console.log('ERROR: Fail to advance quiz, ', err))
-
   return (
     <>
-      <p>Remain Time: {remainTime}</p>
-      <p>question: {JSON.stringify(question)}</p>
-      {/* XXX: UX: only when timer=0, admin can advance the q */}
-      <Button
-        disabled={remainTime > 0}
-        variant="contained"
-        onClick={handleNext}
+      <Box
+        display='flex'
+        flexDirection='row'
+        justifyContent='space-between'
       >
-        NEXT
-      </Button>
+        <Typography
+          variant="h2"
+          color={remainTime < 5 ? 'secondary' : 'initial'}
+        >
+          Remain Time: {remainTime}
+        </Typography>
+        <Typography
+          variant="h2"
+          className={classes.answerDiaplayText}
+        >
+          Answer Display!
+        </Typography>
+        {/* XXX: UX: only when timer=0, admin can advance the q */}
+        <Button
+          disabled={remainTime > 0}
+          variant="contained"
+          onClick={handleNext}
+          size="large"
+        >
+          NEXT
+        </Button>
+      </Box>
+      <Box p={3}>
+        <Divider />
+      </Box>
+      <div>
+        <Title>{question.contents}</Title>
+        <Box
+          display="flex"
+          flexDirection="row"
+          flexWrap="wrap"
+        >
+          {
+            question.options.map((option, index) => (
+              <Card
+                key={index}
+                elevation={5}
+                className={ `${classes.root} ${question.answers.indexOf(index) > -1 ? classes.answer : ''}` }
+              >
+                { `${sequenceNum[index]}. ${option}`}
+              </Card>
+            ))
+          }
+        </Box>
+      </div>
     </>
   );
 };
@@ -66,7 +121,7 @@ const GamePlayAdminQuestion = ({ question, quizPos, setQuizPos }) => {
 GamePlayAdminQuestion.propTypes = {
   quizPos: PropTypes.number,
   question: PropTypes.object,
-  setQuizPos: PropTypes.func
+  handleNext: PropTypes.func
 }
 
 export default GamePlayAdminQuestion;
