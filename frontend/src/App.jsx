@@ -1,4 +1,6 @@
 import React from 'react';
+
+// pages
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -10,122 +12,79 @@ import NotFound from './pages/NotFound';
 import JoinSession from './pages/JoinSession';
 import GamePlayerController from './pages/GamePlayerController';
 import GameAdminController from './pages/GameAdminController';
-import { browserHistory } from 'react-router';
+
+// components
+import AppHeader from './components/AppHeader';
+
+// packages
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
 } from 'react-router-dom';
-import
-{
-  Button,
-  AppBar,
-  Toolbar,
-  Typography,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import './App.css';
-import makeAPIRequest from './Api';
 import PlayerResult from './pages/PlayerResult';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-  appbar: {
-    zIndex: theme.zIndex.title + 1,
-  }
-}));
+// style sheets
+import './App.css';
 
 function App () {
-  const classes = useStyles();
-  // const loc = browserHistory.getCurrentLocation();
-
-  // directs to different page by setting state
-  const [curPage, setCurPage] = React.useState();
-
-  // update curPage automatically
-  React.useEffect(() => {
-    const loc = browserHistory.getCurrentLocation();
-    setCurPage(loc.pathname);
-  }, [])
-  browserHistory.listen(location => {
-    console.log(location.pathname)
-  })
-  console.log('cur page: ', curPage);
-  // FIXME: state to indicate if the user is logged in, is false by defualt
-  // keep it for any legacy issue. Will be removed later
   const [token, setToken] = React.useState('');
   React.useEffect(() => {
     setToken(localStorage.getItem('token'));
     console.log('token: ', token);
   }, [localStorage.getItem('token')])
 
-  // Handle logout button, clear localstorage and reset current page
-  const handleLogout = () => {
-    makeAPIRequest('admin/auth/logout', 'POST', token, null, null)
-      .then(() => {
-        alert('Logged out successfully.')
-        localStorage.clear();
-        setToken('');
-        setCurPage('home');
-      }).catch(() => alert('Invalid Token'));
-  }
+  const logout = () => setToken('');
 
   return (
     <div>
       <Router>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h6" className={classes.title} component={ Link } to='/' color="inherit" onClick={() => setCurPage('home')}>
-              BigBrain
-            </Typography>
-              {/* if not logged in, show login/register button */}
-              {!token && (
-                <div>
-                  <Button component={ Link } color="inherit" to='/login'>Login</Button>
-                  <Button component={ Link } color="inherit" to='/register'>Register</Button>
-                </div>
-              )}
-              {/* if logged in, show dashboard and logout button */}
-              {token && (
-                <div>
-                  <Button component={ Link } color="inherit" to='/dashboard'>Dashboard</Button>
-                  <Button component={ Link } color="inherit" to='/home' onClick={handleLogout}>Logout</Button>
-                </div>
-              )}
-          </Toolbar>
-        </AppBar>
         <Switch>
-          <Route exact path="/login" component={Login}/>
-          <Route exact path="/register" component={Register}/>
-          <Route exact path="/dashboard" component={Dashboard} />
+          <Route
+            path='/quiz/play'
+            render={({ match: { url } }) => (
+              <>
+                <Switch>
+                  {/* Quiz play */}
+                  <Route exact path={`${url}/admin/:quizid/:sessionid`} component={GameAdminController}/>
+                  <Route exact path={url} component={JoinSession} />
+                  <Route exact path={`${url}/:sessionid`} component={GamePlayerController} />
 
-          {/* Session Result */}
-          <Route exact path="/results/:sessionid" component={SessionResults} />
-          <Route exact path="/results/player/:playerid" component={PlayerResult} />
+                  {/* Any other path leads to 404 page */}
+                  <Route path="*" component={NotFound} />
+                </Switch>
+              </>
+            )}
+          />
+          <Route
+            path='/'
+            render={({ match: { url } }) => (
+              <>
+                <AppHeader token={token} logout={logout}/>
+                {/* Home page */}
+                <Switch>
+                  <Route exact path={url} component={Home}/>
+                  <Route exact path={`${url}home`} component={Home}/>
+                  <Route exact path={`${url}login`} component={Login}/>
+                  <Route exact path={`${url}register`} component={Register}/>
+                  <Route exact path={`${url}dashboard`} component={Dashboard} />
 
-          {/* Quiz edit */}
-          <Route exact path='/quiz/edit/:quizid' component={GameEdit} />
-          <Route exact path='/quiz/edit/:quizid/:questionid' component={QuestionEdit} />
+                  {/* Session Result */}
+                  <Route exact path={`${url}results/:sessionid`} component={SessionResults} />
+                  <Route exact path={`${url}results/player/:playerid`} component={PlayerResult} />
 
-          {/* Quiz play */}
-          <Route exact path='/quiz/play/admin/:quizid/:sessionid' component={GameAdminController}/>
-          <Route exact path='/quiz/play' component={JoinSession} />
-          <Route exact path='/quiz/play/:sessionid' component={GamePlayerController} />
+                  {/* Quiz edit */}
+                  <Route exact path={`${url}quiz/edit/:quizid`} component={GameEdit} />
+                  <Route exact path={`${url}quiz/edit/:quizid/:questionid`} component={QuestionEdit} />
 
-          {/* Home page */}
-          <Route exact path="/home" component={Home}/>
-          <Route exact path="/" component={Home}/>
+                  <Route exact path="*" component={NotFound} />
+
+                </Switch>
+              </>
+            )}
+          />
           {/* Any other path leads to 404 page */}
-          <Route path="*" component={NotFound} />
+          <Route exact path="*" component={NotFound} />
         </Switch>
       </Router>
     </div>
