@@ -1,51 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
-import makeAPIRequest from '../Api';
-import { useParams } from 'react-router-dom';
+import { List } from 'react-content-loader';
 
-const GamePlayAdminQuestion = ({ question, quizPos, setQuizPos }) => {
-  const { quizid: quizId } = useParams();
+const GamePlayAdminQuestion = ({ question, timerActive, handleNext, pauseTimer }) => {
+  if (question === undefined) return <List />
   // timer is initially active
-  const [timerActive, setTimerActive] = React.useState(true);
-  const [remainTime, setRemainTime] = React.useState(question.timeLimit);
+  const [remainTime, setRemainTime] = React.useState();
 
   const stopTimer = (timer) => {
-    clearInterval(timer);
-    setTimerActive(false);
+    setRemainTime(0);
+    pauseTimer(false);
   }
+  console.log('----------', question, remainTime);
+  // React.useEffect(() => {
+  //   setTimerActive(true);
+  // }, [quizPos]);
 
-  console.log('question', question);
-  React.useEffect(() => {
-    if (quizPos >= 0) setRemainTime(question.timeLimit);
-  }, [quizPos])
   // get state from local storage in case user accidentally close the browser
   React.useEffect(() => {
-    const timer = null;
-    if (!remainTime) setRemainTime(+question.timeLimit);
-    console.log('starting timer for q ', question.qid)
-    // if timer is Active, countdown
-    if (timerActive) {
-      const timer = window.setInterval(() => {
-        // stop timer when timer hits 0, else keep decreasing
-        setRemainTime(r => r <= 0 ? stopTimer(timer) : r - 1);
-      }, 1000);
-    } else {
-      setRemainTime(0);
-    }
+    setRemainTime(question.timeLimit)
+    const timer = window.setInterval(() => {
+      // when timer is active, stop timer when timer hits 0, else keep decreasing
+      if (timerActive && remainTime !== undefined) {
+        const decre = remainTime - 1;
+        console.log(decre)
+        console.log('timer working')
+        decre === 0 ? stopTimer(timer) : setRemainTime(r => r - 1);
+      }
+      // const decre = +remainTime - 1;
+      // setRemainTime(decre === 0 ? stopTimer(timer) : decre);
+    }, 1000);
+
     return () => {
       console.log('stoping timer for q ', question.qid)
-      if (timer !== null) clearInterval(timer);
+      clearInterval(timer);
     }
   }, [])
-
-  // advance the question, and set position state to next
-  const handleNext = () =>
-    makeAPIRequest(`admin/quiz/${quizId}/advance`, 'POST', localStorage.getItem('token'), null, null)
-      .then(res => {
-        console.log('to ', res.stage)
-        setQuizPos(res.stage)
-      }).catch(err => console.log('ERROR: Fail to advance quiz, ', err))
 
   return (
     <>
@@ -64,9 +55,10 @@ const GamePlayAdminQuestion = ({ question, quizPos, setQuizPos }) => {
 };
 
 GamePlayAdminQuestion.propTypes = {
-  quizPos: PropTypes.number,
+  timerActive: PropTypes.bool,
   question: PropTypes.object,
-  setQuizPos: PropTypes.func
+  handleNext: PropTypes.func,
+  pauseTimer: PropTypes.func,
 }
 
 export default GamePlayAdminQuestion;
