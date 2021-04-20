@@ -6,20 +6,33 @@ import { useParams } from 'react-router-dom';
 
 const GamePlayAdminQuestion = ({ question, setQuizPos }) => {
   const { quizid: quizId } = useParams();
-  const [remainTime, setRemainTime] = React.useState();
+  // timer is initially active
+  const [timerActive, setTimerActive] = React.useState(true);
+  const [remainTime, setRemainTime] = React.useState(question.timeLimit);
+
+  const stopTimer = (timer) => {
+    clearInterval(timer);
+    setTimerActive(false);
+  }
 
   console.log(question);
   // get state from local storage in case user accidentally close the browser
   React.useEffect(() => {
+    const timer = null;
     if (!remainTime) setRemainTime(+question.timeLimit);
     console.log('starting timer for q ', question.qid)
-    const timer = window.setInterval(() => {
-      // stop timer when timer hits 0, else keep decreasing
-      setRemainTime(r => r <= 0 ? clearInterval(timer) : r - 1);
-    }, 1000);
+    // if timer is Active, countdown
+    if (timerActive) {
+      const timer = window.setInterval(() => {
+        // stop timer when timer hits 0, else keep decreasing
+        setRemainTime(r => r <= 0 ? stopTimer(timer) : r - 1);
+      }, 1000);
+    } else {
+      setRemainTime(0);
+    }
     return () => {
       console.log('stoping timer for q ', question.qid)
-      clearInterval(timer);
+      if (timer !== null) clearInterval(timer);
     }
   }, [])
 

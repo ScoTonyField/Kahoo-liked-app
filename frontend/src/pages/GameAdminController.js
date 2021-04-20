@@ -10,16 +10,17 @@ import { List } from 'react-content-loader';
 
 const GameAdminController = () => {
   const history = useHistory();
+  const { sessionid: sessionId } = useParams();
   if (localStorage.getItem('token') === null) {
     return <p>You are not logged in</p>;
   }
+
   // current position
   const [quizPos, setQuizPos] = React.useState();
 
   // all the quiz data
   const [quiz, setQuiz] = React.useState({});
   // -1: lobby (not started), 0: in progress (started), 1: finish (ended)
-  const { sessionid: sessionId } = useParams();
 
   React.useEffect(() => {
     console.log('admin controller interval triggerd, fetch quiz status every 10sec')
@@ -27,11 +28,11 @@ const GameAdminController = () => {
       makeAPIRequest(`admin/session/${sessionId}/status`, 'GET', localStorage.getItem('token'), null, null)
         .then(res => {
           console.log(res)
+          setQuiz(res.results);
           localStorage.setItem('position', res.results.position);
           if (res.results.position < 0) setQuizPos(-1);
           else if (res.results.position === res.results.questions.length) setQuizPos(1);
           else setQuizPos(0)
-          setQuiz(res.results);
         }).catch((err) => {
           console.log('ERROR: Fail to fetch quiz status', err)
         })
@@ -42,10 +43,8 @@ const GameAdminController = () => {
       clearInterval(fetchStatus)
     };
   }, [])
-
   // UX: if quiz has not been load, display content loader
-  if (!quiz || !quizPos) return <List />
-
+  if (quiz === undefined || quizPos === undefined) return <List />
   // handle "view result" button
   const handleClick = () => history.push(`/results/${sessionId}`);
 
@@ -59,7 +58,7 @@ const GameAdminController = () => {
     switch (quizPos) {
       // if progress < 0, the game is at lobby state and should display joined player's name
       case -1:
-        return <Lobby players={quiz.results.players} />;
+        return <Lobby players={quiz.players} />;
 
         // if progress == 0, the game is at question state
       case 0:
