@@ -6,15 +6,16 @@ import Register from './pages/Register';
 import QuestionEdit from './pages/QuestionEdit';
 import GameEdit from './pages/GameEdit';
 import Results from './pages/Results';
-// import GamePlay from './pages/GamePlay';
-
+import NotFound from './pages/NotFound';
+import GamePlayerController from './pages/GamePlayerController';
+import GameAdminController from './pages/GameAdminController';
+import { browserHistory } from 'react-router';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link,
 } from 'react-router-dom';
-
 import
 {
   Button,
@@ -25,7 +26,7 @@ import
 import { makeStyles } from '@material-ui/core/styles';
 import './App.css';
 import makeAPIRequest from './Api';
-import NotFound from './pages/NotFound';
+import PlayerResult from './pages/PlayerResult';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,20 +45,20 @@ const useStyles = makeStyles((theme) => ({
 
 function App () {
   const classes = useStyles();
+  // const loc = browserHistory.getCurrentLocation();
+
   // directs to different page by setting state
-  const curRoute = window.location.href.split('/')[3];
-  const [curPage, setCurPage] = React.useState(curRoute || 'home');
-  // // auto update curPage when path
-  // React.useEffect(() => {
-  //   console.log(history)
-  // }, [history[0]]);
-  // console.log(window.location.href)
+  const [curPage, setCurPage] = React.useState();
 
+  // update curPage automatically
   React.useEffect(() => {
-    setCurPage(curRoute || 'home');
-    console.log('cur page: ', curPage);
-  }, [curRoute]);
-
+    const loc = browserHistory.getCurrentLocation();
+    setCurPage(loc.pathname);
+  }, [])
+  browserHistory.listen(location => {
+    console.log(location.pathname)
+  })
+  console.log('cur page: ', curPage);
   // FIXME: state to indicate if the user is logged in, is false by defualt
   // keep it for any legacy issue. Will be removed later
   const [token, setToken] = React.useState('');
@@ -88,14 +89,14 @@ function App () {
               {/* if not logged in, show login/register button */}
               {!token && (
                 <div>
-                  <Button component={ Link } color="inherit" to='/login' onClick={() => setCurPage('login')}>Login</Button>
-                  <Button component={ Link } color="inherit" to='/register' onClick={() => setCurPage('register')}>Register</Button>
+                  <Button component={ Link } color="inherit" to='/login'>Login</Button>
+                  <Button component={ Link } color="inherit" to='/register'>Register</Button>
                 </div>
               )}
               {/* if logged in, show dashboard and logout button */}
               {token && (
                 <div>
-                  <Button component={ Link } color="inherit" to='/dashboard' onClick={() => setCurPage('dashboard')}>Dashboard</Button>
+                  <Button component={ Link } color="inherit" to='/dashboard'>Dashboard</Button>
                   <Button component={ Link } color="inherit" to='/home' onClick={handleLogout}>Logout</Button>
                 </div>
               )}
@@ -105,11 +106,22 @@ function App () {
           <Route exact path="/login" component={Login}/>
           <Route exact path="/register" component={Register}/>
           <Route exact path="/dashboard" component={Dashboard} />
+
+          {/* Session Result */}
           <Route exact path="/results/:sessionid" component={Results} />
+          <Route exact path="/results/player/:playerid" component={PlayerResult} />
+
+          {/* Quiz edit */}
+          <Route exact path='/quiz/edit/:quizid' component={GameEdit} />
+          <Route exact path='/quiz/edit/:quizid/:questionid' component={QuestionEdit} />
+
+          {/* Quiz play */}
+          <Route exact path='/quiz/play/admin/:quizid/:sessionid' component={GameAdminController}/>
+          <Route exact path='/quiz/play/:sessionid' component={GamePlayerController} />
+
+          {/* Home page */}
           <Route exact path="/home" component={Home}/>
           <Route exact path="/" component={Home}/>
-          <Route exact path='/quiz/:quizid' component={GameEdit} />
-          <Route eact path='/quiz/:quizid/:questionid' component={QuestionEdit} />
           {/* Any other path leads to 404 page */}
           <Route path="*" component={NotFound} />
         </Switch>

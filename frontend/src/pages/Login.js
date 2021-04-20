@@ -75,8 +75,8 @@ const Login = () => {
         <Formik
           // TODO: clear this
           initialValues={{
-            email: 'hayden@unsw.edu.au',
-            password: 'adummypassword'
+            email: 'test@test.com',
+            password: '12345678'
           }}
           validate={validateInput}
           onSubmit={handleLogin}
@@ -155,7 +155,7 @@ const Login = () => {
 };
 
 Login.propTypes = {
-  setPage: PropTypes.func.isRequired
+  setPage: PropTypes.func
 };
 
 export default Login;

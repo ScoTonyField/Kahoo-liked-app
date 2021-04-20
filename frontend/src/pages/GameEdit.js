@@ -7,7 +7,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import { Button, Container, Card, CardActionArea, CardMedia } from '@material-ui/core';
 import AddBoxRoundedIcon from '@material-ui/icons/AddBoxRounded';
@@ -112,12 +111,12 @@ const GameEdit = () => {
   }
 
   const handleEdit = (qid, event) => {
-    history.push(`/quiz/${currentQuiz}/${qid}`);
+    history.push(`/quiz/edit/${currentQuiz}/${qid}`);
   }
 
   const handleAdd = (event) => {
     const newQuestionId = IdGenerator(idList);
-    history.push(`/quiz/${currentQuiz}/${newQuestionId}`);
+    history.push(`/quiz/edit/${currentQuiz}/${newQuestionId}`);
   }
 
   const handleNameChange = () => {
@@ -264,8 +263,8 @@ const GameEdit = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
-                  <Row key={row.qid} row={row} remove={handleDelete} edit={handleEdit}/>
+                {rows.map((row, idx) => (
+                  <Row key={idx} row={row} remove={handleDelete} edit={handleEdit}/>
                 ))}
               </TableBody>
             </Table>

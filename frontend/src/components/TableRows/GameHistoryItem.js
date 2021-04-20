@@ -6,7 +6,8 @@ import {
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
-import makeAPIRequest from '../Api';
+import makeAPIRequest from '../../Api';
+import { toFriendlyFormat } from '../../TimeManipulation';
 
 const GameHistoryItem = ({ sessionId }) => {
   const history = useHistory();
@@ -21,8 +22,6 @@ const GameHistoryItem = ({ sessionId }) => {
   // Handle 'view results' button to jump to the results page
   const handleClick = () => history.push(`/results/${sessionId}`)
 
-  console.log(sessionInfo)
-
   return (
     <TableRow hover key={sessionId}>
       { sessionInfo === null
@@ -32,11 +31,10 @@ const GameHistoryItem = ({ sessionId }) => {
         : (
             <>
               <TableCell component="th" scope="row">{sessionId}</TableCell>
-              <TableCell align="right">{'' + sessionInfo.active}</TableCell>
               <TableCell align="right">{'' + sessionInfo.answerAvailable}</TableCell>
               <TableCell align="right">
-                {sessionInfo.iosTimeLastQuestionStarted
-                  ? new Date(sessionInfo.iosTimeLastQuestionStarted).toString().split(' ').splice(0, 5).join(' ')
+                {sessionInfo.isoTimeLastQuestionStarted
+                  ? toFriendlyFormat(sessionInfo.isoTimeLastQuestionStarted)
                   : 'Not Available'
                 }</TableCell>
               <TableCell align="right">{sessionInfo.questions.length}</TableCell>

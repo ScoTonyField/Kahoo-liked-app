@@ -10,21 +10,13 @@ import {
 } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import makeAPIRequest from '../../Api';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const CreateGameModal = ({ games, setGames }) => {
+const CreateGameModal = ({ name, setName, errText }) => {
   const [open, setOpen] = React.useState(false);
-  const [name, setName] = React.useState('');
-  const [errorText, setErrorText] = React.useState();
+  const [errorText, setErrorText] = React.useState(errText);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
-  // Handler for opening the 'create new game' modal
-  const handleClickOpen = () => {
-    setErrorText();
-    setOpen(true);
-  };
 
   // Handler for closing the 'create new game' modal
   const handleClose = () => {
@@ -35,54 +27,25 @@ const CreateGameModal = ({ games, setGames }) => {
   const handleSubmit = () => {
     // Empty name is not allowed
     if (!name) {
-      setErrorText('Quiz name cannot be empty.')
+      setErrorText('Name cannot be empty.')
     } else {
-      createNewGame(name);
       setOpen(false);
     }
   }
 
-  const createNewGame = (value) => {
-    const body = JSON.stringify({
-      name: value
-    })
-    makeAPIRequest('admin/quiz/new', 'POST', localStorage.getItem('token'), null, body)
-      .then((res) => {
-        alert('Successfully create a new quiz!');
-        return res;
-      }).then((res) => setGames([...games, parseInt(res.quizId)])
-      ).catch(err => {
-        const errMsg = 'ERROR: Fail to create new quiz: ';
-        if (err.status === 400) {
-          alert(errMsg + 'Invalid input');
-        } else if (err.status === 403) {
-          alert(errMsg + 'Invalid token');
-        } else {
-          alert(errMsg + err);
-        }
-      });
-  }
-
   return (
     <div>
-      <Button
-        onClick={handleClickOpen}
-        variant="outlined"
-        color="primary"
-      >
-        Create a new quiz
-      </Button>
         {/* XXX: accessibility: labelledby: https://material-ui.com/zh/components/modal/ */}
       <Dialog
         open={open}
         onClose={handleClose}
         fullScreen={fullScreen}
-        aria-labelledby="create-new-quiz-title"
+        aria-labelledby="enter-nickname"
       >
-        <DialogTitle id="create-new-quiz-title">Create a new quiz</DialogTitle>
+        <DialogTitle id="enter-nickname">Enter a nickname</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To make a new quiz, please enter the name of the new game.
+            Please enter your nickname.
           </DialogContentText>
           <TextField
             autoFocus
@@ -95,9 +58,6 @@ const CreateGameModal = ({ games, setGames }) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
           <Button onClick={handleSubmit} color="primary">
             Confirm
           </Button>
@@ -108,8 +68,9 @@ const CreateGameModal = ({ games, setGames }) => {
 }
 
 CreateGameModal.propTypes = {
-  setGames: PropTypes.func,
-  games: PropTypes.array,
+  setName: PropTypes.func,
+  name: PropTypes.string,
+  errText: PropTypes.string,
 };
 
 export default CreateGameModal;
