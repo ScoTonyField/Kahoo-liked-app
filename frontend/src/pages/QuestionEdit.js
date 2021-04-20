@@ -57,7 +57,11 @@ const useStyles = makeStyles((theme) => ({
   card: {
     maxWidth: '50%',
     margin: theme.spacing(2, 'auto', 0)
-  }
+  },
+  // popover: {
+  //   padding: theme.spacing(2),
+  //   // backgroundColor: 'lightgrey'
+  // }
 }));
 
 const HiddenInput = styled.input`
@@ -78,8 +82,12 @@ const QuestionEdit = () => {
   const [defaultPoint, setDefaultPoint] = useState('');
   const [fetchData, setFetchData] = useState({});
   const [defaultOptions, setDefaultOptions] = useState([]);
-  const [defaultImage, setDefaultImage] = useState();
-  const [urlAvailable, setUrlAvailable] = useState(false);
+  // const [defaultImage, setDefaultImage] = useState();
+  // const [urlAvailable, setUrlAvailable] = useState(false);
+  const [defaultMedia, setDefaultMedia] = useState('img');
+  // const [anchorEl, setAnchorEl] = useState(null);
+  // const imgaePop = Boolean(anchorEl);
+  // const imagePopId = imgaePop ? 'image-popover' : undefined;
 
   const params = useParams();
   const classes = useStyles();
@@ -94,7 +102,7 @@ const QuestionEdit = () => {
   }
 
   const isOptionsValid = (defaultOptions) => {
-    if (defaultOptions.length === 0) {
+    if (defaultOptions.length < 2) {
       return false;
     } else {
       for (let i = 0; i < defaultOptions.length; i++) {
@@ -115,23 +123,13 @@ const QuestionEdit = () => {
     setDefaultOptions(OptionsAll);
   }
 
-  const getFinalMedia = (defaultImage, defaultLink) => {
-    if (defaultLink) {
-      return defaultLink
-    } else if (!defaultImage && !defaultLink) {
-      return '';
-    } else {
-      return defaultImage;
-    }
-  }
-
   const handleSubmit = () => {
     console.log(fetchData);
     deleteEmptyOption();
     if (!defaultContent) {
       alert('Question content cannot be empty')
     } else if (!isOptionsValid(defaultOptions)) {
-      alert('Answer options cannot be empty or repeat options')
+      alert('Answer options cannot less than 2 or be repeat options')
     } else if (!defaultPoint || defaultPoint < 0) {
       alert('Question point cannot be empty or negative');
     } else if (defaultAnswer.length === 0) {
@@ -145,7 +143,7 @@ const QuestionEdit = () => {
           contents: defaultContent,
           timeLimit: parseInt(defaultTime),
           points: parseInt(defaultPoint),
-          media: getFinalMedia(defaultImage, defaultLink),
+          media: defaultLink,
           options: defaultOptions,
           answers: defaultAnswer
         });
@@ -172,11 +170,10 @@ const QuestionEdit = () => {
           contents: defaultContent,
           timeLimit: parseInt(defaultTime),
           points: parseInt(defaultPoint),
-          media: getFinalMedia(defaultImage, defaultLink),
+          media: defaultLink,
           options: defaultOptions,
           answers: defaultAnswer
         })
-        // console.log(updateQuestion);
         makeAPIRequest(
           `admin/quiz/${params.quizid}`,
           'PUT',
@@ -192,7 +189,6 @@ const QuestionEdit = () => {
         })
       }
     }
-    // history.push(`/quiz/${params.quizid}`)
   }
 
   useEffect(() => {
@@ -214,8 +210,10 @@ const QuestionEdit = () => {
         setDefaultTime(parseInt(data.questions[questionIndex].timeLimit));
         setDefaultPoint(parseInt(data.questions[questionIndex].points));
         if (data.questions[questionIndex].media.length > 0 && data.questions[questionIndex].media.split('/')[0] === 'data:image') {
-          setDefaultImage(data.questions[questionIndex].media);
+          setDefaultMedia('img')
+          setDefaultLink(data.questions[questionIndex].media);
         } else {
+          setDefaultMedia('iframe');
           setDefaultLink(data.questions[questionIndex].media);
         }
       }
@@ -232,12 +230,10 @@ const QuestionEdit = () => {
         <Grid container className={classes.root} spacing={2}>
           <Grid item xs={7} sm={8} md={8} lg={10}>
             <Paper className={classes.main} elevation={3}>
-              {/* Type questions */}
               <Typography variant="h6">Current question ID: <b>{params.questionid}</b></Typography>
               <TextField
                 variant='outlined'
                 error={!defaultContent}
-                // required
                 id='content'
                 name='content'
                 placeholder='Start typing your question'
@@ -259,15 +255,14 @@ const QuestionEdit = () => {
                 <Card className={classes.card}>
                   <CardActionArea>
                     <CardMedia
-                      component="img"
+                      component={defaultMedia}
                       alt="upload-media"
                       height='180'
-                      image={!defaultLink ? defaultImage : 'https://tse4-mm.cn.bing.net/th/id/OIP.EEoake0D7LrG5c4X4TDPFQHaHa?pid=ImgDet&rs=1'}
+                      src={defaultLink.length > 0 ? defaultLink : 'https://tse4-mm.cn.bing.net/th/id/OIP.EEoake0D7LrG5c4X4TDPFQHaHa?pid=ImgDet&rs=1'}
                     />
                   </CardActionArea>
                 </Card>
                 <HiddenInput
-                  disabled={defaultLink.length > 0}
                   accept='image/*'
                   id='image-upload-btn'
                   type='file'
@@ -276,14 +271,13 @@ const QuestionEdit = () => {
                     const fileRead = new FileReader();
                     fileRead.readAsDataURL(file);
                     fileRead.onload = (data) => {
-                      setDefaultImage(data.target.result);
-                      setUrlAvailable(true);
+                      setDefaultLink(data.target.result);
+                      setDefaultMedia('img');
                     }
                   }}
                 />
                 <label htmlFor="image-upload-btn">
                   <Button
-                    disabled={defaultLink.length > 0}
                     variant='contained'
                     color='primary'
                     component='span'
@@ -293,7 +287,6 @@ const QuestionEdit = () => {
                   </Button>
                 </label>
                 <Button
-                  disabled={urlAvailable}
                   variant='contained'
                   color='primary'
                   className={classes.mediaButton}
@@ -301,7 +294,7 @@ const QuestionEdit = () => {
                 >
                   Youtube Link
                 </Button>
-                <VideoModal key={questions.qid} open={open} setOpen={setOpen} defaultLink={defaultLink} setDefaultLink={setDefaultLink}></VideoModal>
+                <VideoModal key={questions.qid} open={open} setOpen={setOpen} setDefaultMedia={setDefaultMedia} setDefaultLink={setDefaultLink}></VideoModal>
               </Box>
               <SelectionBox
                 key={questions.qid}
