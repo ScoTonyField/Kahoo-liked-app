@@ -1,5 +1,5 @@
 import { Box, Container, Grid } from '@material-ui/core';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import React from 'react';
 import Title from '../components/Titles/Title';
 import Subtitle from '../components/Titles/Subtitle';
@@ -9,7 +9,7 @@ import CreateGameModal from '../components/Modals/CreateGameModal';
 import ImportModal from '../components/Modals/ImportModal';
 
 const Dashboard = () => {
-  // const history = useHistory();
+  const history = useHistory();
   const gamesId = [];
 
   // games contains a list of quiz id (not quiz object)
@@ -25,8 +25,15 @@ const Dashboard = () => {
             tmp.push(gid)
           )
           setGames(tmp);
-        }).catch(err => console.log('Error fetching quizzes id: ', err)
-        )
+        }).catch(err => {
+          if (err.status === 403) {
+            localStorage.clear();
+            alert('Fail to fetch quizzes: Please login again.');
+            history.push('/home');
+          } else {
+            console.log('Error fetching quizzes id: ', err)
+          }
+        })
     }
   }, [])
 
