@@ -12,14 +12,16 @@ const GamePlayPlayerController = () => {
   // Progress: -1: lobby (not started), 0: in progress (started), 1: finish (ended)
   const [progress, setProgress] = React.useState();
 
-  if (!localStorage.getItem('player')) {
-    return <Subtitle>You did not join the quiz.</Subtitle>;
-  }
   // get state from local storage in case user accidentally close the browser
   React.useEffect(() => {
-    const playerInfo = JSON.parse(localStorage.getItem('player'));
-    setPlayerId(playerInfo.id);
-    setProgress(playerInfo.progress);
+    if (!localStorage.getItem('player')) {
+      setProgress(-1);
+      // return <Subtitle>You did not join the quiz.</Subtitle>;
+    } else {
+      const playerInfo = JSON.parse(localStorage.getItem('player'));
+      setPlayerId(playerInfo.id);
+      setProgress(playerInfo.progress);
+    }
   }, [])
   console.log('progress: ', progress)
   console.log('playerid: ', playerId)
@@ -36,12 +38,13 @@ const GamePlayPlayerController = () => {
 
       // if progress > 0, the game is finished. Display result page
       case 1:
+        localStorage.removeItem('player');
         // (kat will do this): write a result page which contains a button that directs to player result page
         return <PlayerResult playerId={playerId} />;
 
       // should never reach
       default:
-        return <p>ERROR: Invalid progress code</p>
+        return <p>ERROR: Invalid progress code {'' + progress}</p>
     }
   }
   return (

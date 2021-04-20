@@ -52,17 +52,19 @@ const GameAdminController = () => {
     console.log('next: ', nextStage)
     localStorage.setItem('position', nextStage);
   }
-
+  console.log(quiz)
   // render content depends on game state: lobby, question, result
   const renderContent = () => {
     switch (quizPos) {
       // if progress < 0, the game is at lobby state and should display joined player's name
       case -1:
-        return <Lobby players={quiz.players} />;
+        return <Lobby players={quiz.players} setQuizPos={setQuizPos}/>;
 
         // if progress == 0, the game is at question state
       case 0:
-        return <GameAdminQuestion question={quiz.questions[quiz.position]} setQuizPos={handleNext} />
+        console.log('quiz position:', quiz.position)
+        console.log('quiz.q.length', quiz.questions.length)
+        return <GameAdminQuestion quizPos={quizPos} question={quiz.questions[quiz.position]} setQuizPos={handleNext} />
 
       // if progress > 0, the game is finished. Display result page
       case 1:

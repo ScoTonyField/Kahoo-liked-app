@@ -9,15 +9,18 @@ const JoinGame = ({ setPlayerId, setProgress }) => {
   React.useEffect(() => {
     // if the current browser has joined as a player
     // if player has joined the quiz, keep fetching game status to wait for start
-    if (localStorage.getItem('player')) {
+    console.log(localStorage.getItem('player'))
+    if (localStorage.getItem('player') !== null) {
       const playerInfo = JSON.parse(localStorage.getItem('player'));
       const fetchQ = window.setInterval(() => {
         makeAPIRequest(`play/${playerInfo.id}/status`, 'GET', null, null, null)
           .then(res => {
             console.log(res)
-            playerInfo.progress = 0;
-            localStorage.setItem('player', JSON.stringify(playerInfo));
-            setProgress(res.started ? 0 : -1);
+            if (res.start === true) {
+              playerInfo.progress = 0;
+              localStorage.setItem('player', JSON.stringify(playerInfo));
+              setProgress(0);
+            }
           }).catch(() => {
             console.log('ERROR: Quiz is not active has been ended.');
             // if the game has finished, remove the player and display player results
@@ -26,12 +29,14 @@ const JoinGame = ({ setPlayerId, setProgress }) => {
             //   history.push(`/results/player/${playerId}`);
             // }
           });
-      }, 10000); // TODO: Change this to 1000 ms
+      }, 1000); // TODO: Change this to 1000 ms
       // setPlayerId(playerid);
       return () => {
         console.log('clear interval in join game')
         clearInterval(fetchQ);
       }
+    } else {
+      return <JoinGameInput setProgress={setProgress} setPlayerId={setPlayerId} />
     }
   }, [])
 
@@ -40,8 +45,8 @@ const JoinGame = ({ setPlayerId, setProgress }) => {
       <Subtitle>Waiting for other players...</Subtitle>
       <div>
         {
-          localStorage.getItem('player')
-            ? <JoinGameInput setPlayerId={setPlayerId} />
+          localStorage.getItem('player') === null
+            ? <JoinGameInput setProgress={setProgress} setPlayerId={setPlayerId} />
             : <Subtitle>Nickname: {JSON.parse(localStorage.getItem('player')).nickname}</Subtitle>
         }
       </div>

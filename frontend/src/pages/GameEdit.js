@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-// import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-// import Box from '@material-ui/core/Box';
-// import Collapse from '@material-ui/core/Collapse';
-// import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,13 +8,13 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-// import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-// import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { Button, Container, Typography } from '@material-ui/core';
 import AddBoxRoundedIcon from '@material-ui/icons/AddBoxRounded';
 import makeAPIRequest from '../Api';
 import Row from '../components/Row';
+import IdGenerator from '../IdGenerator';
 import Title from '../components/Titles/Title';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     textAlign: 'center',
@@ -35,6 +31,7 @@ const GameEdit = () => {
   const params = useParams();
   const [currentQuiz, setCurrentQuiz] = useState('');
   const [fetchData, setFetchData] = useState({});
+  const [idList, setIdList] = useState([]);
   const [rows, setRows] = useState([]);
   const history = useHistory();
 
@@ -50,6 +47,12 @@ const GameEdit = () => {
     ).then(data => {
       setFetchData(data);
       setRows(data.questions);
+      // get current id list of the quiz
+      const currentIdList = []
+      for (let i = 0; i < data.questions.length; i++) {
+        currentIdList.push(data.questions[i].qid);
+      }
+      setIdList(currentIdList);
     });
   }, []);
   const classes = useStyles();
@@ -69,6 +72,7 @@ const GameEdit = () => {
         }
       ),
     ).then(() => {
+      // TODO: change the alert information
       alert('delete successfully');
     }).catch(e => {
       alert('Something wrong:' + e);
@@ -76,16 +80,18 @@ const GameEdit = () => {
   }
 
   const handleEdit = (qid, event) => {
-    history.push(`/quiz/${currentQuiz}/${qid}`);
+    history.push(`/quiz/edit/${currentQuiz}/${qid}`);
   }
 
   const handleAdd = (event) => {
-    if (Object.keys(rows).length === 0) {
-      history.push(`/quiz/edit/${currentQuiz}/1`);
-    } else {
-      const newQuizId = ++rows.length
-      history.push(`/quiz/edit/${currentQuiz}/${newQuizId}`);
-    }
+    // if (Object.keys(rows).length === 0) {
+    //   history.push(`/quiz/${currentQuiz}/1`);
+    // } else {
+    //   const newQuizId = ++rows.length
+    //   history.push(`/quiz/${currentQuiz}/${newQuizId}`);
+    // }
+    const newQuestionId = IdGenerator(idList);
+    history.push(`/quiz/edit/${currentQuiz}/${newQuestionId}`);
   }
 
   if (Object.keys(rows).length === 0 || rows.length === 0) {
