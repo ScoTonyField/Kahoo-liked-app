@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TableCell, TableRow } from '@material-ui/core';
+import { TableCell, TableRow, Typography } from '@material-ui/core';
 import { calculateIsoTimeDiff } from '../../TimeManipulation';
 
 const PlayerResultRow = ({ playerAnswer, question, idx }) => {
@@ -8,12 +8,13 @@ const PlayerResultRow = ({ playerAnswer, question, idx }) => {
     playerAnswer.answerIds.indexOf(i) > -1
       ? `${item} ✔`
       : item
-  console.log('qqq', playerAnswer)
+
   return (
     <TableRow hover key={idx}>
       <TableCell component="th" scope="row">{idx + 1}</TableCell>
-      <TableCell align="right">{question.contents}</TableCell>
-      <TableCell align="right">
+      <TableCell align="left">{question.contents}</TableCell>
+      <TableCell align="left">{question.points}</TableCell>
+      <TableCell align="left">
         <ul>
           {
             // for each question, display all the options for that question
@@ -26,8 +27,14 @@ const PlayerResultRow = ({ playerAnswer, question, idx }) => {
             ))
           }
         </ul>
+        {
+          playerAnswer.answerIds.length === 0 &&
+            <Typography variant="body2" color="error">
+              The player did not <br/>answer this question
+            </Typography>
+        }
       </TableCell>
-      <TableCell align="right">
+      <TableCell align="left">
         <ul>
           {
             question.answers.map((item, i) => (
@@ -36,10 +43,14 @@ const PlayerResultRow = ({ playerAnswer, question, idx }) => {
           }
         </ul>
       </TableCell>
-      <TableCell align="right">
-        {calculateIsoTimeDiff(playerAnswer.questionStartedAt, playerAnswer.answeredAt)}
+      <TableCell align="left">
+        {`${calculateIsoTimeDiff(playerAnswer.questionStartedAt, playerAnswer.answeredAt)}s`}
       </TableCell>
-      <TableCell align="right">{'' + playerAnswer.correct}</TableCell>
+      <TableCell align="left">
+        <Typography variant="body1" color={playerAnswer.correct ? 'primary' : 'error'}>
+          <b>{playerAnswer.correct ? 'Correct' : 'Wrong'}</b>
+        </Typography>
+      </TableCell>
     </TableRow>
   );
 };

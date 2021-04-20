@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 
 const sequenceNum = ['A', 'B', 'C', 'D', 'E', 'F'];
 
-const GamePlayAdminQuestion = ({ question, quizPos, handleNext }) => {
+const GamePlayAdminQuestion = ({ question, progress, handleNext }) => {
   if (question === undefined) return <List/>
   // timer is initially active
   const [timerActive, setTimerActive] = React.useState(true);
@@ -39,9 +39,9 @@ const GamePlayAdminQuestion = ({ question, quizPos, handleNext }) => {
   }
 
   console.log('question', question);
-  React.useEffect(() => {
-    if (quizPos >= 0) setRemainTime(question.timeLimit);
-  }, [quizPos])
+  // React.useEffect(() => {
+  //   if (progress >= 0) setRemainTime(question.timeLimit);
+  // }, [progress])
   // get state from local storage in case user accidentally close the browser
   React.useEffect(() => {
     const timer = null;
@@ -79,7 +79,7 @@ const GamePlayAdminQuestion = ({ question, quizPos, handleNext }) => {
           variant="h2"
           className={classes.answerDiaplayText}
         >
-          Answer Display!
+          Answer Displayed!
         </Typography>
         {/* XXX: UX: only when timer=0, admin can advance the q */}
         <Button
@@ -119,7 +119,7 @@ const GamePlayAdminQuestion = ({ question, quizPos, handleNext }) => {
 };
 
 GamePlayAdminQuestion.propTypes = {
-  quizPos: PropTypes.number,
+  progress: PropTypes.number,
   question: PropTypes.object,
   handleNext: PropTypes.func
 }

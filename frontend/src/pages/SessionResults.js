@@ -18,7 +18,7 @@ const StyledUl = styled.ul`
   font-size: 14pt;
 `;
 
-const Results = () => {
+const SessionResults = () => {
   const { sessionid: sessionId } = useParams();
   const [results, setResults] = React.useState();
   const [quiz, setQuiz] = React.useState();
@@ -87,4 +87,4 @@ const Results = () => {
   );
 };
 
-export default Results;
+export default SessionResults;

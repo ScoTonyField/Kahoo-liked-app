@@ -5,8 +5,9 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import QuestionEdit from './pages/QuestionEdit';
 import GameEdit from './pages/GameEdit';
-import Results from './pages/Results';
+import SessionResults from './pages/SessionResults';
 import NotFound from './pages/NotFound';
+import JoinSession from './pages/JoinSession';
 import GamePlayerController from './pages/GamePlayerController';
 import GameAdminController from './pages/GameAdminController';
 import { browserHistory } from 'react-router';
@@ -108,7 +109,7 @@ function App () {
           <Route exact path="/dashboard" component={Dashboard} />
 
           {/* Session Result */}
-          <Route exact path="/results/:sessionid" component={Results} />
+          <Route exact path="/results/:sessionid" component={SessionResults} />
           <Route exact path="/results/player/:playerid" component={PlayerResult} />
 
           {/* Quiz edit */}
@@ -117,6 +118,7 @@ function App () {
 
           {/* Quiz play */}
           <Route exact path='/quiz/play/admin/:quizid/:sessionid' component={GameAdminController}/>
+          <Route exact path='/quiz/play' component={JoinSession} />
           <Route exact path='/quiz/play/:sessionid' component={GamePlayerController} />
 
           {/* Home page */}

@@ -31,7 +31,7 @@ const GameHistory = ({ name, history }) => {
         <Dialog
           open={open}
           onClose={handleClose}
-          fullWidth={true}
+          fullWidth
           maxWidth={'lg'}
           fullScreen={fullScreen}
           aria-labelledby="quiz-history-title"

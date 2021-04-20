@@ -101,9 +101,6 @@ const ChartsController = ({ players, questions }) => {
   const [labels, setLabels] = React.useState([]);
   const [dataset, setDataset] = React.useState([]);
 
-  console.log('players: ', players)
-  console.log('questions: ', questions)
-
   React.useEffect(() => {
     const labelTmp = [];
     // set label to data
@@ -121,7 +118,7 @@ const ChartsController = ({ players, questions }) => {
     }
   }, [topic])
 
-  const handleChange = (e) => setTopic(e.target.value);
+  const selectTopic = (e) => setTopic(e.target.value);
 
   console.log('dataset: ', dataset);
 
@@ -137,7 +134,7 @@ const ChartsController = ({ players, questions }) => {
                 <Box m={2}>
                   <Select
                     value={topic}
-                    onChange={handleChange}
+                    onChange={selectTopic}
                     displayEmpty
                     inputProps={{ 'aria-label': 'Without label' }}
                   >
