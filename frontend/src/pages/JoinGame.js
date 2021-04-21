@@ -15,6 +15,7 @@ const JoinGame = ({ setPlayerId, setProgress }) => {
     console.log(localStorage.getItem('player'));
     console.log(sessionId);
     if (localStorage.getItem('player') !== null && sessionId === JSON.parse(localStorage.getItem('player')).sessionid) {
+      // check if session id is the same, if not, means player changed to a new game
       console.log(localStorage.getItem('player'));
       const playerInfo = JSON.parse(localStorage.getItem('player'));
       const fetchQ = window.setInterval(() => {

@@ -14,7 +14,11 @@ const useStlyes = makeStyles((theme) => ({
     margin: theme.spacing(3, 1),
   }
 }))
-
+/**
+ * return 6 option box for admin to edit in current question
+ * @param {props} props
+ * @returns
+ */
 const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnswer, defaultOptions, setDefaultOptions }) => {
   const [disabledOne, setDisabledOne] = useState(true);
   const [disabledTwo, setDisabledTwo] = useState(true);

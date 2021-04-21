@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import Subtitle from '../components/Titles/Subtitle';
 import Title from '../components/Titles/Title';
-import GamePlayPlayerQuestion from './GamePlayerQuestion';
+import GamePlayerQuestion from './GamePlayerQuestion';
 import JoinGame from './JoinGame';
 import PlayerResult from './PlayerResult';
 
@@ -14,7 +14,6 @@ const GamePlayPlayerController = () => {
 
   // get state from local storage in case user accidentally close the browser
   React.useEffect(() => {
-    // console.log('sessionid', sessionId);
     if (!localStorage.getItem('player')) {
       setProgress(-1);
       // return <Subtitle>You did not join the quiz.</Subtitle>;
@@ -35,7 +34,7 @@ const GamePlayPlayerController = () => {
 
       // if progress == 0, the game is at question state
       case 0:
-        return <GamePlayPlayerQuestion setProgress={setProgress} />;
+        return <GamePlayerQuestion setProgress={setProgress} />;
 
       // if progress > 0, the game is finished. Display result page
       case 1:

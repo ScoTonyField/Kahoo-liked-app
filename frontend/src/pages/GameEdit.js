@@ -86,6 +86,7 @@ const GameEdit = () => {
   }, []);
   const classes = useStyles();
 
+  // click to delete the questions and upload to the backend
   const handleDelete = (qid, event) => {
     const newRows = rows.filter((item) => item.qid !== qid);
     setRows(newRows);
@@ -109,15 +110,18 @@ const GameEdit = () => {
     })
   }
 
+  // click button to quiz edit pages
   const handleEdit = (qid, event) => {
     history.push(`/quiz/edit/${currentQuiz}/${qid}`);
   }
 
+  // click to add a new question
   const handleAdd = (event) => {
-    const newQuestionId = IdGenerator(idList);
+    const newQuestionId = IdGenerator(idList); // generate a 6-digit question id for question
     history.push(`/quiz/edit/${currentQuiz}/${newQuestionId}`);
   }
 
+  // change current quiz name
   const handleNameChange = () => {
     if (!defaultName) {
       alert('Quiz name cannot be empty');
@@ -141,6 +145,7 @@ const GameEdit = () => {
     }
   }
 
+  // change thumbnail of the quiz
   const handleSubmit = () => {
     if (imageChanged) {
       makeAPIRequest(
@@ -193,11 +198,11 @@ const GameEdit = () => {
             />
         </Card>
         <HiddenInput
-          // disabled={defaultLink.length > 0}
           accept='image/*'
           id='avatar'
           type='file'
           onChange={(event) => {
+            // transfer upload image into base64 format
             const file = event.target.files[0];
             const fileRead = new FileReader();
             fileRead.readAsDataURL(file);
