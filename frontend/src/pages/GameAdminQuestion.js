@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, Card, Divider, Typography } from '@material-ui/core';
+import { Box, Button, Card, Divider, Typography, CardMedia, CardContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
 import { List } from 'react-content-loader';
+import ReactPlayer from 'react-player/youtube';
 import Title from '../components/Titles/Title';
 
 const useStyles = makeStyles({
@@ -20,6 +20,10 @@ const useStyles = makeStyles({
   },
   answerDiaplayText: {
     display: props => props.remainTime <= 0 ? 'initial' : 'none',
+  },
+  media: {
+    width: '700px',
+    margin: 'auto'
   }
 });
 
@@ -68,6 +72,7 @@ const GamePlayAdminQuestion = ({ question, progress, handleNext }) => {
         display='flex'
         flexDirection='row'
         justifyContent='space-between'
+        p={3}
       >
         <Typography
           variant="h2"
@@ -91,9 +96,31 @@ const GamePlayAdminQuestion = ({ question, progress, handleNext }) => {
           NEXT
         </Button>
       </Box>
-      <Box p={3}>
-        <Divider />
-      </Box>
+      <Divider />
+      {
+        question.media !== '' &&
+          <Card className={classes.media}>
+            <CardContent>
+            {
+              question.media.includes('data:image') &&
+                (
+                  <CardMedia
+                    component='img'
+                    alt="Question Media"
+                    src={question.media}
+                    title="Question Media"
+                  />
+                )
+            }
+            {
+              question.media.includes('youtube') &&
+                (
+                  <ReactPlayer url={question.media} controls={true} />
+                )
+            }
+            </CardContent>
+          </Card>
+      }
       <div>
         <Title>{question.contents}</Title>
         <Box

@@ -60,7 +60,7 @@ function App () {
             path='/'
             render={({ match: { url } }) => (
               <>
-                <AppHeader token={token} logout={logout}/>
+                <AppHeader logout={logout}/>
                 {/* Home page */}
                 <Switch>
                   <Route exact path={url} component={Home}/>

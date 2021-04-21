@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const AppHeader = ({ token, logout }) => {
+const AppHeader = ({ logout }) => {
   const classes = useStyles();
   // Handle logout button, clear localstorage and reset current page
   const handleLogout = () => {
@@ -41,19 +41,19 @@ const AppHeader = ({ token, logout }) => {
           BigBrain
         </Typography>
           {
-            token
+            localStorage.getItem('token')
               /* if not logged in, show login/register button */
               ? (
                   <div>
-                    <Button component={ Link } color="inherit" to='/login'>Login</Button>
-                    <Button component={ Link } color="inherit" to='/register'>Register</Button>
+                    <Button component={ Link } color="inherit" to='/dashboard'>Dashboard</Button>
+                    <Button component={ Link } color="inherit" to='/home' onClick={handleLogout}>Logout</Button>
                   </div>
                 )
               /* if logged in, show dashboard and logout button */
               : (
                   <div>
-                    <Button component={ Link } color="inherit" to='/dashboard'>Dashboard</Button>
-                    <Button component={ Link } color="inherit" to='/home' onClick={handleLogout}>Logout</Button>
+                    <Button component={ Link } color="inherit" to='/login'>Login</Button>
+                    <Button component={ Link } color="inherit" to='/register'>Register</Button>
                   </div>
                 )
           }
@@ -63,7 +63,6 @@ const AppHeader = ({ token, logout }) => {
 };
 
 AppHeader.propTypes = {
-  token: PropTypes.string,
   logout: PropTypes.func,
 };
 

@@ -56,7 +56,13 @@ const GameAdminController = () => {
     switch (progress) {
       // if progress < 0, the game is at lobby state and should display joined player's name
       case -1:
-        return <Lobby players={quiz.players} handleNext={handleNext}/>;
+        return (
+          <>
+            <Title>Welcome to BigBrain!</Title>
+            <Subtitle>Current Session: {sessionId}</Subtitle>
+            <Lobby players={quiz.players} handleNext={handleNext}/>
+          </>
+        );
 
       // if progress == 0, the game is at question state
       case 0:
@@ -64,6 +70,7 @@ const GameAdminController = () => {
 
       // if progress > 0, the game is finished. Display result page
       case 1:
+        if (quiz.position !== quiz.questions.length) return <List />
         return (
           <Box align='center' p={20}>
             <Title>Game End</Title>
@@ -78,8 +85,6 @@ const GameAdminController = () => {
   }
   return (
     <Container>
-        <Title>Welcome to BigBrain!</Title>
-        <Subtitle>Current Session: {sessionId}</Subtitle>
         { renderContent() }
     </Container>
   );
