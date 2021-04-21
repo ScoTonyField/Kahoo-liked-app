@@ -72,7 +72,7 @@ const JoinGameInput = ({ setPlayerId, setProgress }) => {
 
 JoinGameInput.propTypes = {
   setProgress: PropTypes.func,
-  setPlayerId: PropTypes.func
+  setPlayerId: PropTypes.func,
 };
 
 export default JoinGameInput;

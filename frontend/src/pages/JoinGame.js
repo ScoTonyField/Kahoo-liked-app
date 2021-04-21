@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import Subtitle from '../components/Titles/Subtitle';
 import PropTypes from 'prop-types';
@@ -6,19 +7,24 @@ import makeAPIRequest from '../Api';
 import JoinGameInput from '../components/JoinGameInput';
 
 const JoinGame = ({ setPlayerId, setProgress }) => {
+  const { sessionid: sessionId } = useParams();
+
   React.useEffect(() => {
     // if the current browser has joined as a player
     // if player has joined the quiz, keep fetching game status to wait for start
-    console.log(localStorage.getItem('player'))
-    if (localStorage.getItem('player') !== null) {
+    console.log(localStorage.getItem('player'));
+    console.log(sessionId);
+    if (localStorage.getItem('player') !== null && sessionId === JSON.parse(localStorage.getItem('player')).sessionid) {
+      console.log(localStorage.getItem('player'));
       const playerInfo = JSON.parse(localStorage.getItem('player'));
       const fetchQ = window.setInterval(() => {
         makeAPIRequest(`play/${playerInfo.id}/status`, 'GET', null, null, null)
           .then(res => {
             console.log(res)
-            if (res.start === true) {
+            if (res.started === true) {
               playerInfo.progress = 0;
               localStorage.setItem('player', JSON.stringify(playerInfo));
+              // console.log(JSON.parse(localStorage.getItem('player')).progress);
               setProgress(0);
             }
           }).catch(() => {
@@ -38,15 +44,17 @@ const JoinGame = ({ setPlayerId, setProgress }) => {
     } else {
       return <JoinGameInput setProgress={setProgress} setPlayerId={setPlayerId} />
     }
-  }, [])
+  }, [localStorage.getItem('player')])
 
   return (
     <Container>
-      <Subtitle>Waiting for other players...</Subtitle>
+      <Subtitle><b>Waiting for other players...</b></Subtitle>
       <div>
         {
-          localStorage.getItem('player') === null
-            ? <JoinGameInput setProgress={setProgress} setPlayerId={setPlayerId} />
+          localStorage.getItem('player') === null || sessionId !== JSON.parse(localStorage.getItem('player')).sessionid
+            ? (
+              <JoinGameInput setProgress={setProgress} setPlayerId={setPlayerId} />
+              )
             : <Subtitle>Nickname: {JSON.parse(localStorage.getItem('player')).nickname}</Subtitle>
         }
       </div>

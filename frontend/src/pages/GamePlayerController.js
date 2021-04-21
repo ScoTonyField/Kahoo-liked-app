@@ -14,6 +14,7 @@ const GamePlayPlayerController = () => {
 
   // get state from local storage in case user accidentally close the browser
   React.useEffect(() => {
+    // console.log('sessionid', sessionId);
     if (!localStorage.getItem('player')) {
       setProgress(-1);
       // return <Subtitle>You did not join the quiz.</Subtitle>;
