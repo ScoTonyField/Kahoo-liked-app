@@ -9,6 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Button, Container, Card, CardMedia, Typography } from '@material-ui/core';
+import CsvDownload from 'react-json-to-csv';
 import AddBoxRoundedIcon from '@material-ui/icons/AddBoxRounded';
 import makeAPIRequest from '../Api';
 import Row from '../components/Row';
@@ -40,12 +41,15 @@ const useStyles = makeStyles((theme) => ({
     height: '50px'
   },
   nameButton: {
-    margin: theme.spacing(3, 4, 2),
+    margin: theme.spacing(3, 2, 3),
     height: '30px'
   },
   nameText: {
     padding: theme.spacing(0, 2),
     textAlign: 'left'
+  },
+  hidden: {
+    display: 'none'
   }
 }));
 
@@ -162,6 +166,15 @@ const GameEdit = () => {
       alert('You did not change your thumbnail');
     }
   }
+  const handleExportJSON = () => {
+    const fileUrl = 'data:application/json;charset=utf-8,' +
+      encodeURIComponent(JSON.stringify(fetchData));
+
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', fileUrl);
+    linkElement.setAttribute('download', `${fetchData.name}_data.json`);
+    linkElement.click();
+  }
 
   if (Object.keys(rows).length === 0 || rows.length === 0) {
     return (
@@ -214,7 +227,7 @@ const GameEdit = () => {
             component='span'
             className={classes.mediaButton}
           >
-            Change
+            Change Thumbnail
           </Button>
         </label>
         <Button
@@ -224,7 +237,7 @@ const GameEdit = () => {
           className={classes.mediaButton}
           onClick={handleSubmit}
         >
-          submit
+          Submit Thumbnail
         </Button>
         <Typography variant='h4' className={classes.nameText}>
           {`Editing ${nameChanged ? defaultName : fetchData.name}`}
@@ -245,6 +258,30 @@ const GameEdit = () => {
             handleNameChange={handleNameChange}
             setNameChanged={setNameChanged}
           />
+          <Button
+            variant='outlined'
+            color='primary'
+            className={classes.nameButton}
+            onClick={handleExportJSON}
+          >
+            Export To JSON
+          </Button>
+          <CsvDownload
+            id='csv-download'
+            data={[fetchData]}
+            filename={`${fetchData.name}_data.csv`}
+            className={classes.hidden}
+          />
+          <label htmlFor='csv-download'>
+            <Button
+              variant='outlined'
+              color='primary'
+              className={classes.nameButton}
+              component="span"
+            >
+                Export To CSV
+            </Button>
+          </label>
         </Typography>
         <Paper className={classes.paper} variant='outlined'>
           <TableContainer>

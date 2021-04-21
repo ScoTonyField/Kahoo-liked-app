@@ -3,7 +3,7 @@ import { Box, Button, Container } from '@material-ui/core';
 import { useParams, useHistory } from 'react-router-dom';
 import Title from '../components/Titles/Title';
 import Subtitle from '../components/Titles/Subtitle';
-import Lobby from './Lobby';
+import LobbyAdmin from './LobbyAdmin';
 import GameAdminQuestion from './GameAdminQuestion';
 import makeAPIRequest from '../Api';
 import { List } from 'react-content-loader';
@@ -58,9 +58,9 @@ const GameAdminController = () => {
       case -1:
         return (
           <>
-            <Title>Welcome to BigBrain!</Title>
-            <Subtitle>Current Session: {sessionId}</Subtitle>
-            <Lobby players={quiz.players} handleNext={handleNext}/>
+            <Title color='#3F51B5'>Welcome to BigBrain!</Title>
+            <Subtitle color='#303F9F'>Current Session: {sessionId}</Subtitle>
+            <LobbyAdmin players={quiz.players} handleNext={handleNext}/>
           </>
         );
 
@@ -73,8 +73,8 @@ const GameAdminController = () => {
         if (quiz.position !== quiz.questions.length) return <List />
         return (
           <Box align='center' p={20}>
-            <Title>Game End</Title>
-            <Button onClick={handleClick} variant="contained" color="primary">View Results</Button>
+            <Title color="#303F9F">Game End</Title>
+            <Button onClick={handleClick} variant="contained" color="primary" size='large'>View Results</Button>
           </Box>
         )
 

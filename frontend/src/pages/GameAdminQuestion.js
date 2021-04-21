@@ -19,11 +19,18 @@ const useStyles = makeStyles({
     fontWeight: props => props.remainTime <= 0 ? 800 : 100,
   },
   answerDiaplayText: {
+    color: '#303F9F',
     display: props => props.remainTime <= 0 ? 'initial' : 'none',
+  },
+  timer: {
+    color: props => props.remainTime < 5 ? '#FF5252' : '#303F9F'
   },
   media: {
     width: '700px',
     margin: 'auto'
+  },
+  divider: {
+    borderTop: '1px solid lightgrey',
   }
 });
 
@@ -76,7 +83,7 @@ const GamePlayAdminQuestion = ({ question, progress, handleNext }) => {
       >
         <Typography
           variant="h2"
-          color={remainTime < 5 ? 'secondary' : 'initial'}
+          className={classes.timer}
         >
           Remain Time: {remainTime}
         </Typography>
@@ -92,11 +99,12 @@ const GamePlayAdminQuestion = ({ question, progress, handleNext }) => {
           variant="contained"
           onClick={handleNext}
           size="large"
+          color="primary"
         >
           NEXT
         </Button>
       </Box>
-      <Divider />
+      <Divider className={classes.divider}/>
       {
         question.media !== '' &&
           <Card className={classes.media}>
@@ -122,7 +130,7 @@ const GamePlayAdminQuestion = ({ question, progress, handleNext }) => {
           </Card>
       }
       <div>
-        <Title>{question.contents}</Title>
+        <Title color="#303F9F">{question.contents}</Title>
         <Box
           display="flex"
           flexDirection="row"

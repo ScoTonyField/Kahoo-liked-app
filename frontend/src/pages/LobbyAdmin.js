@@ -16,8 +16,8 @@ const LobbyAdmin = ({ players, handleNext }) => {
 
   return (
     <Container>
-      <Title>{'> Lobby < '}</Title>
-      <Subtitle>Join with this link: <b>localhost:3000/quiz/play</b></Subtitle>
+      <Title color='#303F9F'>{'> Lobby < '}</Title>
+      <Subtitle color='#303F9F'>Join with this link: <b>localhost:3000/quiz/play</b></Subtitle>
       <Box
         display='flex'
         flexDirection='row'
@@ -28,11 +28,13 @@ const LobbyAdmin = ({ players, handleNext }) => {
           <Button
             variant="contained"
             onClick={handleNext}
+            color="primary"
+            size="large"
           >
             Start
           </Button>
         </Box>
-        <Subtitle>Waiting for players...</Subtitle>
+        <Subtitle color='#303F9F'>Waiting for players...</Subtitle>
       </Box>
       <Box
         display='flex'

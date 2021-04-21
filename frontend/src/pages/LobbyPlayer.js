@@ -48,16 +48,16 @@ const LobbyPlayer = ({ setPlayerId, setProgress }) => {
 
   return (
     <Container>
-      <Subtitle><b>Waiting for other players...</b></Subtitle>
+      <Subtitle color='#303F9F'><b>{'> Lobby <'}<br/>Waiting for other players...</b></Subtitle>
       <div>
         {
           localStorage.getItem('player') === null || sessionId !== JSON.parse(localStorage.getItem('player')).sessionid
-            ? (
-              <JoinGameInput setProgress={setProgress} setPlayerId={setPlayerId} />
-              )
-            : <Subtitle>Nickname: {JSON.parse(localStorage.getItem('player')).nickname}</Subtitle>
+            ? <JoinGameInput setProgress={setProgress} setPlayerId={setPlayerId} />
+            : <Subtitle color='#303F9F'>Your Nickname: {JSON.parse(localStorage.getItem('player')).nickname}</Subtitle>
         }
       </div>
+      <img src="https://64.media.tumblr.com/8210fd413c5ce209678ef82d65731443/tumblr_mjphnqLpNy1s5jjtzo1_400.gifv"/>
+
     </Container>
   );
 };

@@ -4,16 +4,29 @@ import PropTypes from 'prop-types';
 import {
   Typography
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-const Title = (props) => (
-  <Typography variant="h4" style={{ padding: '20px', textAlign: 'center' }}>
-    { props.children }
-  </Typography>
+const useStyles = makeStyles({
+  title: {
+    padding: '20px',
+    textAlign: 'center',
+    color: props => props.color,
+  }
+});
 
-);
+const Title = ({ children, color }) => {
+  const classes = useStyles({ color });
+
+  return (
+    <Typography variant="h3" className={classes.title}>
+      { children }
+    </Typography>
+  )
+};
 
 Title.propTypes = {
   children: PropTypes.node,
+  color: PropTypes.string,
 }
 
 export default Title;

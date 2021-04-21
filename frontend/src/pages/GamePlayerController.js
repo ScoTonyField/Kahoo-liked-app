@@ -50,8 +50,8 @@ const GamePlayPlayerController = () => {
   }
   return (
     <>
-      <Title>Welcome to BigBrain</Title>
-      <Subtitle>Current Session: {sessionId}</Subtitle>
+      <Title color='#303F9F'>Welcome to BigBrain</Title>
+      <Subtitle color='#303F9F'>Current Session: {sessionId}</Subtitle>
       { renderContent() }
     </>
   );

@@ -23,9 +23,12 @@ import {
   Route,
 } from 'react-router-dom';
 import PlayerResult from './pages/PlayerResult';
+import styled from 'styled-components';
 
-// style sheets
-import './App.css';
+const Background = styled.div`
+  background: #FDDCFF;
+  height: 100vh;
+`;
 
 function App () {
   const [token, setToken] = React.useState('');
@@ -43,7 +46,7 @@ function App () {
           <Route
             path='/quiz/play'
             render={({ match: { url } }) => (
-              <>
+              <Background>
                 <Switch>
                   {/* Quiz play */}
                   <Route exact path={`${url}/admin/:quizid/:sessionid`} component={GameAdminController}/>
@@ -53,7 +56,7 @@ function App () {
                   {/* Any other path leads to 404 page */}
                   <Route path="*" component={NotFound} />
                 </Switch>
-              </>
+              </Background>
             )}
           />
           <Route

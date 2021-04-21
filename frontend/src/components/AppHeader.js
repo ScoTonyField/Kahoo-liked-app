@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    textDecoration: 'none'
   },
   appbar: {
     zIndex: theme.zIndex.title + 1,
@@ -37,7 +38,7 @@ const AppHeader = ({ logout }) => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" className={classes.title} component={ Link } to='/' color="inherit">
+        <Typography variant="h4" className={classes.title} component={ Link } to='/' color="inherit">
           BigBrain
         </Typography>
           {
