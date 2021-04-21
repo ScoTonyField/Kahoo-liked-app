@@ -53,6 +53,7 @@ const GameCard = ({ gid, games, setGames }) => {
     makeAPIRequest(`admin/quiz/${gid}`, 'GET', localStorage.getItem('token'), null, null)
       .then(game => {
         game.id = gid;
+        console.log('game card----', game)
         setGameInfo(game);
       }).catch(err => console.log('Error fetching quizzes: ', err))
   }, [active])

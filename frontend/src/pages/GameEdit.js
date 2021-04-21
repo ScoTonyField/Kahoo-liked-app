@@ -122,6 +122,15 @@ const GameEdit = () => {
     history.push(`/quiz/edit/${currentQuiz}/${newQuestionId}`);
   }
 
+  // Remove unneccessary fields for quiz data to be exported
+  const exportData = () => {
+    const toExport = fetchData;
+    delete toExport.oldSessions;
+    delete toExport.active;
+    delete toExport.owner;
+    return toExport;
+  }
+
   const handleNameChange = () => {
     if (!defaultName) {
       alert('Quiz name cannot be empty');
@@ -168,7 +177,7 @@ const GameEdit = () => {
   }
   const handleExportJSON = () => {
     const fileUrl = 'data:application/json;charset=utf-8,' +
-      encodeURIComponent(JSON.stringify(fetchData));
+      encodeURIComponent(JSON.stringify(exportData()));
 
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', fileUrl);
@@ -268,7 +277,7 @@ const GameEdit = () => {
           </Button>
           <CsvDownload
             id='csv-download'
-            data={[fetchData]}
+            data={[exportData()]}
             filename={`${fetchData.name}_data.csv`}
             className={classes.hidden}
           />
@@ -283,6 +292,7 @@ const GameEdit = () => {
             </Button>
           </label>
         </Typography>
+        <Typography variant='body2' color='error'>Warning: Only quiz data and questions will be exported. Session data (e.g. players and results) will not be exported.</Typography>
         <Paper className={classes.paper} variant='outlined'>
           <TableContainer>
             <Table aria-label="collapsible table">
