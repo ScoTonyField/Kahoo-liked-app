@@ -24,16 +24,7 @@ function Row (props) {
         <TableCell align="center">
           {props.row.qid}
         </TableCell>
-        {/* <TableCell align="center">{props.row.isSingle}</TableCell> */}
-        {
-          props.row.isSingle
-            ? (
-              <TableCell align="center">Single-select</TableCell>
-              )
-            : (
-              <TableCell align="center">Multiple-select</TableCell>
-              )
-        }
+        <TableCell align="center">{props.row.isSingle ? 'Single Select' : 'Multiple Select'}</TableCell>
         <TableCell align="center">
           <Button variant="contained" color="primary" onClick={ (event) => { props.edit(props.row.qid, event) }}>
             Edit
@@ -49,14 +40,23 @@ function Row (props) {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
-              <Typography variant='h5' component='div'>
-                {props.row.contents}
-              </Typography>
-              {props.row.options.map((data) => (
-                <Typography variant='body1' component='div' key={data}>
-                  {data}
+              <Typography variant='h5'>
+                Questions:<br />
+                <Typography variant='body1'>{props.row.contents}</Typography> <br/>
+                Options: <br/>
+                <Typography variant='body1'>
+                  {
+                    props.row.options.map((data) => (
+                      // <Typography variant='body1' component='div' key={data}>
+                      //   {data}
+                      // </Typography>
+                      <li key={data}>
+                        {data}
+                      </li>
+                    ))
+                  }
                 </Typography>
-              ))}
+              </Typography>
             </Box>
           </Collapse>
         </TableCell>

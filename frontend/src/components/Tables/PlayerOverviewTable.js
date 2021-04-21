@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -51,7 +50,7 @@ const PlayerOverviewTable = ({ results, questions }) => {
         players.length === 0
           ? <p align='center'>Table not available: No player</p>
           : (
-              <TableContainer component={Paper}>
+              <TableContainer>
                 <Table aria-label="quiz history table">
                   <TableHead>
                     <TableRow>

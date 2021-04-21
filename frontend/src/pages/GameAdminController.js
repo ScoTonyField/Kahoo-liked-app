@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Container } from '@material-ui/core';
+import { Box, Button, Container } from '@material-ui/core';
 import { useParams, useHistory } from 'react-router-dom';
 import Title from '../components/Titles/Title';
 import Subtitle from '../components/Titles/Subtitle';
@@ -10,31 +10,28 @@ import { List } from 'react-content-loader';
 
 const GameAdminController = () => {
   const history = useHistory();
+  const { sessionid: sessionId, quizid: quizId } = useParams();
+
   if (localStorage.getItem('token') === null) {
-    return <p>You are not logged in</p>;
+    return <Title>You are not logged in</Title>;
   }
-  // current position
-  const [quizPos, setQuizPos] = React.useState();
+
+  // -1: lobby (not started), 0: in progress (started), 1: finish (ended)
+  const [progress, setProgress] = React.useState();
 
   // all the quiz data
   const [quiz, setQuiz] = React.useState({});
-  // -1: lobby (not started), 0: in progress (started), 1: finish (ended)
-  const { sessionid: sessionId } = useParams();
 
   React.useEffect(() => {
-    console.log('admin controller interval triggerd, fetch quiz status every 10sec')
     const fetchStatus = window.setInterval(() => {
       makeAPIRequest(`admin/session/${sessionId}/status`, 'GET', localStorage.getItem('token'), null, null)
         .then(res => {
-          console.log(res)
           setQuiz(res.results);
           localStorage.setItem('position', res.results.position);
-          if (res.results.position < 0) setQuizPos(-1);
-          else if (res.results.position === res.results.questions.length) setQuizPos(1);
-          else setQuizPos(0)
-        }).catch((err) => {
-          console.log('ERROR: Fail to fetch quiz status', err)
-        })
+          if (res.results.position < 0) setProgress(-1);
+          else if (res.results.position === res.results.questions.length) setProgress(1);
+          else setProgress(0)
+        }).catch((err) => console.log('ERROR: Fail to fetch quiz status', err))
       console.log(new Date());
     }, 1000);
     return () => {
@@ -42,49 +39,52 @@ const GameAdminController = () => {
       clearInterval(fetchStatus)
     };
   }, [])
-
   // UX: if quiz has not been load, display content loader
-  if (quiz === undefined || quizPos === undefined) return <List />
+  if (quiz === undefined || progress === undefined) return <List />
 
   // handle "view result" button
   const handleClick = () => history.push(`/results/${sessionId}`);
 
-  const handleNext = (nextStage) => {
-    console.log('next: ', nextStage)
-    localStorage.setItem('position', nextStage);
-  }
-  console.log(quiz)
+  // when player click 'next', advance the state
+  const handleNext = () =>
+    makeAPIRequest(`admin/quiz/${quizId}/advance`, 'POST', localStorage.getItem('token'), null, null)
+      .then(res => setProgress(res.stage))
+      .catch(err => console.log('ERROR: Fail to advance quiz, ', err))
+
   // render content depends on game state: lobby, question, result
   const renderContent = () => {
-    switch (quizPos) {
+    switch (progress) {
       // if progress < 0, the game is at lobby state and should display joined player's name
       case -1:
-        return <Lobby players={quiz.players} setQuizPos={setQuizPos}/>;
+        return (
+          <>
+            <Title>Welcome to BigBrain!</Title>
+            <Subtitle>Current Session: {sessionId}</Subtitle>
+            <Lobby players={quiz.players} handleNext={handleNext}/>
+          </>
+        );
 
-        // if progress == 0, the game is at question state
+      // if progress == 0, the game is at question state
       case 0:
-        console.log('quiz position:', quiz.position)
-        console.log('quiz.q.length', quiz.questions.length)
-        return <GameAdminQuestion quizPos={quizPos} question={quiz.questions[quiz.position]} setQuizPos={handleNext} />
+        return <GameAdminQuestion progress={progress} question={quiz.questions[quiz.position]} handleNext={handleNext} />
 
       // if progress > 0, the game is finished. Display result page
       case 1:
+        if (quiz.position !== quiz.questions.length) return <List />
         return (
-          <>
-            <p> game end</p>
+          <Box align='center' p={20}>
+            <Title>Game End</Title>
             <Button onClick={handleClick} variant="contained" color="primary">View Results</Button>
-          </>
+          </Box>
         )
 
-      // should never reach
+      // if reach, it means that the react states are not up to date, display content loader
       default:
-        return <p>ERROR: Invalid quiz position code {quizPos}</p>
+        return <List />
     }
   }
   return (
     <Container>
-        <Title>Welcome to BigBrain!</Title>
-        <Subtitle>Current Session: {sessionId}</Subtitle>
         { renderContent() }
     </Container>
   );

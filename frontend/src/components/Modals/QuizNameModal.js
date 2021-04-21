@@ -4,17 +4,20 @@ import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, B
 
 const QuizNameModal = ({ open, setOpen, defaultName, setDefaultName, handleNameChange, setNameChanged }) => {
   return (
-    <Dialog open={open} aria-labelledby="simple-dialog-title">
-      <DialogTitle id='video-title'>Quiz name</DialogTitle>
+    <Dialog open={open} aria-labelledby="simple-dialog-title" fullWidth maxWidth={'sm'}>
+      <DialogTitle id='video-title'>Edit Quiz Name</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Edit your quiz name if you want :)
+          Please enter new quiz name :)
         </DialogContentText>
         <TextField
           id='quizname'
           name='quizname'
-          placeholder='Quiz name'
+          label="New Quiz Name"
           fullWidth
+          required
+          error={defaultName === ''}
+          helperText={defaultName === '' && 'Quiz name cannot be empty'}
           value={defaultName}
           onChange={(event) => setDefaultName(event.target.value)}
         ></TextField>

@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 
 const Title = (props) => (
-  <Typography variant="h3" style={{ padding: '20px', textAlign: 'center' }}>
+  <Typography variant="h4" style={{ padding: '20px', textAlign: 'center' }}>
     { props.children }
   </Typography>
 

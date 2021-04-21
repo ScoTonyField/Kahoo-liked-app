@@ -4,8 +4,16 @@
  to return to a "player"
 */
 export const quizQuestionPublicReturn = question => {
-  console.log('See question: ', question); //TODO: remove answer
-  return question; // not returning the answer
+  const ret = {
+    isSingle: question.isSingle,
+    contents: question.contents,
+    timeLimit: question.timeLimit,
+    points: question.points,
+    media: question.media,
+    options: question.options,
+  };
+  console.log(ret);
+  return ret; // not returning the answer
 };
 
 /*
@@ -21,8 +29,8 @@ export const quizQuestionGetCorrectAnswers = question => {
  all of the answers, correct or incorrect.
 */
 export const quizQuestionGetAnswers = question => {
-  console.log(question)
-  return question; // For a single answer
+  console.log('get answer', question)
+  return question.options; // For a single answer
 };
 
 /*
@@ -30,5 +38,6 @@ export const quizQuestionGetAnswers = question => {
  of the question once it starts. (Seconds)
 */
 export const quizQuestionGetDuration = question => {
-  return question.timeLimit;
+  // adding 5 sec delay to allow user submit answer in the last sec
+  return question.timeLimit + 5; 
 };

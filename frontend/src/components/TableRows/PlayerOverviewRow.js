@@ -11,7 +11,7 @@ const PlayerOverviewRow = ({ player, questions, idx }) => {
       <TableCell align="right">{player.score}</TableCell>
       <TableCell align="right">{player.averageTime ?? '[Not Available]'}</TableCell>
       <TableCell align="right">
-        <PlayerResultModal player={player} questions={questions} />
+        <PlayerResultModal player={player} questions={questions}/>
       </TableCell>
     </TableRow>
   );

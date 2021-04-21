@@ -8,7 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Button, Container, Card, CardActionArea, CardMedia, Typography } from '@material-ui/core';
+import { Button, Container, Card, CardMedia, Typography } from '@material-ui/core';
 import AddBoxRoundedIcon from '@material-ui/icons/AddBoxRounded';
 import makeAPIRequest from '../Api';
 import Row from '../components/Row';
@@ -41,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
   },
   nameButton: {
     margin: theme.spacing(3, 4, 2),
-    width: '10%',
     height: '30px'
   },
   nameText: {
@@ -138,8 +137,8 @@ const GameEdit = () => {
       ).then(() => {
         alert('name updates successfully');
       })
+      setOpen(false);
     }
-    setOpen(false);
   }
 
   const handleSubmit = () => {
@@ -157,10 +156,10 @@ const GameEdit = () => {
           }
         )
       ).then(() => {
-        alert('avatar updates successfully');
+        alert('Thumbnail updates successfully');
       })
     } else {
-      alert('You do not change your avatar');
+      alert('You did not change your thumbnail');
     }
   }
 
@@ -186,14 +185,12 @@ const GameEdit = () => {
     return (
       <Container maxWidth='md' component='main' className={classes.root}>
         <Card className={classes.card}>
-          <CardActionArea>
             <CardMedia
               component="img"
               alt="upload-media"
               height='180'
               image={defaultImage ?? 'https://tse4-mm.cn.bing.net/th/id/OIP.EEoake0D7LrG5c4X4TDPFQHaHa?pid=ImgDet&rs=1'}
             />
-          </CardActionArea>
         </Card>
         <HiddenInput
           // disabled={defaultLink.length > 0}
@@ -217,7 +214,7 @@ const GameEdit = () => {
             component='span'
             className={classes.mediaButton}
           >
-            change
+            Change
           </Button>
         </label>
         <Button
@@ -230,15 +227,14 @@ const GameEdit = () => {
           submit
         </Button>
         <Typography variant='h4' className={classes.nameText}>
-          {nameChanged ? defaultName : fetchData.name}
+          {`Editing ${nameChanged ? defaultName : fetchData.name}`}
           <Button
             variant='outlined'
             color='primary'
-            component='span'
             className={classes.nameButton}
             onClick={(event) => setOpen(true)}
           >
-            Change
+            Change Quiz Name
           </Button>
           <QuizNameModal
             key={params.quizid}
@@ -248,7 +244,7 @@ const GameEdit = () => {
             setDefaultName={setDefaultName}
             handleNameChange={handleNameChange}
             setNameChanged={setNameChanged}
-          ></QuizNameModal>
+          />
         </Typography>
         <Paper className={classes.paper} variant='outlined'>
           <TableContainer>
