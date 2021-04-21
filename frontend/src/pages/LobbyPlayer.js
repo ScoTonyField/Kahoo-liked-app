@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import makeAPIRequest from '../Api';
 import JoinGameInput from '../components/JoinGameInput';
 
-const JoinGame = ({ setPlayerId, setProgress }) => {
+const LobbyPlayer = ({ setPlayerId, setProgress }) => {
   const { sessionid: sessionId } = useParams();
 
   React.useEffect(() => {
@@ -62,9 +62,9 @@ const JoinGame = ({ setPlayerId, setProgress }) => {
   );
 };
 
-JoinGame.propTypes = {
+LobbyPlayer.propTypes = {
   setPlayerId: PropTypes.func.isRequired,
   setProgress: PropTypes.func.isRequired,
 };
 
-export default JoinGame;
+export default LobbyPlayer;

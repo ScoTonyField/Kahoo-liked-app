@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import Subtitle from '../components/Titles/Subtitle';
 import Title from '../components/Titles/Title';
 import GamePlayPlayerQuestion from './GamePlayerQuestion';
-import JoinGame from './JoinGame';
+import LobbyPlayer from './LobbyPlayer';
 import PlayerResult from './PlayerResult';
 
 const GamePlayPlayerController = () => {
@@ -31,7 +31,7 @@ const GamePlayPlayerController = () => {
     switch (progress) {
       // if progress < 0, the game is at lobby state and should ask user to join the game
       case -1:
-        return <JoinGame setPlayerId={setPlayerId} setProgress={setProgress} />;
+        return <LobbyPlayer setPlayerId={setPlayerId} setProgress={setProgress} />;
 
       // if progress == 0, the game is at question state
       case 0:
