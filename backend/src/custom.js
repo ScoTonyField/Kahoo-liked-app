@@ -12,7 +12,7 @@ export const quizQuestionPublicReturn = question => {
     media: question.media,
     options: question.options,
   };
-  console.log(ret);
+  // console.log(ret);
   return ret; // not returning the answer
 };
 
@@ -21,16 +21,17 @@ export const quizQuestionPublicReturn = question => {
  the correct answers (minimum 1).
 */
 export const quizQuestionGetCorrectAnswers = question => {
-  return question.answers; // For a single answer
+  console.log(question.answers);
+  return question.answers;
 };
 
 /*
- For a given data structure of a question, get the IDs of
+ For a given data structure of a question, get the Index of
  all of the answers, correct or incorrect.
 */
 export const quizQuestionGetAnswers = question => {
   console.log('get answer', question)
-  return question.options; // For a single answer
+  return question.options;
 };
 
 /*
@@ -38,6 +39,6 @@ export const quizQuestionGetAnswers = question => {
  of the question once it starts. (Seconds)
 */
 export const quizQuestionGetDuration = question => {
-  // adding 5 sec delay to allow user submit answer in the last sec
-  return question.timeLimit + 5; 
+  // reduce 1 sec to allow player-end to fetch correct answer after completing the timer
+  return question.timeLimit - 1; 
 };

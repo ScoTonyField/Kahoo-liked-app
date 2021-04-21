@@ -9532,6 +9532,13 @@ react-content-loader@^6.0.3:
   resolved "https://registry.yarnpkg.com/react-content-loader/-/react-content-loader-6.0.3.tgz#32e28ca7120e0a2552fc26655d0d4448cc1fc0c5"
   integrity sha512-CIRgTHze+ls+jGDIfCitw27YkW2XcaMpsYORTUdBxsMFiKuUYMnlvY76dZE4Lsaa9vFXVw+41ieBEK7SJt0nug==
 
+react-countdown@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.npm.taobao.org/react-countdown/download/react-countdown-2.3.1.tgz#6914538705075c74ac8f97fd8c31b29eadf44cbd"
+  integrity sha1-aRRThwUHXHSsj5f9jDGynq30TL0=
+  dependencies:
+    prop-types "^15.7.2"
+
 react-dev-utils@^11.0.0:
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-11.0.0.tgz#9fdb1b173f4ffc1f23fcf98465d93b16a860b73e"
