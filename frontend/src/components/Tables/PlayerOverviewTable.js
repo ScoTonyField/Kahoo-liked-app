@@ -26,13 +26,6 @@ const PlayerOverviewTable = ({ results, questions }) => {
       return a + +pointsCurrentQuestion;
     }, 0)
 
-    // TODO: delete this, might be an incorrect function
-    // const avgTime = player.answers.reduce((a, b) => {
-    //   const aDate = new Date(a);
-    //   const bDate = new Date(b);
-    //   return timeDiff(aDate.questionStartedAt, aDate.answeredAt) - timeDiff(bDate.questionStartedAt, bDate.answeredAt);
-    // }, 0) / player.answers.length;
-
     // calculate average time used to answer a question
     const avgTime = player.answers.reduce((a, b) =>
       a + calculateIsoTimeDiff(b.questionStartedAt, b.answeredAt), 0) / player.answers.length;

@@ -104,7 +104,11 @@ const ToggleGameBtn = ({ gameId, sessionId, active, setActive }) => {
         <DialogContent dividers>
           <Typography gutterBottom>
             {
-              active ? `Session id: ${sessionId}` : 'Would you like to view results?'
+              active
+                ? sessionId === null
+                    ? 'Loading...'
+                    : `Session id: ${sessionId}`
+                : 'Would you like to view results?'
             }
           </Typography>
         </DialogContent>

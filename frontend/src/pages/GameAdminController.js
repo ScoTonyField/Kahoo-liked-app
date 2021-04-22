@@ -22,21 +22,20 @@ const GameAdminController = () => {
   // all the quiz data
   const [quiz, setQuiz] = React.useState({});
 
+  // fetch status every 0.5 second
   React.useEffect(() => {
     const fetchStatus = window.setInterval(() => {
       makeAPIRequest(`admin/session/${sessionId}/status`, 'GET', localStorage.getItem('token'), null, null)
         .then(res => {
           setQuiz(res.results);
-          localStorage.setItem('position', res.results.position);
           if (res.results.position < 0) setProgress(-1);
           else if (res.results.position === res.results.questions.length) setProgress(1);
           else setProgress(0)
         }).catch((err) => console.log('ERROR: Fail to fetch quiz status', err))
-      console.log(new Date());
     }, 1000);
     return () => {
-      console.log('stop interval in admin controller') // TODO: delete this
-      clearInterval(fetchStatus)
+      console.log('stop admin controller') // TODO: delete this
+      clearInterval(fetchStatus);
     };
   }, [])
   // UX: if quiz has not been load, display content loader
@@ -66,7 +65,7 @@ const GameAdminController = () => {
 
       // if progress == 0, the game is at question state
       case 0:
-        return <GameAdminQuestion progress={progress} question={quiz.questions[quiz.position]} handleNext={handleNext} />
+        return <GameAdminQuestion question={quiz.questions[quiz.position]} handleNext={handleNext} lastTimeStarted={quiz.isoTimeLastQuestionStarted}/>
 
       // if progress > 0, the game is finished. Display result page
       case 1:

@@ -55,7 +55,7 @@ const ImportModal = ({ games, setGames }) => {
         quizid = res.quizId;
       }).then(() => {
         alert('Successfully import a quiz!');
-        if (quizid != null) setGames([...games, +quizid]);
+        if (quizid != null) setGames([...games, parseInt(quizid)]);
       }).catch((err) => {
         if (err.status === 403) {
           alert('ERROR: Fail to import game. Invalid token.')
