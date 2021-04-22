@@ -30,7 +30,6 @@ const PlayerResult = ({ playerId }) => {
         p.averageTime = isNaN(avgTime) ? 0 : avgTime;
         // construct questions array
         const q = JSON.parse(localStorage.getItem('questions'));
-        // if (answers === null || answers === undefined) return Promise.reject(res);
         console.log(q);
         answers.map((a, idx) => {
           q[idx].answers = a.answerIds;

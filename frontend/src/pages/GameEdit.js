@@ -107,7 +107,6 @@ const GameEdit = () => {
         }
       ),
     ).then(() => {
-      // TODO: change the alert information
       alert('delete successfully');
     }).catch(e => {
       alert('Something wrong:' + e);
