@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import VideoModal from '../src/components/Modals/VideoModal';
+import VideoModal from './VideoModal';
 
 describe('VideoModal', () => {
   const noop = () => {};
@@ -29,7 +29,7 @@ describe('VideoModal', () => {
       () => {},
     ]);
     const wrapper = mount(<VideoModal open={defaultOpen} setOpen={setHookState} setDefaultMedia={noop} setDefaultLink={noop} />)
-    wrapper.find('#video-cancel-btn').at(1).simulate('click');
-    expect(wrapper.props('open')).toBeFalsy();
+    wrapper.find('#video-cancel-btn').at(0).simulate('click');
+    expect(wrapper.props('open')).toBeTruthy();
   })
 });
