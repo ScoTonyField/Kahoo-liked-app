@@ -50,6 +50,27 @@ const TimerCount = ({ playerId, question, setIsTimeOut, setFinalAnswerIds }) => 
           .then(res => {
             // console.log('final answer', res.answerIds);
             setFinalAnswerIds(res.answerIds);
+            // localStorage.setItem()
+            if (!sessionStorage.getItem('answers')) {
+              sessionStorage.setItem('answers', JSON.stringify([{
+                answerIds: res.answerIds
+              }]));
+            } else {
+              const currentAnswers = JSON.parse(sessionStorage.getItem('answers'));
+              currentAnswers.push({
+                answerIds: res.answerIds
+              });
+              sessionStorage.setItem('answers', JSON.stringify(currentAnswers));
+            }
+            if (!sessionStorage.getItem('questions')) {
+              sessionStorage.setItem('questions', JSON.stringify([
+                question
+              ]))
+            } else {
+              const currentQuestions = JSON.parse(sessionStorage.getItem('questions'));
+              currentQuestions.push(question);
+              sessionStorage.setItem('questions', JSON.stringify(currentQuestions));
+            }
           }).catch((err) => {
             console.log('ERROR: Fail to fetch answer', err)
           });
