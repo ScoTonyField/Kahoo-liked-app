@@ -44,7 +44,6 @@ const GamePlayAdminQuestion = ({ question, handleNext, lastTimeStarted }) => {
   // the time is depends on backend's start time
   const timeDiff = parseInt((new Date(lastTimeStarted).getTime() + (+question.timeLimit + 1) * 1000 -
                     new Date().getTime()) / 1000);
-  console.log(new Date(), lastTimeStarted)
   const [remainTime, setRemainTime] = React.useState(timeDiff <= 0 ? 0 : timeDiff);
 
   const classes = useStyles({ remainTime });

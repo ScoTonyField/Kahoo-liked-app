@@ -34,7 +34,6 @@ const SessionResults = () => {
     makeAPIRequest(`admin/session/${sessionId}/results`, 'GET', localStorage.getItem('token'), null, null)
       .then(res => {
         setResults(res.results);
-        console.log(res.results);
       }).catch(() => alert('Fail to fetch results.'))
 
   React.useEffect(() => {

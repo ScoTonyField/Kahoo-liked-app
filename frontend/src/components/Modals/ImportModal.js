@@ -47,7 +47,6 @@ const ImportModal = ({ games, setGames }) => {
       name: data.name,
       thumbnail: data.thumbnail,
     }
-    console.log(putQuzBody)
     makeAPIRequest('admin/quiz/new', 'POST', localStorage.getItem('token'), null, JSON.stringify(newQuizBody))
       .then(res => {
         makeAPIRequest(`admin/quiz/${res.quizId}`, 'PUT', localStorage.getItem('token'), null, JSON.stringify(putQuzBody))

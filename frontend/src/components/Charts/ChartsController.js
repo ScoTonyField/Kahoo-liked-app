@@ -120,8 +120,6 @@ const ChartsController = ({ players, questions }) => {
 
   const selectTopic = (e) => setTopic(e.target.value);
 
-  console.log('dataset: ', dataset);
-
   return (
     <div>
       <h2>Charts</h2>
