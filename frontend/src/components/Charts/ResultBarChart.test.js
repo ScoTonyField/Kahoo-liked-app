@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 // import renderer from 'react-test-renderer';
-import ResultBarChart from './ResultBarChart';
+// import ResultBarChart from './ResultBarChart';
 
 describe('ResultBarChart', () => {
   // const noop = () => {};

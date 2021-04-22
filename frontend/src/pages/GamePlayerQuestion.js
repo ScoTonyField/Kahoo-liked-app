@@ -79,7 +79,7 @@ const GamePlayPlayerQuestion = ({ setProgress }) => {
     }
   };
 
-  // fetch question every 0.5 second
+  // fetch question every 0.2 second
   React.useEffect(() => {
     console.log('player question interval triggered, fetch question every 10 sec');
     const fetchQ = window.setInterval(() => {
@@ -100,8 +100,7 @@ const GamePlayPlayerQuestion = ({ setProgress }) => {
           // when no more question, the quiz is done.
           setProgress(1);
         });
-      console.log(new Date());
-    }, 500);
+    }, 200);
 
     return () => {
       console.log('stop player question interval');

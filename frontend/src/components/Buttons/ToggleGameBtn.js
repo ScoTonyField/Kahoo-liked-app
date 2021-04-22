@@ -22,19 +22,15 @@ const ToggleGameBtn = ({ gameId, sessionId, active, setActive }) => {
   };
 
   // Handle 'copy' button to copy the link which contains the sesion id to the started game
-  // TODO: maybe auto open the game page?
   const handleCopy = () => {
     navigator.clipboard.writeText(`localhost:3000/quiz/play/${sessionId}`)
       .then(() => {
         alert('Link coppied! Paste into brower and go to the game page.')
       }).catch(err => alert('Copied failed.', err));
-
-    setOpen(false);
   };
 
   // Handle 'view results' button to jump to the results page of the stopped game.
   const handleViewResults = () => {
-    // TODO: view results
     history.push(`/results/${lastSessionId}`);
     setOpen(false);
   };

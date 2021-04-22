@@ -12,7 +12,6 @@ export const quizQuestionPublicReturn = question => {
     media: question.media,
     options: question.options,
   };
-  // console.log(ret);
   return ret; // not returning the answer
 };
 
@@ -21,7 +20,6 @@ export const quizQuestionPublicReturn = question => {
  the correct answers (minimum 1).
 */
 export const quizQuestionGetCorrectAnswers = question => {
-  console.log(question.answers);
   return question.answers;
 };
 
@@ -30,7 +28,6 @@ export const quizQuestionGetCorrectAnswers = question => {
  all of the answers, correct or incorrect.
 */
 export const quizQuestionGetAnswers = question => {
-  console.log('get answer', question)
   return question.options;
 };
 

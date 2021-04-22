@@ -75,8 +75,8 @@ const Login = () => {
         <Formik
           // TODO: clear this
           initialValues={{
-            email: 'test@test.com',
-            password: '12345678'
+            email: '',
+            password: ''
           }}
           validate={validateInput}
           onSubmit={handleLogin}

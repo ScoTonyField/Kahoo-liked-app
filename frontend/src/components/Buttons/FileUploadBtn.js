@@ -18,11 +18,9 @@ const FileUploadBtn = ({ fileType, setData }) => {
   const handleChange = (e) => {
     setFileInfo(e.target.files[0])
     const isJSON = e.target.files[0].type.includes('json');
-    console.log(e.target.files[0])
     const fileReader = new FileReader();
     fileReader.onload = (e) => {
       let data = null;
-      console.log(e)
       // parse JSON file directly
       if (isJSON) {
         data = JSON.parse(e.target.result);

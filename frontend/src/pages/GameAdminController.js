@@ -22,7 +22,7 @@ const GameAdminController = () => {
   // all the quiz data
   const [quiz, setQuiz] = React.useState({});
 
-  // fetch status every 0.5 second
+  // fetch status every 0.2 second
   React.useEffect(() => {
     const fetchStatus = window.setInterval(() => {
       makeAPIRequest(`admin/session/${sessionId}/status`, 'GET', localStorage.getItem('token'), null, null)
@@ -32,7 +32,7 @@ const GameAdminController = () => {
           else if (res.results.position === res.results.questions.length) setProgress(1);
           else setProgress(0)
         }).catch((err) => console.log('ERROR: Fail to fetch quiz status', err))
-    }, 1000);
+    }, 200);
     return () => {
       console.log('stop admin controller') // TODO: delete this
       clearInterval(fetchStatus);

@@ -41,9 +41,7 @@ const GamePlayAdminQuestion = ({ question, handleNext }) => {
   if (!question) return <List/>
   // timer is initially active
   const [timerActive, setTimerActive] = React.useState(true);
-  console.log(question)
   // the time is depends on backend's start time
-  console.log(new Date())
   const [remainTime, setRemainTime] = React.useState(question.timeLimit);
   const classes = useStyles({ remainTime });
 
