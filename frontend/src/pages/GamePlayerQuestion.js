@@ -85,7 +85,6 @@ const GamePlayPlayerQuestion = ({ setProgress }) => {
     const fetchQ = window.setInterval(() => {
       makeAPIRequest(`play/${playerId}/question`, 'GET', null, null, null)
         .then(res => {
-          console.log('question: ', res);
           if (res.question.media.split('/')[0] === 'data:image' || res.question.media === '') {
             // check media type before display if media is image or empty -> 'img' type
             setMediaTypes('img');

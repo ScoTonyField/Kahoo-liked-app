@@ -37,12 +37,16 @@ const useStyles = makeStyles({
 
 const sequenceNum = ['A', 'B', 'C', 'D', 'E', 'F'];
 
-const GamePlayAdminQuestion = ({ question, handleNext }) => {
-  if (!question) return <List/>
+const GamePlayAdminQuestion = ({ question, handleNext, lastTimeStarted }) => {
+  if (question === undefined) return <List/>
   // timer is initially active
   const [timerActive, setTimerActive] = React.useState(true);
   // the time is depends on backend's start time
-  const [remainTime, setRemainTime] = React.useState(question.timeLimit);
+  const timeDiff = parseInt((new Date(lastTimeStarted).getTime() + (+question.timeLimit + 1) * 1000 -
+                    new Date().getTime()) / 1000);
+  console.log(new Date(), lastTimeStarted)
+  const [remainTime, setRemainTime] = React.useState(timeDiff <= 0 ? 0 : timeDiff);
+
   const classes = useStyles({ remainTime });
 
   const stopTimer = (timer) => {
@@ -54,7 +58,7 @@ const GamePlayAdminQuestion = ({ question, handleNext }) => {
   // get state from local storage in case user accidentally close the browser
   React.useEffect(() => {
     const timer = null;
-    if (!remainTime) setRemainTime(question.timeLimit);
+    if (!remainTime) setRemainTime(timeDiff <= 0 ? 0 : timeDiff);
     console.log('starting timer for q ', question.qid)
     // if timer is Active, countdown
     if (timerActive) {
@@ -155,6 +159,7 @@ const GamePlayAdminQuestion = ({ question, handleNext }) => {
 GamePlayAdminQuestion.propTypes = {
   question: PropTypes.object,
   handleNext: PropTypes.func,
+  lastTimeStarted: PropTypes.string,
 }
 
 export default GamePlayAdminQuestion;
