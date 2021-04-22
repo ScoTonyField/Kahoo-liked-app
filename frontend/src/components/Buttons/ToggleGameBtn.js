@@ -28,8 +28,6 @@ const ToggleGameBtn = ({ gameId, sessionId, active, setActive }) => {
       .then(() => {
         alert('Link coppied! Paste into brower and go to the game page.')
       }).catch(err => alert('Copied failed.', err));
-
-    setOpen(false);
   };
 
   // Handle 'view results' button to jump to the results page of the stopped game.

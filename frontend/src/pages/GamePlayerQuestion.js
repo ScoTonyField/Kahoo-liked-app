@@ -100,8 +100,7 @@ const GamePlayPlayerQuestion = ({ setProgress }) => {
           // when no more question, the quiz is done.
           setProgress(1);
         });
-      console.log(new Date());
-    }, 500);
+    }, 200);
 
     return () => {
       console.log('stop player question interval');

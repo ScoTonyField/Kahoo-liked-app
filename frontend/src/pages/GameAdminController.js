@@ -32,7 +32,7 @@ const GameAdminController = () => {
           else if (res.results.position === res.results.questions.length) setProgress(1);
           else setProgress(0)
         }).catch((err) => console.log('ERROR: Fail to fetch quiz status', err))
-    }, 1000);
+    }, 200);
     return () => {
       console.log('stop admin controller') // TODO: delete this
       clearInterval(fetchStatus);

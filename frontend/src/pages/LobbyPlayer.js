@@ -13,7 +13,7 @@ const LobbyPlayer = ({ setPlayerId, setProgress }) => {
     // if the current browser has joined as a player
     // if player has joined the quiz, keep fetching game status to wait for start
     console.log(localStorage.getItem('player'));
-    console.log(sessionId);
+    console.log('qq', sessionId);
     if (localStorage.getItem('player') !== null && sessionId === JSON.parse(localStorage.getItem('player')).sessionid) {
       // check if session id is the same, if not, means player changed to a new game
       console.log(localStorage.getItem('player'));
@@ -43,6 +43,7 @@ const LobbyPlayer = ({ setPlayerId, setProgress }) => {
         clearInterval(fetchQ);
       }
     } else {
+      localStorage.clear();
       return <JoinGameInput setProgress={setProgress} setPlayerId={setPlayerId} />
     }
   }, [localStorage.getItem('player')])

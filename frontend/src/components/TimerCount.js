@@ -51,25 +51,25 @@ const TimerCount = ({ playerId, question, setIsTimeOut, setFinalAnswerIds }) => 
             // console.log('final answer', res.answerIds);
             setFinalAnswerIds(res.answerIds);
             // localStorage.setItem()
-            if (!sessionStorage.getItem('answers')) {
-              sessionStorage.setItem('answers', JSON.stringify([{
+            if (!localStorage.getItem('answers')) {
+              localStorage.setItem('answers', JSON.stringify([{
                 answerIds: res.answerIds
               }]));
             } else {
-              const currentAnswers = JSON.parse(sessionStorage.getItem('answers'));
+              const currentAnswers = JSON.parse(localStorage.getItem('answers'));
               currentAnswers.push({
                 answerIds: res.answerIds
               });
-              sessionStorage.setItem('answers', JSON.stringify(currentAnswers));
+              localStorage.setItem('answers', JSON.stringify(currentAnswers));
             }
-            if (!sessionStorage.getItem('questions')) {
-              sessionStorage.setItem('questions', JSON.stringify([
+            if (!localStorage.getItem('questions')) {
+              localStorage.setItem('questions', JSON.stringify([
                 question
               ]))
             } else {
-              const currentQuestions = JSON.parse(sessionStorage.getItem('questions'));
+              const currentQuestions = JSON.parse(localStorage.getItem('questions'));
               currentQuestions.push(question);
-              sessionStorage.setItem('questions', JSON.stringify(currentQuestions));
+              localStorage.setItem('questions', JSON.stringify(currentQuestions));
             }
           }).catch((err) => {
             console.log('ERROR: Fail to fetch answer', err)

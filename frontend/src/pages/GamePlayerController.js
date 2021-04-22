@@ -14,19 +14,24 @@ const GamePlayPlayerController = () => {
 
   // get state from local storage in case user accidentally close the browser
   React.useEffect(() => {
-    if (!localStorage.getItem('player')) {
+    if (!localStorage.getItem('player') || sessionId !== JSON.parse(localStorage.getItem('player')).sessionid) {
+      localStorage.clear();
       setProgress(-1);
       // return <Subtitle>You did not join the quiz.</Subtitle>;
     } else {
       const playerInfo = JSON.parse(localStorage.getItem('player'));
       setPlayerId(playerInfo.id);
       setProgress(playerInfo.progress);
+      if (localStorage.getItem('answers')) {
+        setProgress(1);
+      }
     }
   }, [])
   console.log('progress: ', progress)
   console.log('playerid: ', playerId)
 
   const renderContent = () => {
+    console.log(progress)
     switch (progress) {
       // if progress < 0, the game is at lobby state and should ask user to join the game
       case -1:
@@ -38,8 +43,7 @@ const GamePlayPlayerController = () => {
 
       // if progress > 0, the game is finished. Display result page
       case 1:
-        localStorage.removeItem('player');
-        // (kat will do this): write a result page which contains a button that directs to player result page
+        //  result page which contains a button that directs to player result page
         return <PlayerResult playerId={playerId} />;
 
       // should never reach

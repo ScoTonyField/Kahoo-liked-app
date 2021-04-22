@@ -34,7 +34,7 @@ const PlayerOverviewTable = ({ results, questions }) => {
     players.push(p);
     return 1;
   })
-  console.log(players)
+  console.log(players, questions)
   return (
     <>
       <h2>Players Overview</h2>

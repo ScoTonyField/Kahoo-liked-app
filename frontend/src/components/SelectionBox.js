@@ -77,7 +77,6 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
 
   const classes = useStlyes();
   const keys = Object.keys(questions);
-  // console.log(keys);
   if (keys.length === 0) {
     questions = {
       options: [],
@@ -110,16 +109,13 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           className={classes.questionForm}
           onChange={(event) => {
             if (event.target.value) {
-              // console.log(event.target.value);
               const newDefaultOptions = defaultOptions;
               newDefaultOptions.splice(0, 1, event.target.value);
-              console.log(newDefaultOptions);
               setDefaultOptions(newDefaultOptions);
               setDisabledOne(false);
             } else {
               const newDefaultOptions = defaultOptions;
               newDefaultOptions.splice(0, 1, '');
-              console.log(newDefaultOptions);
               setDefaultOptions(newDefaultOptions);
               setDisabledOne(true);
             }
@@ -155,7 +151,6 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
             const newDefaultOptions = defaultOptions;
             newDefaultOptions.splice(1, 1, event.target.value);
             setDefaultOptions(newDefaultOptions);
-            console.log(newDefaultOptions);
             setDisabledTwo(false);
           }}
         >
@@ -188,7 +183,7 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           onChange={(event) => {
             const newDefaultOptions = defaultOptions;
             newDefaultOptions.splice(2, 1, event.target.value);
-            console.log(newDefaultOptions);
+            (newDefaultOptions);
             setDefaultOptions(newDefaultOptions);
             setDisabledThree(false);
           }}
@@ -222,7 +217,6 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           onChange={(event) => {
             const newDefaultOptions = defaultOptions;
             newDefaultOptions.splice(3, 1, event.target.value);
-            console.log(newDefaultOptions);
             setDefaultOptions(newDefaultOptions);
             setDisabledFour(false);
           }}
@@ -256,7 +250,6 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           onChange={(event) => {
             const newDefaultOptions = defaultOptions;
             newDefaultOptions.splice(4, 1, event.target.value);
-            console.log(newDefaultOptions);
             setDefaultOptions(newDefaultOptions);
             setDisabledFive(false);
           }}
@@ -290,7 +283,6 @@ const SelectionBox = ({ questions, setDefaultType, defaultAnswer, setDefaultAnsw
           onChange={(event) => {
             const newDefaultOptions = defaultOptions;
             newDefaultOptions.splice(5, 1, event.target.value);
-            console.log(newDefaultOptions);
             setDefaultOptions(newDefaultOptions);
             setDisabledSix(false);
           }}
