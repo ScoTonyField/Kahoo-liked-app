@@ -3,20 +3,22 @@ import makeAPIRequest from '../Api';
 // import { List } from 'react-content-loader';
 import PropTypes from 'prop-types';
 import Subtitle from '../components/Titles/Subtitle';
+// import PlayerResultModal from '../components/Modals/PlayerResultModal';
 import {
   Container,
   Paper,
   List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
+  // ListItem,
+  // ListItemText,
+  // ListItemIcon,
 } from '@material-ui/core';
-import CheckIcon from '@material-ui/icons/Check';
-import ClearIcon from '@material-ui/icons/Clear';
+// import CheckIcon from '@material-ui/icons/Check';
+// import ClearIcon from '@material-ui/icons/Clear';
 
 const PlayerResult = ({ playerId }) => {
   // a list of result (1 per question)
   const [result, setResult] = React.useState([]);
+  const [player, setPlayer] = React.useState({});
   // const [defaultOptions, setDefaultOptions] = useState([])
   // const [defaultPoints, setDefaultPoints] = useState(0);
 
@@ -56,16 +58,30 @@ const PlayerResult = ({ playerId }) => {
     makeAPIRequest(`play/${playerId}/results`, 'GET', null, null, null)
       .then(res => setResult(res))
       .catch(err => console.log('ERROR: error fetching player result: ', err));
+    const p = {};
+    p.anwers = sessionStorage.getItem('answers');
+    p.questions = sessionStorage.getItem('questions');
+    p.score = p.answers.reduce((a, b, indx) => {
+      const pointsCurrentQuestion = b.correct ? +p.questions[indx].points : 0;
+      return a + +pointsCurrentQuestion;
+    }, 0);
+    p.avgTime = p.answers.reduce((a, b, indx) => {
+      const pointsCurrentQuestion = b.correct ? +p.questions[indx].points : 0;
+      return a + +pointsCurrentQuestion;
+    }, 0);
+    setPlayer(p);
+    console.log((result));
   }, [])
 
   // XXX: UX content loader
-  if (result.length === 0) return <List />
+  if (Object.keys(player).length === 0) return <List />
 
   return (
     <Container>
       <Paper elevation={3}>
         <Subtitle><b>Well done! View your result below.</b></Subtitle>
-        <List>
+        {/* <PlayerResultModal key={player} player={player} questions={player.questions}></PlayerResultModal> */}
+        {/* <List>
           {result.map((value, index) => {
             return (
               <ListItem key={index} dense button >
@@ -82,23 +98,15 @@ const PlayerResult = ({ playerId }) => {
                   }
                 </ListItemIcon>
                 <ListItemText>
-                  {/* {JSON.stringify(value)} */}
-                  {/* {getOption(value.answerIds)} */}
                   {'answers'}
                 </ListItemText>
                 <ListItemIcon>
-                  {/* TODO: add points and points system */}
                   {'points'}
                 </ListItemIcon>
               </ListItem>
             )
           })}
-        </List>
-        {/* {
-          result.map((r, idx) =>
-            <p key={idx}>{JSON.stringify(r)}</p>
-          )
-        } */}
+        </List> */}
       </Paper>
     </Container>
   );

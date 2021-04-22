@@ -98,7 +98,7 @@ const GamePlayPlayerQuestion = ({ setProgress }) => {
         }).catch((err) => {
           console.log('ERROR: Fail to fetch question', err)
           // when no more question, the quiz is done.
-          setProgress(-1);
+          setProgress(1);
         });
       console.log(new Date());
     }, 500);
