@@ -112,9 +112,10 @@ const GamePlayAdminQuestion = ({ question, handleNext }) => {
                 (
                   <CardMedia
                     component='img'
-                    alt="Question Media"
+                    alt="Helper Image"
                     src={question.media}
                     title="Question Media"
+                    style={{ maxHeight: '300px', objectFit: 'contain' }}
                   />
                 )
             }

@@ -54,7 +54,6 @@ const SessionResults = () => {
       : toFriendlyFormat(quiz.isoTimeLastQuestionStarted)
 
   const contentLoader = () => <List />
-
   return (
     <Container>
         <Title>

@@ -73,7 +73,6 @@ const Login = () => {
       <StyledLayout>
         <Title>Sign in</Title>
         <Formik
-          // TODO: clear this
           initialValues={{
             email: '',
             password: ''

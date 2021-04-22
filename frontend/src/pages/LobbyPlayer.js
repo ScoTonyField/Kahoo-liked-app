@@ -33,6 +33,7 @@ const LobbyPlayer = ({ setPlayerId, setProgress }) => {
         clearInterval(fetchQ);
       }
     } else {
+      localStorage.clear();
       return <JoinGameInput setProgress={setProgress} setPlayerId={setPlayerId} />
     }
   }, [localStorage.getItem('player')])

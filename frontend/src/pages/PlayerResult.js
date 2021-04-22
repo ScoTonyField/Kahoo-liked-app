@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import Subtitle from '../components/Titles/Subtitle';
 import PlayerResultModal from '../components/Modals/PlayerResultModal';
 import {
-  List,
   Box,
 } from '@material-ui/core';
+import { calculateIsoTimeDiff } from '../TimeManipulation';
+import { List } from 'react-content-loader';
 
 const PlayerResult = ({ playerId }) => {
   // a list of result (1 per question)
@@ -41,12 +42,12 @@ const PlayerResult = ({ playerId }) => {
   }, [])
 
   // XXX: UX content loader
-  if (Object.keys(player).length === 0) return <List />
+  if (player === undefined || questions === undefined) return <List />
 
   return (
     <Box display='flex' flexDirection='column' alignItems='center'>
-      <Subtitle><b>Well done! View your result below.</b></Subtitle>
-      <PlayerResultModal player={player} questions={questions} />
+        <Subtitle><b>Well done! View your result below.</b></Subtitle>
+        <PlayerResultModal player={player} questions={questions} />
     </Box>
   );
 };
