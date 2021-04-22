@@ -23,8 +23,11 @@ const FileUploadBtn = ({ fileType, setData }) => {
     fileReader.onload = (e) => {
       let data = null;
       console.log(e)
+      // parse JSON file directly
       if (isJSON) {
         data = JSON.parse(e.target.result);
+
+      // fails to implement csv file parsing
       } else {
         console.log(e.target.result)
       }
