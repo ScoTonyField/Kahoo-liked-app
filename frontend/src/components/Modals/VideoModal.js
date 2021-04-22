@@ -21,7 +21,7 @@ const VideoModal = ({ open, setOpen, setDefaultMedia, setDefaultLink }) => {
   }
 
   return (
-    <Dialog open={open} aria-labelledby="simple-dialog-title">
+    <Dialog open={open} aria-labelledby="simple-dialog-title" id='main-dialog'>
       <DialogTitle id='video-title'>Youtube Link</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -40,6 +40,7 @@ const VideoModal = ({ open, setOpen, setDefaultMedia, setDefaultLink }) => {
         ></TextField>
         <DialogActions>
           <Button
+            id='video-cancel-btn'
             variant='contained'
             color='primary'
             onClick={(event) => setOpen(false)}
