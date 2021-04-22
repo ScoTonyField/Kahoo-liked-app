@@ -7,7 +7,7 @@ describe('ResultBarChart', () => {
   // const noop = () => {};
 
   it('render graph when mount', () => {
-    const ResultBarChart = shallow(<ResultBarChart options='' topic='' labels={[]} dataset={[]} />).simulate('click');
+    const ResultBarChart = shallow(<ResultBarChart options='' topic='' labels={[]} dataset={[]} />);
     expect(ResultBarChart.contains(<h3 align="center">Percentage of Correctness</h3>)).to.equal(true);
   });
 
