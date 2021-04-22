@@ -3,7 +3,7 @@ import makeAPIRequest from '../Api';
 // import { List } from 'react-content-loader';
 import PropTypes from 'prop-types';
 import Subtitle from '../components/Titles/Subtitle';
-import PlayerResultModal from '../components/Modals/PlayerResultModal';
+// import PlayerResultModal from '../components/Modals/PlayerResultModal';
 import {
   Container,
   Paper,
@@ -80,7 +80,7 @@ const PlayerResult = ({ playerId }) => {
     <Container>
       <Paper elevation={3}>
         <Subtitle><b>Well done! View your result below.</b></Subtitle>
-        <PlayerResultModal key={player} player={player} questions={player.questions}></PlayerResultModal>
+        {/* <PlayerResultModal key={player} player={player} questions={player.questions}></PlayerResultModal> */}
         {/* <List>
           {result.map((value, index) => {
             return (
