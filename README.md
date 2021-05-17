@@ -61,3 +61,97 @@ User
   - [x] 游戏问题
   - [x] 倒计时
 - [x] 回答结果与正确结果
+
+### 项目结构
+
+```
+.
+├── BONUS.md
+├── README.md
+├── TESTING.md
+├── UIUX.md
+├── backend
+├── frontend
+│   ├── 2.5.json
+│   ├── README.md
+│   ├── package.json
+│   ├── public
+│   ├── src
+│   │   ├── Api.js
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── IdGenerator.js									
+│   │   ├── TimeManipulation.js							
+│   │   ├── components
+│   │   │   ├── AppHeader.js								
+│   │   │   ├── Buttons											
+│   │   │   │   ├── FileUploadBtn.js
+│   │   │   │   └── ToggleGameBtn.js
+│   │   │   ├── ChartTabBar.js							
+│   │   │   ├── Charts											
+│   │   │   │   ├── ChartsController.js			
+│   │   │   │   ├── ResultBarChart.js				
+│   │   │   │   ├── ResultBarChart.test.js	
+│   │   │   │   ├── ResultLineChart.js
+│   │   │   │   └── ResultPieChart.js
+│   │   │   ├── GameCard.js
+│   │   │   ├── JoinGameInput.js
+│   │   │   ├── Modals
+│   │   │   │   ├── CreateGameModal.js
+│   │   │   │   ├── EnterNameModal.js
+│   │   │   │   ├── GameHistoryModal.js
+│   │   │   │   ├── ImportModal.js
+│   │   │   │   ├── PlayerResultModal.js
+│   │   │   │   ├── QuizNameModal.js
+│   │   │   │   ├── VideoModal.js
+│   │   │   │   └── VideoModal.test.js
+│   │   │   ├── Row.js
+│   │   │   ├── Row.test.js
+│   │   │   ├── SelectionBox.js
+│   │   │   ├── TableRows
+│   │   │   │   ├── GameHistoryItem.js
+│   │   │   │   ├── PlayerOverviewRow.js
+│   │   │   │   └── PlayerResultRow.js
+│   │   │   ├── Tables
+│   │   │   │   ├── GameHistoryTable.js
+│   │   │   │   ├── PlayerOverviewTable.js
+│   │   │   │   └── PlayerResultTable.js
+│   │   │   ├── TimerCount.js
+│   │   │   ├── Titles
+│   │   │   │   ├── Subtitle.js
+│   │   │   │   └── Title.js
+│   │   │   └── __snapshots__
+│   │   │       └── Row.test.js.snap
+│   │   ├── config.json
+│   │   ├── index.css
+│   │   ├── index.jsx
+│   │   ├── logo.svg
+│   │   ├── pages
+│   │   │   ├── Dashboard.js
+│   │   │   ├── GameAdminController.js
+│   │   │   ├── GameAdminQuestion.js
+│   │   │   ├── GameEdit.js
+│   │   │   ├── GamePlayerController.js
+│   │   │   ├── GamePlayerQuestion.js
+│   │   │   ├── Home.js
+│   │   │   ├── JoinSession.js
+│   │   │   ├── LobbyAdmin.js
+│   │   │   ├── LobbyPlayer.js
+│   │   │   ├── Login.js
+│   │   │   ├── NotFound.js
+│   │   │   ├── PlayerResult.js
+│   │   │   ├── QuestionEdit.js
+│   │   │   ├── Register.js
+│   │   │   ├── SessionResults.js
+│   │   │   └── styles.css
+│   │   └── setupTests.js
+│   ├── yarn-error.log
+│   └── yarn.lock
+├── package-lock.json
+├── package.json
+├── screenshots
+└── yarn.lock
+
+16 directories, 89 files
+```
+
