@@ -6,7 +6,7 @@
 
 ​	本项目是基于`react` 和 `material-ui`进行实现的。
 
-<img src="https://github.com/ScoTonyField/Kahoo-liked-app/tree/master/screenshots/image-20210518011225702.png" alt="image-20210518011225702" style="zoom:50%; border: 1px solid black" />
+<img src="https://github.com/ScoTonyField/Kahoo-liked-app/raw/master/screenshots/image-20210518011225702.png" alt="image-20210518011225702" style="zoom:50%; border: 1px solid black" />
 
 ### 技术栈
 
