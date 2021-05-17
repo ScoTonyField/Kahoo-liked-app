@@ -15,7 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import makeAPIRequest from '../Api';
 import PropTypes from 'prop-types';
 import CheckIcon from '@material-ui/icons/Check';
-import TimerCount from '../TimerCount';
+import TimerCount from '../components/TimerCount';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,13 +79,12 @@ const GamePlayPlayerQuestion = ({ setProgress }) => {
     }
   };
 
-  // fetch question every 1 second
+  // fetch question every 0.2 second
   React.useEffect(() => {
     console.log('player question interval triggered, fetch question every 10 sec');
     const fetchQ = window.setInterval(() => {
       makeAPIRequest(`play/${playerId}/question`, 'GET', null, null, null)
         .then(res => {
-          console.log('question: ', res);
           if (res.question.media.split('/')[0] === 'data:image' || res.question.media === '') {
             // check media type before display if media is image or empty -> 'img' type
             setMediaTypes('img');
@@ -100,8 +99,7 @@ const GamePlayPlayerQuestion = ({ setProgress }) => {
           // when no more question, the quiz is done.
           setProgress(1);
         });
-      console.log(new Date());
-    }, 1000);
+    }, 200);
 
     return () => {
       console.log('stop player question interval');
@@ -113,7 +111,7 @@ const GamePlayPlayerQuestion = ({ setProgress }) => {
 
   return (
     <Container component='main' className={classes.root} id='main'>
-      <TimerCount key={question} playerId={playerId} question={question} setIsTimeOut={setIsTimeOut} setFinalAnswerIds={setFinalAnswerIds} ></TimerCount>
+      <TimerCount key={question} playerId={playerId} question={question} setIsTimeOut={setIsTimeOut} setFinalAnswerIds={setFinalAnswerIds} />
       <Typography variant='h5'><b>{question.contents}</b></Typography>
       <Card>
         <CardActionArea>

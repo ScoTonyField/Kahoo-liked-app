@@ -25,7 +25,6 @@ const ImportModal = ({ games, setGames }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-  console.log(data)
   // Handler for opening the 'import gmae data' modal
   const handleClickOpen = () => {
     setOpen(true);
@@ -48,14 +47,13 @@ const ImportModal = ({ games, setGames }) => {
       name: data.name,
       thumbnail: data.thumbnail,
     }
-    console.log(putQuzBody)
     makeAPIRequest('admin/quiz/new', 'POST', localStorage.getItem('token'), null, JSON.stringify(newQuizBody))
       .then(res => {
         makeAPIRequest(`admin/quiz/${res.quizId}`, 'PUT', localStorage.getItem('token'), null, JSON.stringify(putQuzBody))
         quizid = res.quizId;
       }).then(() => {
         alert('Successfully import a quiz!');
-        if (quizid != null) setGames([...games, +quizid]);
+        if (quizid != null) setGames([...games, parseInt(quizid)]);
       }).catch((err) => {
         if (err.status === 403) {
           alert('ERROR: Fail to import game. Invalid token.')
@@ -104,10 +102,10 @@ const ImportModal = ({ games, setGames }) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To make a new quiz, please upload the <b>csv/json</b> file that contains game data
+            To make a new quiz, please upload the <b>json</b> file that contains game data
           </DialogContentText>
 
-          <FileUploadBtn fileType=".csv,.json" setData={setData}/>
+          <FileUploadBtn fileType=".json" setData={setData}/>
           {
             // quiz data preview
             data && (

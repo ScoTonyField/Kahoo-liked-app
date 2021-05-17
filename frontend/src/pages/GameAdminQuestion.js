@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, Card, Divider, Typography, CardMedia, CardContent } from '@material-ui/core';
+import { Box, Button, Card, Typography, CardMedia, CardContent } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { List } from 'react-content-loader';
 import ReactPlayer from 'react-player/youtube';
 import Title from '../components/Titles/Title';
+// import { calculateIsoTimeDiff } from '../TimeManipulation';
 
 const useStyles = makeStyles({
   root: {
@@ -36,11 +37,15 @@ const useStyles = makeStyles({
 
 const sequenceNum = ['A', 'B', 'C', 'D', 'E', 'F'];
 
-const GamePlayAdminQuestion = ({ question, progress, handleNext }) => {
+const GamePlayAdminQuestion = ({ question, handleNext, lastTimeStarted }) => {
   if (question === undefined) return <List/>
   // timer is initially active
   const [timerActive, setTimerActive] = React.useState(true);
-  const [remainTime, setRemainTime] = React.useState(question.timeLimit);
+  // the time is depends on backend's start time
+  const timeDiff = parseInt((new Date(lastTimeStarted).getTime() + (+question.timeLimit + 1) * 1000 -
+                    new Date().getTime()) / 1000);
+  const [remainTime, setRemainTime] = React.useState(timeDiff <= 0 ? 0 : timeDiff);
+
   const classes = useStyles({ remainTime });
 
   const stopTimer = (timer) => {
@@ -49,14 +54,10 @@ const GamePlayAdminQuestion = ({ question, progress, handleNext }) => {
     setTimerActive(false);
   }
 
-  console.log('question', question);
-  // React.useEffect(() => {
-  //   if (progress >= 0) setRemainTime(question.timeLimit);
-  // }, [progress])
   // get state from local storage in case user accidentally close the browser
   React.useEffect(() => {
     const timer = null;
-    if (!remainTime) setRemainTime(+question.timeLimit);
+    if (!remainTime) setRemainTime(timeDiff <= 0 ? 0 : timeDiff);
     console.log('starting timer for q ', question.qid)
     // if timer is Active, countdown
     if (timerActive) {
@@ -68,7 +69,7 @@ const GamePlayAdminQuestion = ({ question, progress, handleNext }) => {
       setRemainTime(0);
     }
     return () => {
-      console.log('stoping timer for q ', question.qid)
+      console.log('stoping admin question', question.qid)
       if (timer !== null) clearInterval(timer);
     }
   }, [])
@@ -104,7 +105,7 @@ const GamePlayAdminQuestion = ({ question, progress, handleNext }) => {
           NEXT
         </Button>
       </Box>
-      <Divider className={classes.divider}/>
+      {/* <Divider className={classes.divider}/> */}
       {
         question.media !== '' &&
           <Card className={classes.media}>
@@ -114,9 +115,10 @@ const GamePlayAdminQuestion = ({ question, progress, handleNext }) => {
                 (
                   <CardMedia
                     component='img'
-                    alt="Question Media"
+                    alt="Helper Image"
                     src={question.media}
                     title="Question Media"
+                    style={{ maxHeight: '300px', objectFit: 'contain' }}
                   />
                 )
             }
@@ -154,9 +156,9 @@ const GamePlayAdminQuestion = ({ question, progress, handleNext }) => {
 };
 
 GamePlayAdminQuestion.propTypes = {
-  progress: PropTypes.number,
   question: PropTypes.object,
-  handleNext: PropTypes.func
+  handleNext: PropTypes.func,
+  lastTimeStarted: PropTypes.string,
 }
 
 export default GamePlayAdminQuestion;

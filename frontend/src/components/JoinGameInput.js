@@ -31,7 +31,6 @@ const JoinGameInput = ({ setPlayerId, setProgress }) => {
           setPlayerId(res.playerId);
         }).catch(() => {
           alert('The game has been started, you are not allowed to join.')
-          // console.log('ERROR: Fail to join player', err) //TODO: delete this
         });
     }
   }

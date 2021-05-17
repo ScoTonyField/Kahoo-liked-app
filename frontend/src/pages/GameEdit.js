@@ -107,7 +107,6 @@ const GameEdit = () => {
         }
       ),
     ).then(() => {
-      // TODO: change the alert information
       alert('delete successfully');
     }).catch(e => {
       alert('Something wrong:' + e);
@@ -192,6 +191,68 @@ const GameEdit = () => {
   if (Object.keys(rows).length === 0 || rows.length === 0) {
     return (
       <Container maxWidth='md' component='main' className={classes.root}>
+        <Card className={classes.card}>
+          <CardMedia
+            component="img"
+            alt="upload-media"
+            height='180'
+            image={defaultImage ?? 'https://tse4-mm.cn.bing.net/th/id/OIP.EEoake0D7LrG5c4X4TDPFQHaHa?pid=ImgDet&rs=1'}
+          />
+        </Card>
+        <HiddenInput
+          accept='image/*'
+          id='avatar'
+          type='file'
+          onChange={(event) => {
+            // transfer upload image into base64 format
+            const file = event.target.files[0];
+            const fileRead = new FileReader();
+            fileRead.readAsDataURL(file);
+            fileRead.onload = (data) => {
+              setDefaultImage(data.target.result);
+              setImageChanged(true);
+            }
+          }}
+        />
+        <label htmlFor="avatar">
+          <Button
+            variant='contained'
+            color='primary'
+            component='span'
+            className={classes.mediaButton}
+          >
+            Change Thumbnail
+          </Button>
+        </label>
+        <Button
+          variant='contained'
+          color='primary'
+          component='span'
+          className={classes.mediaButton}
+          onClick={handleSubmit}
+        >
+          Submit Thumbnail
+        </Button>
+        <Typography variant='h4' className={classes.nameText}>
+          {`Editing ${nameChanged ? defaultName : fetchData.name}`}
+          <Button
+            variant='outlined'
+            color='primary'
+            className={classes.nameButton}
+            onClick={(event) => setOpen(true)}
+          >
+            Change Quiz Name
+          </Button>
+          <QuizNameModal
+            key={params.quizid}
+            open={open}
+            setOpen={setOpen}
+            defaultName={defaultName}
+            setDefaultName={setDefaultName}
+            handleNameChange={handleNameChange}
+            setNameChanged={setNameChanged}
+          />
+        </Typography>
         <Paper className={classes.paper} variant='outlined'>
           <Typography variant='h5'>No questions in this game now, please add your question.</Typography>
           <Button

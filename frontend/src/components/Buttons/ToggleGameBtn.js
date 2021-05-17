@@ -2,7 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, 
 import CloseIcon from '@material-ui/icons/Close';
 import React from 'react';
 import makeAPIRequest from '../../Api';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const closeBtnStyle = {
@@ -22,19 +22,15 @@ const ToggleGameBtn = ({ gameId, sessionId, active, setActive }) => {
   };
 
   // Handle 'copy' button to copy the link which contains the sesion id to the started game
-  // TODO: maybe auto open the game page?
   const handleCopy = () => {
-    navigator.clipboard.writeText(`localhost:3000/quiz/play/admin/${gameId}/${sessionId}`)
+    navigator.clipboard.writeText(`localhost:3000/quiz/play/${sessionId}`)
       .then(() => {
         alert('Link coppied! Paste into brower and go to the game page.')
       }).catch(err => alert('Copied failed.', err));
-
-    setOpen(false);
   };
 
   // Handle 'view results' button to jump to the results page of the stopped game.
   const handleViewResults = () => {
-    // TODO: view results
     history.push(`/results/${lastSessionId}`);
     setOpen(false);
   };
@@ -104,7 +100,11 @@ const ToggleGameBtn = ({ gameId, sessionId, active, setActive }) => {
         <DialogContent dividers>
           <Typography gutterBottom>
             {
-              active ? `Session id: ${sessionId}` : 'Would you like to view results?'
+              active
+                ? sessionId === null
+                    ? 'Loading...'
+                    : `Session id: ${sessionId}`
+                : 'Would you like to view results?'
             }
           </Typography>
         </DialogContent>
@@ -112,14 +112,25 @@ const ToggleGameBtn = ({ gameId, sessionId, active, setActive }) => {
           {
             active
               ? (
-                <Button
-                  autoFocus
-                  variant="contained"
-                  onClick={handleCopy}
-                  color="primary"
-                >
-                  Copy Link
-                </Button>
+                <>
+                  <Button
+                    autoFocus
+                    variant="contained"
+                    onClick={handleCopy}
+                    color="primary"
+                  >
+                    Copy Player Link
+                  </Button>
+                  <Button
+                    component={Link}
+                    to={`quiz/play/admin/${gameId}/${sessionId}`}
+                    autoFocus
+                    variant="contained"
+                    color="primary"
+                  >
+                    Go to admin quiz controller
+                  </Button>
+                </>
                 )
               : (
                 <Button
